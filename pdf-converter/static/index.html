@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF to Word Converter</title>
+  <meta name="description" content="Convert PDF files to editable Word documents. Upload a PDF and download a .docx file instantly.">
+  <link rel="canonical" href="https://example.com/pdf-converter">
+  <meta property="og:title" content="PDF to Word Converter">
+  <meta property="og:description" content="Convert PDF files to editable Word documents in seconds.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://example.com/pdf-converter">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>PDF to Word Converter</h1>
+      <p class="subtitle">Upload a PDF and download an editable Word document. Text and paragraphs are extracted automatically.</p>
+    </header>
+
+    <section class="converter" aria-labelledby="upload-heading">
+      <h2 id="upload-heading" class="visually-hidden">Upload PDF</h2>
+
+      <div
+        id="drop-zone"
+        class="drop-zone"
+        role="button"
+        tabindex="0"
+        aria-label="Drop a PDF here or click to choose a file"
+      >
+        <svg class="drop-zone__icon" xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="12" y1="18" x2="12" y2="12"/>
+          <line x1="9" y1="15" x2="15" y2="15"/>
+        </svg>
+        <p class="drop-zone__prompt">Drag &amp; drop your PDF here</p>
+        <p class="drop-zone__hint">or</p>
+        <label for="file-input" class="btn btn-secondary">Choose PDF</label>
+        <input type="file" id="file-input" accept=".pdf,application/pdf" hidden>
+        <p id="file-name" class="file-name" aria-live="polite"></p>
+      </div>
+
+      <button id="convert-btn" class="btn btn-primary" type="button" disabled>
+        Convert to Word
+      </button>
+
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </section>
+
+    <footer class="footer">
+      <p>Files are processed in memory and not stored. Maximum file size: 25 MB.</p>
+      <p class="footer__note">Scanned or image-only PDFs may not produce text. Layout, images, and tables are not preserved.</p>
+    </footer>
+  </main>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
