@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Retro Platformer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="game-container">
+    <canvas id="game"></canvas>
+
+    <div id="touch-controls">
+      <button id="btn-left" class="touch-btn" aria-label="Move left">◀</button>
+      <button id="btn-right" class="touch-btn" aria-label="Move right">▶</button>
+      <button id="btn-jump" class="touch-btn touch-btn-jump" aria-label="Jump">▲</button>
+    </div>
+
+    <button id="btn-pause" class="pause-btn" aria-label="Pause">⏸</button>
+
+    <div id="overlay-menu" class="overlay screen">
+      <div class="card">
+        <h1>Retro Platformer</h1>
+        <p class="subtitle">Run, jump, and stomp your way through endless levels!</p>
+        <div class="stats" id="menu-stats"></div>
+        <button id="btn-start" class="btn-primary">Start Game</button>
+        <button id="btn-mute" class="btn-secondary">Sound: ON</button>
+        <div class="controls-hint">
+          <p><strong>Controls:</strong> Arrow keys / WASD + Space</p>
+          <p>Stomp enemies from above · Collect coins &amp; power-ups</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="overlay-pause" class="overlay screen hidden">
+      <div class="card">
+        <h2>Paused</h2>
+        <button id="btn-resume" class="btn-primary">Resume</button>
+        <button id="btn-quit" class="btn-secondary">Quit to Menu</button>
+      </div>
+    </div>
+
+    <div id="overlay-gameover" class="overlay screen hidden">
+      <div class="card">
+        <h2>Game Over</h2>
+        <p id="gameover-stats"></p>
+        <button id="btn-retry" class="btn-primary">Try Again</button>
+        <button id="btn-menu" class="btn-secondary">Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="game.js" defer></script>
+</body>
+</html>

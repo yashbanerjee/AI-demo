@@ -1,0 +1,48 @@
+---
+description: Demo rule — conventions for the retro platformer (HTML5 Canvas game)
+globs: game.js,index.html,style.css
+alwaysApply: false
+---
+
+# Retro Platformer Conventions
+
+This is a **sample Cursor rule** for demo purposes. Rules in `.cursor/rules/*.mdc` give the AI persistent project context.
+
+## Project shape
+
+- Static browser game: `index.html`, `style.css`, `game.js`
+- No build step, no external game engines or npm dependencies
+- Canvas logical resolution: 480×270, scaled via CSS + `devicePixelRatio`
+
+## Code style
+
+- Keep game logic in `game.js`; use section headers like `// === Input ===`
+- Prefer plain classes/objects over frameworks
+- Match existing naming: `TILE`, `LOGIC_W`, `aabbOverlap`, `Save.get/set`
+
+## When editing gameplay
+
+```javascript
+// ✅ GOOD — extend existing systems
+this.particles.coinBurst(x, y);
+this.audio.sfxCoin();
+
+// ❌ BAD — don't add image assets or bundlers for this project
+import sprite from './hero.png';
+```
+
+## Physics & feel
+
+- Preserve coyote time, jump buffer, and forgiving hitboxes (~70% width)
+- New juice (particles, screen shake, squash-stretch) should reuse `ParticleSystem` and `Camera.addShake`
+- Procedural levels must stitch chunk seams cleanly (no floating ground gaps)
+
+## Audio
+
+- Use `AudioEngine` Web Audio synthesis only — no external sound files
+- Respect mute state from `localStorage` key `platformer_muted`
+
+## Persistence
+
+- High score / best level keys: `platformer_highscore`, `platformer_bestlevel`
+- Do not rename these without a migration note
