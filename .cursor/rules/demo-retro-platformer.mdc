@@ -1,9 +1,6 @@
 ---
-description: Demo rule — conventions for the retro platformer (HTML5 Canvas game)
-globs: game.js,index.html,style.css
 alwaysApply: false
 ---
-
 # Retro Platformer Conventions
 
 This is a **sample Cursor rule** for demo purposes. Rules in `.cursor/rules/*.mdc` give the AI persistent project context.

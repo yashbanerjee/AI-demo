@@ -163,43 +163,45 @@
     });
   });
 
-  // === Testimonials slider ===
-  const slides = [...document.querySelectorAll(".t-slide")];
-  const dots = [...document.querySelectorAll("#tDots button")];
-  const currentLabel = document.getElementById("tCurrent");
+  // === Testimonials slider (homepage only) ===
   const slider = document.getElementById("tSlider");
-  let tIndex = 0;
-  let tTimer;
-  const goTo = (i) => {
-    tIndex = (i + slides.length) % slides.length;
-    slides.forEach((s, n) => s.classList.toggle("is-active", n === tIndex));
-    dots.forEach((d, n) => d.setAttribute("aria-selected", String(n === tIndex)));
-    currentLabel.textContent = String(tIndex + 1).padStart(2, "0");
-  };
-  const restartAuto = () => {
-    clearInterval(tTimer);
-    if (!reduceMotion) tTimer = setInterval(() => goTo(tIndex + 1), 5000);
-  };
-  dots.forEach((d, n) => d.addEventListener("click", () => { goTo(n); restartAuto(); }));
-  restartAuto();
+  if (slider) {
+    const slides = [...document.querySelectorAll(".t-slide")];
+    const dots = [...document.querySelectorAll("#tDots button")];
+    const currentLabel = document.getElementById("tCurrent");
+    let tIndex = 0;
+    let tTimer;
+    const goTo = (i) => {
+      tIndex = (i + slides.length) % slides.length;
+      slides.forEach((s, n) => s.classList.toggle("is-active", n === tIndex));
+      dots.forEach((d, n) => d.setAttribute("aria-selected", String(n === tIndex)));
+      currentLabel.textContent = String(tIndex + 1).padStart(2, "0");
+    };
+    const restartAuto = () => {
+      clearInterval(tTimer);
+      if (!reduceMotion) tTimer = setInterval(() => goTo(tIndex + 1), 5000);
+    };
+    dots.forEach((d, n) => d.addEventListener("click", () => { goTo(n); restartAuto(); }));
+    restartAuto();
 
-  // Swipe between testimonials on touch devices
-  let touchX = null;
-  let touchY = null;
-  slider.addEventListener("touchstart", (e) => {
-    touchX = e.touches[0].clientX;
-    touchY = e.touches[0].clientY;
-  }, { passive: true });
-  slider.addEventListener("touchend", (e) => {
-    if (touchX === null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    const dy = e.changedTouches[0].clientY - touchY;
-    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
-      goTo(tIndex + (dx < 0 ? 1 : -1));
-      restartAuto();
-    }
-    touchX = touchY = null;
-  }, { passive: true });
+    // Swipe between testimonials on touch devices
+    let touchX = null;
+    let touchY = null;
+    slider.addEventListener("touchstart", (e) => {
+      touchX = e.touches[0].clientX;
+      touchY = e.touches[0].clientY;
+    }, { passive: true });
+    slider.addEventListener("touchend", (e) => {
+      if (touchX === null) return;
+      const dx = e.changedTouches[0].clientX - touchX;
+      const dy = e.changedTouches[0].clientY - touchY;
+      if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        goTo(tIndex + (dx < 0 ? 1 : -1));
+        restartAuto();
+      }
+      touchX = touchY = null;
+    }, { passive: true });
+  }
 
   // === Magnetic buttons (fine pointers only) ===
   if (hoverCapable && !reduceMotion) {
@@ -221,7 +223,8 @@
   // ============================================================
   // Scroll-driven scenes (rAF loop with lerp smoothing —
   // progress eases toward the scroll position so fast flicks
-  // and touch scrolling feel fluid instead of steppy)
+  // and touch scrolling feel fluid instead of steppy).
+  // Homepage only — bail out on pages without these sections.
   // ============================================================
   const hero = document.getElementById("hero");
   const heroCard = document.getElementById("heroCard");
@@ -231,6 +234,7 @@
   const showreel = document.getElementById("showreel");
   const showreelMedia = document.getElementById("showreelMedia");
   const collage = document.querySelector(".collage-grid");
+  const hasScenes = hero && heroCard && vision && visionImage && showreel && showreelMedia && collage;
 
   // Vision scene: words fly through 3D space one after another,
   // then the image scales up from the void.
@@ -278,7 +282,7 @@
     showreelMedia.style.margin = `${inset}vh ${inset}vw`;
   };
 
-  if (!reduceMotion) {
+  if (hasScenes && !reduceMotion) {
     const SMOOTH = 0.16; // catch-up factor per frame
     const EPS = 0.0004;
     let settled = false;
@@ -316,7 +320,7 @@
     window.addEventListener("scroll", wake, { passive: true });
     window.addEventListener("resize", wake, { passive: true });
     window.addEventListener("touchmove", wake, { passive: true });
-  } else {
+  } else if (hasScenes) {
     // Static fallback: show final states
     visionWords.forEach((w) => { w.style.opacity = "0"; });
     visionImage.style.opacity = "1";
