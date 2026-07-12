@@ -253,7 +253,7 @@ body.menu-open .site-header__logo { color: #fff; }
   overflow: hidden;
 }
 
-.hero__collage { position: absolute; inset: 0; background: var(--dark); }
+.hero__collage { position: absolute; inset: 0; background: #f9f6f1; }
 .collage-grid {
   position: absolute; inset: -10%;
   display: grid;
