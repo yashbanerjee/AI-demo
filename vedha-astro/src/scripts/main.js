@@ -238,7 +238,7 @@
   const heroVideo = document.getElementById("heroVideo");
   const heroVideoMedia = document.getElementById("heroVideoMedia");
   const heroVideoEnd = document.getElementById("heroVideoEnd");
-  const heroVideoHint = document.getElementById("heroVideoHint");
+  const heroVideoIntro = document.getElementById("heroVideoIntro");
 
   // Each scene runs independently so either hero variant can be enabled
   const sceneEls = {};
@@ -275,11 +275,18 @@
   // Smoothed progress state per scene
   const scenes = { hero: 0, vision: 0, showreel: 0, heroVideo: 0 };
 
-  // Video hero timing: the video scrubs over the first part of the scroll,
-  // then the end overlay (bg colour + logo) fades in over the rest.
-  const HERO_VIDEO_SCRUB_END = 0.78;
+  // Video hero timing: a black intro cover fades first so the video emerges
+  // from the dark, the video then scrubs over the middle of the scroll, and
+  // finally the end overlay (bg colour + logo) fades in over the rest.
+  const HERO_VIDEO_INTRO_END = 0.12;
+  const HERO_VIDEO_SCRUB_END = 0.8;
   const animateHeroVideo = (p) => {
-    const scrub = clamp01(p / HERO_VIDEO_SCRUB_END);
+    // Intro: black cover fades out while the video settles from a slight zoom
+    const introLocal = clamp01(p / HERO_VIDEO_INTRO_END);
+    if (heroVideoIntro) heroVideoIntro.style.opacity = String(1 - introLocal);
+    heroVideoMedia.style.transform = `scale(${1.08 - introLocal * 0.08})`;
+
+    const scrub = clamp01((p - HERO_VIDEO_INTRO_END) / (HERO_VIDEO_SCRUB_END - HERO_VIDEO_INTRO_END));
     const duration = heroVideoMedia.duration;
     if (duration) {
       // Small back-off from the exact end so the final frame stays rendered
@@ -293,7 +300,6 @@
     heroVideoEnd.style.opacity = String(endLocal);
     const logo = heroVideoEnd.firstElementChild;
     if (logo) logo.style.transform = `scale(${0.92 + endLocal * 0.08}) translateY(${(1 - endLocal) * 1.2}rem)`;
-    if (heroVideoHint) heroVideoHint.style.opacity = String(1 - clamp01(p * 10));
   };
 
   const applyScenes = () => {
@@ -366,7 +372,7 @@
     }
     if (sceneEls.heroVideo) {
       heroVideoEnd.style.opacity = "1";
-      if (heroVideoHint) heroVideoHint.style.opacity = "0";
+      if (heroVideoIntro) heroVideoIntro.style.opacity = "0";
     }
   }
 

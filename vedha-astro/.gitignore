@@ -20,6 +20,9 @@ pnpm-debug.log*
 # local postgres data
 data/
 
+# raw hero video source (81 MB — web version lives in public/videos)
+11904079_3840_2160_30fps.mp4
+
 # macOS-specific files
 .DS_Store
 

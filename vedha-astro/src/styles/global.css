@@ -340,12 +340,17 @@ body.menu-open .site-header__logo { color: #fff; }
   transform: scale(0.92);
   will-change: transform;
 }
-.hero-video__hint {
-  position: absolute; left: 50%; bottom: 1.6rem;
-  transform: translateX(-50%);
-  background: rgba(244, 244, 242, 0.75);
-  backdrop-filter: blur(6px);
-  transition: opacity 0.4s var(--ease-out);
+.hero-video__intro {
+  position: absolute; inset: 0;
+  background: #000;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  will-change: opacity;
+}
+.hero-video__intro span {
+  font-size: 0.7rem; font-weight: 500;
+  letter-spacing: 0.18em; text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 /* ============ Sections shared ============ */
