@@ -234,7 +234,19 @@
   const showreel = document.getElementById("showreel");
   const showreelMedia = document.getElementById("showreelMedia");
   const collage = document.querySelector(".collage-grid");
-  const hasScenes = hero && heroCard && vision && visionImage && showreel && showreelMedia && collage;
+  // Alternative hero: scroll-scrubbed 3D video
+  const heroVideo = document.getElementById("heroVideo");
+  const heroVideoMedia = document.getElementById("heroVideoMedia");
+  const heroVideoEnd = document.getElementById("heroVideoEnd");
+  const heroVideoHint = document.getElementById("heroVideoHint");
+
+  // Each scene runs independently so either hero variant can be enabled
+  const sceneEls = {};
+  if (hero && heroCard && collage) sceneEls.hero = hero;
+  if (vision && visionImage) sceneEls.vision = vision;
+  if (showreel && showreelMedia) sceneEls.showreel = showreel;
+  if (heroVideo && heroVideoMedia) sceneEls.heroVideo = heroVideo;
+  const hasScenes = Object.keys(sceneEls).length > 0;
 
   // Vision scene: words fly through 3D space one after another,
   // then the image scales up from the void.
@@ -261,25 +273,52 @@
   };
 
   // Smoothed progress state per scene
-  const scenes = { hero: 0, vision: 0, showreel: 0 };
+  const scenes = { hero: 0, vision: 0, showreel: 0, heroVideo: 0 };
+
+  // Video hero timing: the video scrubs over the first part of the scroll,
+  // then the end overlay (bg colour + logo) fades in over the rest.
+  const HERO_VIDEO_SCRUB_END = 0.78;
+  const animateHeroVideo = (p) => {
+    const scrub = clamp01(p / HERO_VIDEO_SCRUB_END);
+    const duration = heroVideoMedia.duration;
+    if (duration) {
+      // Small back-off from the exact end so the final frame stays rendered
+      const t = scrub * Math.max(0, duration - 0.05);
+      if (Math.abs(heroVideoMedia.currentTime - t) > 0.02) {
+        heroVideoMedia.currentTime = t;
+      }
+    }
+    // End state: fade the background in, settle the logo into place
+    const endLocal = clamp01((p - HERO_VIDEO_SCRUB_END) / (1 - HERO_VIDEO_SCRUB_END));
+    heroVideoEnd.style.opacity = String(endLocal);
+    const logo = heroVideoEnd.firstElementChild;
+    if (logo) logo.style.transform = `scale(${0.92 + endLocal * 0.08}) translateY(${(1 - endLocal) * 1.2}rem)`;
+    if (heroVideoHint) heroVideoHint.style.opacity = String(1 - clamp01(p * 10));
+  };
 
   const applyScenes = () => {
-    // Hero: white card shrinks and rounds, collage drifts behind it
-    const hp = scenes.hero;
-    const scale = 1 - hp * 0.72;
-    heroCard.style.transform = `scale(${scale})`;
-    heroCard.style.borderRadius = `${hp * 24}px`;
-    heroCard.style.opacity = String(1 - clamp01((hp - 0.75) * 4));
-    collage.style.transform = `translateY(${(1 - hp) * 6}%) scale(${1.05 - hp * 0.05})`;
+    if (sceneEls.hero) {
+      // Hero: white card shrinks and rounds, collage drifts behind it
+      const hp = scenes.hero;
+      const scale = 1 - hp * 0.72;
+      heroCard.style.transform = `scale(${scale})`;
+      heroCard.style.borderRadius = `${hp * 24}px`;
+      heroCard.style.opacity = String(1 - clamp01((hp - 0.75) * 4));
+      collage.style.transform = `translateY(${(1 - hp) * 6}%) scale(${1.05 - hp * 0.05})`;
+    }
 
-    animateVision(scenes.vision);
+    if (sceneEls.heroVideo) animateHeroVideo(scenes.heroVideo);
 
-    // Showreel: media scales from inset card to full-bleed
-    const sp = scenes.showreel;
-    const inset = (1 - sp) * 6;
-    showreelMedia.style.transform = `scale(${0.86 + sp * 0.14})`;
-    showreelMedia.style.borderRadius = `${(1 - sp) * 20}px`;
-    showreelMedia.style.margin = `${inset}vh ${inset}vw`;
+    if (sceneEls.vision) animateVision(scenes.vision);
+
+    if (sceneEls.showreel) {
+      // Showreel: media scales from inset card to full-bleed
+      const sp = scenes.showreel;
+      const inset = (1 - sp) * 6;
+      showreelMedia.style.transform = `scale(${0.86 + sp * 0.14})`;
+      showreelMedia.style.borderRadius = `${(1 - sp) * 20}px`;
+      showreelMedia.style.margin = `${inset}vh ${inset}vw`;
+    }
   };
 
   if (hasScenes && !reduceMotion) {
@@ -287,11 +326,8 @@
     const EPS = 0.0004;
     let settled = false;
     const loop = () => {
-      const targets = {
-        hero: progressOf(hero),
-        vision: progressOf(vision),
-        showreel: progressOf(showreel),
-      };
+      const targets = {};
+      for (const key in sceneEls) targets[key] = progressOf(sceneEls[key]);
       let maxDelta = 0;
       for (const key in targets) {
         scenes[key] = lerp(scenes[key], targets[key], SMOOTH);
@@ -312,18 +348,26 @@
       }
     };
     // Snap to current position on load, then smooth from there
-    scenes.hero = progressOf(hero);
-    scenes.vision = progressOf(vision);
-    scenes.showreel = progressOf(showreel);
+    for (const key in sceneEls) scenes[key] = progressOf(sceneEls[key]);
     applyScenes();
     settled = true;
     window.addEventListener("scroll", wake, { passive: true });
     window.addEventListener("resize", wake, { passive: true });
     window.addEventListener("touchmove", wake, { passive: true });
+    // Once video metadata arrives, sync the frame to the current scroll position
+    if (sceneEls.heroVideo) {
+      heroVideoMedia.addEventListener("loadedmetadata", wake, { once: true });
+    }
   } else if (hasScenes) {
     // Static fallback: show final states
-    visionWords.forEach((w) => { w.style.opacity = "0"; });
-    visionImage.style.opacity = "1";
+    if (sceneEls.vision) {
+      visionWords.forEach((w) => { w.style.opacity = "0"; });
+      visionImage.style.opacity = "1";
+    }
+    if (sceneEls.heroVideo) {
+      heroVideoEnd.style.opacity = "1";
+      if (heroVideoHint) heroVideoHint.style.opacity = "0";
+    }
   }
 
   // === Forms (demo only — no backend) ===
