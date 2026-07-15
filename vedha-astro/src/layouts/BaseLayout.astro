@@ -3,6 +3,7 @@ import Preloader from "../components/Preloader.astro";
 import Header from "../components/Header.astro";
 import MenuOverlay from "../components/MenuOverlay.astro";
 import Footer from "../components/Footer.astro";
+import BookingModal from "../components/BookingModal.astro";
 import { getSeoForPath } from "../lib/db";
 import "../styles/global.css";
 
@@ -84,6 +85,7 @@ const organizationSchema = {
     <slot />
   </main>
   <Footer />
+  <BookingModal />
   <script src="../scripts/main.js"></script>
 </body>
 </html>

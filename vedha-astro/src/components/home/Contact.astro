@@ -1,17 +1,38 @@
-<!-- ===== Contact ===== -->
+<!-- ===== Contact / Enquiry ===== -->
 <section class="contact" id="contact">
-  <div class="contact__left">
+  <div class="contact__intro">
     <p class="kicker" data-reveal>(Contact us)</p>
     <h2 class="giant" data-reveal>Let’s talk.</h2>
-    <p data-reveal>Let’s create new experiences. Book a free consultation and tell us about your project.</p>
+    <p data-reveal>Send an enquiry and we’ll get back to you — or book a free consultation on our calendar.</p>
+    <button type="button" class="btn btn--dark" data-book-consultation data-reveal>
+      <span>Book free consultation</span>
+    </button>
   </div>
-  <form class="contact__form" data-reveal>
-    <div class="field-row">
-      <label>First name<input type="text" name="firstName" placeholder="First name" required autocomplete="given-name" /></label>
-      <label>Last name<input type="text" name="lastName" placeholder="Last name" autocomplete="family-name" /></label>
-    </div>
-    <label>Email<input type="email" name="email" placeholder="Email" required autocomplete="email" /></label>
-    <button class="btn btn--dark btn--wide" type="submit"><span>Contact Us</span></button>
+
+  <form class="contact__form" id="enquiry" data-reveal>
+    <p class="kicker">(Send us an enquiry)</p>
+    <label>Name
+      <input type="text" name="name" placeholder="Your name" required autocomplete="name" />
+    </label>
+    <label>Email
+      <input type="email" name="email" placeholder="Email" required autocomplete="email" />
+    </label>
+    <label>Service type
+      <select name="service" required>
+        <option value="" disabled selected>Select a service</option>
+        <option value="web-development">Web Development &amp; CMS</option>
+        <option value="ui-ux">UI/UX Design</option>
+        <option value="ecommerce">E-Commerce Development</option>
+        <option value="ai">AI Development</option>
+        <option value="web-apps">Web Applications &amp; Integrations</option>
+        <option value="brand-support">Brand, Support &amp; Growth</option>
+        <option value="other">Other</option>
+      </select>
+    </label>
+    <label>Description
+      <textarea name="description" rows="5" placeholder="Tell us about your project" required></textarea>
+    </label>
+    <button class="btn btn--dark btn--wide" type="submit"><span>Send enquiry</span></button>
     <p class="contact__terms">By contacting us, you accept our <a href="/#contact">Terms</a> and <a href="/#contact">Privacy Policy</a>.</p>
   </form>
 </section>

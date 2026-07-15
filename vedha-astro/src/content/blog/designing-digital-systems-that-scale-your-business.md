@@ -27,4 +27,4 @@ Three principles do most of the work:
 
 You don't need a big-bang transformation. Pick the highest-friction workflow — often content publishing or lead handling — and systematize it. The momentum from one working system funds the next.
 
-This is the thinking behind every platform we build at Vedha, and it's why our clients' sites improve with age. If your digital presence feels like it's decaying instead of compounding, [book a free consultation](/#contact) and we'll map the path out together.
+This is the thinking behind every platform we build at Vedha, and it's why our clients' sites improve with age. If your digital presence feels like it's decaying instead of compounding, [book a free consultation](/#book) and we'll map the path out together.

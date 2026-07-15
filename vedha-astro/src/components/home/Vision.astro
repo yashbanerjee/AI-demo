@@ -1,17 +1,43 @@
-<!-- ===== Vision: 3D scroll-driven words ===== -->
-<section class="vision" id="vision">
-  <div class="vision__sticky">
-    <p class="kicker kicker--light">(Our Process)</p>
-    <div class="vision__stage" id="visionStage" aria-hidden="false">
-      <p class="vision__word">01/ Discover</p>
-      <p class="vision__word">02/ Chart</p>
-      <p class="vision__word">03/ Validate</p>
-      <p class="vision__word">04/ Engineer</p>
-      <p class="vision__word">05/ Scale</p>
-      <figure class="vision__image">
-        <img src="https://picsum.photos/seed/mono-vision/1200/800" alt="Editorial photograph representing the studio vision" width="1200" height="800" loading="lazy" />
-      </figure>
+<!-- ===== Process: 3D card stack → lined-up finale ===== -->
+<section class="process" id="vision">
+  <div class="process__sticky">
+    <header class="process__head">
+      <p class="kicker kicker--light">(Our Process)</p>
+      <p class="process__count" id="processCount" aria-hidden="true">
+        <span id="processCurrent">01</span><span>/</span><span>05</span>
+      </p>
+    </header>
+
+    <div class="process__stage" id="processStage">
+      <article class="process-card is-active" data-process-card>
+        <span class="process-card__num">01</span>
+        <h3>Discover</h3>
+        <p>We learn your goals, users, and constraints before a single line of code.</p>
+      </article>
+      <article class="process-card" data-process-card>
+        <span class="process-card__num">02</span>
+        <h3>Chart</h3>
+        <p>A clear roadmap with milestones, scope, and priorities you can trust.</p>
+      </article>
+      <article class="process-card" data-process-card>
+        <span class="process-card__num">03</span>
+        <h3>Validate</h3>
+        <p>Prototypes and reviews so decisions land early — not at the finish line.</p>
+      </article>
+      <article class="process-card" data-process-card>
+        <span class="process-card__num">04</span>
+        <h3>Engineer</h3>
+        <p>Senior-led build with clean architecture, performance, and polish.</p>
+      </article>
+      <article class="process-card" data-process-card>
+        <span class="process-card__num">05</span>
+        <h3>Scale</h3>
+        <p>Launch, measure, and iterate — so the product keeps growing with you.</p>
+      </article>
     </div>
-    <p class="kicker kicker--light">(Scroll for more)</p>
+
+    <div class="process__dots" id="processDots" aria-hidden="true">
+      <i class="is-active"></i><i></i><i></i><i></i><i></i>
+    </div>
   </div>
 </section>

@@ -1,0 +1,31 @@
+<!-- Site-wide Google Calendar booking popup -->
+<div class="booking-modal" id="bookingModal" hidden aria-hidden="true">
+  <div class="booking-modal__backdrop" data-booking-close tabindex="-1"></div>
+  <div
+    class="booking-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="bookingModalTitle"
+  >
+    <header class="booking-modal__head">
+      <h2 class="booking-modal__title" id="bookingModalTitle">Book a free consultation</h2>
+      <button
+        type="button"
+        class="booking-modal__close"
+        data-booking-close
+        aria-label="Close booking calendar"
+      >
+        <span></span><span></span>
+      </button>
+    </header>
+    <div class="booking-modal__body">
+      <iframe
+        id="bookingCalendar"
+        data-src="https://calendar.google.com/calendar/appointments/schedules/AcZssZ0ezJNfO97-cH26sBULEcHz6tcwpk4J_LncvNky0QP5dEqMocAyQ6xwf9fIDTphVQficDq-ORGQ?gv=true"
+        title="Book a consultation with Vedha"
+        width="100%"
+        height="600"
+      ></iframe>
+    </div>
+  </div>
+</div>

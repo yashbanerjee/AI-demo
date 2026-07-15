@@ -228,9 +228,6 @@
   // ============================================================
   const hero = document.getElementById("hero");
   const heroCard = document.getElementById("heroCard");
-  const vision = document.getElementById("vision");
-  const visionWords = [...document.querySelectorAll(".vision__word")];
-  const visionImage = document.querySelector(".vision__image");
   const showreel = document.getElementById("showreel");
   const showreelMedia = document.getElementById("showreelMedia");
   const collage = document.querySelector(".collage-grid");
@@ -239,41 +236,40 @@
   const heroVideoMedia = document.getElementById("heroVideoMedia");
   const heroVideoEnd = document.getElementById("heroVideoEnd");
   const heroVideoIntro = document.getElementById("heroVideoIntro");
+  // Process: short 3D card stack
+  const process = document.getElementById("vision");
+  const processStage = document.getElementById("processStage");
+  const processCards = [...document.querySelectorAll("[data-process-card]")];
+  const processDots = [...document.querySelectorAll("#processDots i")];
+  const processCurrent = document.getElementById("processCurrent");
 
   // Each scene runs independently so either hero variant can be enabled
   const sceneEls = {};
   if (hero && heroCard && collage) sceneEls.hero = hero;
-  if (vision && visionImage) sceneEls.vision = vision;
   if (showreel && showreelMedia) sceneEls.showreel = showreel;
   if (heroVideo && heroVideoMedia) sceneEls.heroVideo = heroVideo;
+  if (process && processStage && processCards.length) sceneEls.process = process;
   const hasScenes = Object.keys(sceneEls).length > 0;
 
-  // Vision scene: words fly through 3D space one after another,
-  // then the image scales up from the void.
-  const VISION_STEPS = visionWords.length + 1; // words + image
-  const animateVision = (p) => {
-    const seg = 1 / VISION_STEPS;
-    visionWords.forEach((word, i) => {
-      // local progress of this word's segment, with overlap for continuity
-      const local = clamp01((p - i * seg) / (seg * 1.35));
-      if (local <= 0 || local >= 1) {
-        word.style.opacity = "0";
-        return;
-      }
-      // Fly from deep z toward viewer, fade in then out
-      const z = -900 + local * 1400;                 // -900px → +500px
-      const fade = local < 0.5 ? local * 2 : (1 - local) * 2;
-      word.style.opacity = String(clamp01(fade * 1.6));
-      word.style.transform = `translateZ(${z}px)`;
-    });
-    // Image is the final "step"
-    const imgLocal = clamp01((p - (VISION_STEPS - 1) * seg) / seg);
-    visionImage.style.opacity = String(clamp01(imgLocal * 1.8));
-    visionImage.style.transform = `scale(${0.6 + imgLocal * 0.4})`;
-  };
-
   // Smoothed progress state per scene
-  const scenes = { hero: 0, vision: 0, showreel: 0, heroVideo: 0 };
+  const scenes = { hero: 0, showreel: 0, heroVideo: 0, process: 0 };
+
+  // Mouse parallax for the process stage (fine pointers only)
+  const processParallax = { x: 0, y: 0, tx: 0, ty: 0 };
+  let wakeProcess = () => {};
+  if (processStage && hoverCapable && !reduceMotion) {
+    process.addEventListener("mousemove", (e) => {
+      const r = process.getBoundingClientRect();
+      processParallax.tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+      processParallax.ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      wakeProcess();
+    }, { passive: true });
+    process.addEventListener("mouseleave", () => {
+      processParallax.tx = 0;
+      processParallax.ty = 0;
+      wakeProcess();
+    }, { passive: true });
+  }
 
   // Video hero timing: a black intro cover fades first so the video emerges
   // from the dark, the video then scrubs over the middle of the scroll, and
@@ -295,11 +291,97 @@
         heroVideoMedia.currentTime = t;
       }
     }
-    // End state: fade the background in, settle the logo into place
+    // End state: fade the background in, settle the logo + CTAs into place
     const endLocal = clamp01((p - HERO_VIDEO_SCRUB_END) / (1 - HERO_VIDEO_SCRUB_END));
     heroVideoEnd.style.opacity = String(endLocal);
-    const logo = heroVideoEnd.firstElementChild;
+    heroVideoEnd.classList.toggle("is-interactive", endLocal > 0.85);
+    heroVideoEnd.setAttribute("aria-hidden", String(endLocal < 0.5));
+    const logo = heroVideoEnd.querySelector(".hero-video__logo");
     if (logo) logo.style.transform = `scale(${0.92 + endLocal * 0.08}) translateY(${(1 - endLocal) * 1.2}rem)`;
+    const ctas = heroVideoEnd.querySelector(".hero-video__ctas");
+    if (ctas) {
+      const ctaLocal = clamp01((endLocal - 0.35) / 0.65);
+      ctas.style.opacity = String(ctaLocal);
+      ctas.style.transform = `translateY(${(1 - ctaLocal) * 0.8}rem)`;
+    }
+  };
+
+  // Process: cards crossfade in Z (no side collisions), then fan out into a lineup
+  const PROCESS_SCRUB_END = 0.68;
+  const animateProcess = (p) => {
+    const n = processCards.length;
+    const scrub = clamp01(p / PROCESS_SCRUB_END);
+    const lineup = clamp01((p - PROCESS_SCRUB_END) / (1 - PROCESS_SCRUB_END));
+    const vertical = window.innerWidth < 768;
+
+    const raw = scrub * (n - 0.001);
+    const index = Math.min(n - 1, Math.floor(raw));
+    const local = raw - index;
+
+    // Lineup geometry — shared across cards
+    const mid = (n - 1) / 2;
+    const lineScale = vertical ? 0.7 : 0.62;
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const cardW = Math.min(window.innerWidth * 0.88, 34 * rem) * lineScale;
+    const pad = vertical ? window.innerHeight * 0.08 : window.innerWidth * 0.04;
+    const available = vertical
+      ? window.innerHeight - pad * 2
+      : window.innerWidth - pad * 2;
+    const centerGap = (available - cardW) / Math.max(n - 1, 1);
+
+    processCards.forEach((card, i) => {
+      const offset = i - index - local;
+
+      // Scrub: stay centered — sink in Z + fade. No lateral shift = no collisions.
+      const absOff = Math.abs(offset);
+      const stackX = 0;
+      const stackY = 0;
+      const stackZ = -absOff * 380;
+      const stackRot = offset * -18;
+      const stackScale = 1 - Math.min(absOff, 1) * 0.06;
+      // Squared falloff so two cards are almost never both readable at once
+      const stackOpacity = absOff < 1 ? (1 - absOff) ** 2 : 0;
+
+      // Lineup: fan out from the center so paths never cross
+      const lineX = vertical ? 0 : ((i - mid) * centerGap / window.innerWidth) * 100;
+      const lineY = vertical ? ((i - mid) * centerGap / window.innerHeight) * 100 : 0;
+
+      const x = lerp(stackX, lineX, lineup);
+      const y = lerp(stackY, lineY, lineup);
+      const z = lerp(stackZ, 0, lineup);
+      const rot = lerp(stackRot, 0, lineup);
+      const scale = lerp(stackScale, lineScale, lineup);
+      // During early lineup, bring every card up from its scrub opacity
+      const opacity = lerp(stackOpacity, 1, clamp01(lineup * 1.4));
+
+      card.style.opacity = String(opacity);
+      card.style.transform =
+        `translate3d(${x}vw, ${y}vh, ${z}px) rotateY(${rot}deg) scale(${scale})`;
+      card.classList.toggle("is-active", lineup > 0.2 || absOff < 0.5);
+      // Keep front-most card on top during scrub; even z-index in lineup
+      card.style.zIndex = String(
+        lineup > 0.2 ? i + 1 : Math.round((1 - absOff) * 10)
+      );
+    });
+
+    if (processCurrent) {
+      processCurrent.textContent = String(
+        lineup > 0.5 ? n : index + 1
+      ).padStart(2, "0");
+    }
+    processDots.forEach((dot, i) => {
+      dot.classList.toggle("is-active", lineup > 0.5 || i === index);
+    });
+
+    process.classList.toggle("is-lined-up", lineup > 0.55);
+
+    // Ease parallax toward the mouse target and tip the whole stage
+    // (parallax softens once lined up so the row stays readable)
+    const paraAmt = 1 - lineup * 0.85;
+    processParallax.x = lerp(processParallax.x, processParallax.tx, 0.08);
+    processParallax.y = lerp(processParallax.y, processParallax.ty, 0.08);
+    processStage.style.transform =
+      `rotateX(${(-processParallax.y * 6 * paraAmt).toFixed(2)}deg) rotateY(${(processParallax.x * 10 * paraAmt).toFixed(2)}deg)`;
   };
 
   const applyScenes = () => {
@@ -314,8 +396,7 @@
     }
 
     if (sceneEls.heroVideo) animateHeroVideo(scenes.heroVideo);
-
-    if (sceneEls.vision) animateVision(scenes.vision);
+    if (sceneEls.process) animateProcess(scenes.process);
 
     if (sceneEls.showreel) {
       // Showreel: media scales from inset card to full-bleed
@@ -341,6 +422,14 @@
         if (d < EPS) scenes[key] = targets[key];
         maxDelta = Math.max(maxDelta, d);
       }
+      // Keep the loop alive while process mouse-parallax eases
+      if (sceneEls.process) {
+        maxDelta = Math.max(
+          maxDelta,
+          Math.abs(processParallax.tx - processParallax.x),
+          Math.abs(processParallax.ty - processParallax.y)
+        );
+      }
       applyScenes();
       settled = maxDelta < EPS;
       if (!settled) {
@@ -353,6 +442,7 @@
         requestAnimationFrame(loop);
       }
     };
+    wakeProcess = wake;
     // Snap to current position on load, then smooth from there
     for (const key in sceneEls) scenes[key] = progressOf(sceneEls[key]);
     applyScenes();
@@ -366,15 +456,85 @@
     }
   } else if (hasScenes) {
     // Static fallback: show final states
-    if (sceneEls.vision) {
-      visionWords.forEach((w) => { w.style.opacity = "0"; });
-      visionImage.style.opacity = "1";
-    }
     if (sceneEls.heroVideo) {
       heroVideoEnd.style.opacity = "1";
+      heroVideoEnd.classList.add("is-interactive");
+      heroVideoEnd.setAttribute("aria-hidden", "false");
+      const ctas = heroVideoEnd.querySelector(".hero-video__ctas");
+      if (ctas) { ctas.style.opacity = "1"; ctas.style.transform = "none"; }
       if (heroVideoIntro) heroVideoIntro.style.opacity = "0";
     }
+    if (sceneEls.process) {
+      processCards.forEach((card, i) => {
+        card.style.opacity = i === 0 ? "1" : "0";
+        card.style.transform = "none";
+        card.classList.toggle("is-active", i === 0);
+      });
+      processDots.forEach((dot, i) => dot.classList.toggle("is-active", i === 0));
+    }
   }
+
+  // === Booking modal (Google Calendar) ===
+  const bookingModal = document.getElementById("bookingModal");
+  const bookingFrame = document.getElementById("bookingCalendar");
+  let bookingLastFocus = null;
+  const openBooking = () => {
+    if (!bookingModal) return;
+    bookingLastFocus = document.activeElement;
+    // Lazy-load the calendar iframe the first time the modal opens
+    if (bookingFrame && !bookingFrame.src && bookingFrame.dataset.src) {
+      bookingFrame.src = bookingFrame.dataset.src;
+    }
+    bookingModal.hidden = false;
+    bookingModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("booking-open");
+    requestAnimationFrame(() => bookingModal.classList.add("is-open"));
+    const closeBtn = bookingModal.querySelector("[data-booking-close].booking-modal__close");
+    if (closeBtn) closeBtn.focus();
+  };
+  const closeBooking = () => {
+    if (!bookingModal || bookingModal.hidden) return;
+    bookingModal.classList.remove("is-open");
+    document.body.classList.remove("booking-open");
+    bookingModal.setAttribute("aria-hidden", "true");
+    const finish = () => {
+      bookingModal.hidden = true;
+      if (bookingLastFocus && bookingLastFocus.focus) bookingLastFocus.focus();
+    };
+    bookingModal.addEventListener("transitionend", finish, { once: true });
+    setTimeout(finish, 450);
+  };
+  document.querySelectorAll("[data-book-consultation], a[href$='#book']").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      e.preventDefault();
+      openBooking();
+      if (location.hash !== "#book") {
+        history.pushState(null, "", "#book");
+      }
+    });
+  });
+  bookingModal?.querySelectorAll("[data-booking-close]").forEach((el) => {
+    el.addEventListener("click", () => {
+      closeBooking();
+      if (location.hash === "#book") {
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && bookingModal && !bookingModal.hidden) {
+      closeBooking();
+      if (location.hash === "#book") {
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+    }
+  });
+  // Deep-link: /#book opens the booking popup
+  const openBookingFromHash = () => {
+    if (location.hash === "#book") openBooking();
+  };
+  openBookingFromHash();
+  window.addEventListener("hashchange", openBookingFromHash);
 
   // === Forms (demo only — no backend) ===
   document.querySelectorAll("form").forEach((form) => {

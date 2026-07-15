@@ -11,9 +11,15 @@
       preload="auto"
       aria-hidden="true"
     ></video>
-    <!-- End state: page background + logo, revealed once the video finishes -->
+    <!-- End state: page background + logo + CTAs, revealed once the video finishes -->
     <div class="hero-video__end" id="heroVideoEnd" aria-hidden="true">
-      <img class="hero-video__logo" src="/images/vedha-logo.png" alt="" width="1483" height="158" />
+      <div class="hero-video__end-inner">
+        <img class="hero-video__logo" src="/images/vedha-logo.png" alt="" width="1483" height="158" />
+        <div class="hero-video__ctas">
+          <a class="btn btn--dark" href="/#book" data-book-consultation><span>Book free consultation</span></a>
+          <a class="btn btn--ghost" href="/#enquiry"><span>Send us an enquiry</span></a>
+        </div>
+      </div>
     </div>
     <!-- Intro state: black cover shown on load, the video emerges as you scroll -->
     <div class="hero-video__intro" id="heroVideoIntro" aria-hidden="true">

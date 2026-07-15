@@ -27,4 +27,4 @@ We treat AI as infrastructure, not a feature checkbox. If a chatbot doesn't serv
 
 The teams that win with AI aren't the ones that adopt everything. They're the ones that pick the two or three applications with real returns and execute them well.
 
-Have a project where AI might fit? [Book a free consultation](/#contact) and we'll give you an honest assessment.
+Have a project where AI might fit? [Book a free consultation](/#book) and we'll give you an honest assessment.
