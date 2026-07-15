@@ -1,3 +1,11 @@
+---
+import { listPosts } from "../../lib/db";
+
+const posts = (await listPosts()).slice(0, 4);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+---
 <!-- ===== Blog ===== -->
 <section class="blog" id="news">
   <header class="section-head">
@@ -5,12 +13,17 @@
       <p class="kicker" data-reveal>(Blog)</p>
       <h2 class="giant" data-reveal>Smart insights.</h2>
     </div>
-    <a class="btn btn--ghost" href="/#news"><span>See all</span></a>
+    <a class="btn btn--ghost" href="/blog/"><span>See all</span></a>
   </header>
   <ul class="blog__list">
-    <li data-reveal><a href="/#news" class="blog-row"><time datetime="2025-11-11">November 11, 2025</time><h3>Where AI genuinely adds value in web development</h3><span class="blog-row__arrow" aria-hidden="true">→</span></a></li>
-    <li data-reveal><a href="/#news" class="blog-row"><time datetime="2025-07-10">July 10, 2025</time><h3>From idea to execution: building products that last</h3><span class="blog-row__arrow" aria-hidden="true">→</span></a></li>
-    <li data-reveal><a href="/#news" class="blog-row"><time datetime="2025-05-10">May 10, 2025</time><h3>E-commerce that balances experience with efficiency</h3><span class="blog-row__arrow" aria-hidden="true">→</span></a></li>
-    <li data-reveal><a href="/#news" class="blog-row"><time datetime="2025-04-10">April 10, 2025</time><h3>Designing digital systems that scale your business</h3><span class="blog-row__arrow" aria-hidden="true">→</span></a></li>
+    {posts.map((post) => (
+      <li data-reveal>
+        <a href={`/blog/${post.slug}/`} class="blog-row">
+          <time datetime={post.pub_date.toISOString().split("T")[0]}>{formatDate(post.pub_date)}</time>
+          <h3>{post.title}</h3>
+          <span class="blog-row__arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    ))}
   </ul>
 </section>

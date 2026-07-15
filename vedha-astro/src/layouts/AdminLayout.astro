@@ -1,0 +1,164 @@
+---
+interface Props {
+  title: string;
+  showNav?: boolean;
+}
+const { title, showNav = true } = Astro.props;
+const current = Astro.url.pathname;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>{title} — Vedha Admin</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+</head>
+<body>
+  {showNav && (
+    <header class="topbar">
+      <a class="topbar__brand" href="/admin">VEDHA<span>Admin</span></a>
+      <nav class="topbar__nav">
+        <a href="/admin" class:list={{ active: current === "/admin" }}>Posts</a>
+        <a href="/admin/seo" class:list={{ active: current.startsWith("/admin/seo") }}>SEO</a>
+        <a href="/" target="_blank" rel="noopener">View site ↗</a>
+      </nav>
+      <form method="post" action="/api/admin/logout">
+        <button class="btn btn--subtle" type="submit">Log out</button>
+      </form>
+    </header>
+  )}
+  <main class="wrap">
+    <slot />
+  </main>
+</body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #f4f4f2;
+    --panel: #ffffff;
+    --ink: #161614;
+    --ink-soft: #6d6d68;
+    --line: #e3e3df;
+    --accent: #161614;
+    --danger: #b3261e;
+    --ok: #1e6f3e;
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 0.9rem 1.5rem;
+    background: var(--panel);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .topbar__brand {
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .topbar__brand span {
+    margin-left: 0.5rem;
+    font-weight: 500;
+    color: var(--ink-soft);
+  }
+  .topbar__nav { display: flex; gap: 1.2rem; flex: 1; }
+  .topbar__nav a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    padding: 0.25rem 0;
+    border-bottom: 2px solid transparent;
+  }
+  .topbar__nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
+  .topbar__nav a:hover { color: var(--ink); }
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+  h1 { font-size: 1.6rem; margin: 0 0 1.5rem; }
+  h2 { font-size: 1.15rem; margin: 2rem 0 0.8rem; }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: #fff;
+    font: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .btn:hover { opacity: 0.85; }
+  .btn--ghost { background: transparent; color: var(--ink); }
+  .btn--subtle { background: transparent; color: var(--ink-soft); border-color: var(--line); }
+  .btn--danger { background: transparent; color: var(--danger); border-color: var(--danger); }
+  .btn--small { padding: 0.3rem 0.8rem; font-size: 0.85rem; }
+
+  label { display: grid; gap: 0.35rem; font-weight: 500; }
+  label small { font-weight: 400; color: var(--ink-soft); }
+  input[type="text"], input[type="password"], input[type="date"], textarea, select {
+    font: inherit;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--ink);
+    width: 100%;
+  }
+  input:focus, textarea:focus { outline: 2px solid var(--ink); outline-offset: 1px; }
+  textarea { resize: vertical; }
+
+  .form-grid { display: grid; gap: 1.1rem; }
+  .form-row { display: grid; gap: 1.1rem; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 40rem) { .form-row { grid-template-columns: 1fr; } }
+
+  .notice {
+    padding: 0.7rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.2rem;
+    border: 1px solid;
+  }
+  .notice--ok { color: var(--ok); border-color: var(--ok); background: #eef7f1; }
+  .notice--error { color: var(--danger); border-color: var(--danger); background: #fdf0ef; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 0.7rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-soft); }
+  .muted { color: var(--ink-soft); }
+  .pill {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.1rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+  }
+  .pill--draft { color: #8a6d00; border-color: #d9b300; background: #fdf7e2; }
+  .row-actions { display: flex; gap: 0.5rem; align-items: center; }
+</style>

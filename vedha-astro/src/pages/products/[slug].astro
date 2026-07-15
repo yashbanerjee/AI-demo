@@ -1,16 +1,12 @@
 ---
-import { getCollection, render } from "astro:content";
+import { getEntry, render } from "astro:content";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
-export async function getStaticPaths() {
-  const products = await getCollection("products", ({ data }) => !data.draft);
-  return products.map((product) => ({
-    params: { slug: product.id },
-    props: { product },
-  }));
+const product = await getEntry("products", Astro.params.slug!);
+if (!product || product.data.draft) {
+  return new Response("Not found", { status: 404 });
 }
 
-const { product } = Astro.props;
 const { Content } = await render(product);
 const { title, tagline, description, category, image, price, timeline, features } = product.data;
 ---

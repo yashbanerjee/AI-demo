@@ -1,0 +1,63 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { listPosts } from "../../lib/db";
+
+const posts = await listPosts({ includeDrafts: true });
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+---
+<AdminLayout title="Posts">
+  <div class="head">
+    <h1>Blog posts</h1>
+    <a class="btn" href="/admin/posts/new">+ New post</a>
+  </div>
+
+  <div class="panel">
+    {posts.length === 0 ? (
+      <p class="muted">No posts yet. Create your first one.</p>
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Date</th>
+            <th>Tags</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {posts.map((post) => (
+            <tr>
+              <td>
+                <a href={`/admin/posts/${post.id}`}><strong>{post.title}</strong></a>
+                <div class="muted">/blog/{post.slug}/</div>
+              </td>
+              <td>{formatDate(post.pub_date)}</td>
+              <td>{post.tags.join(", ") || <span class="muted">—</span>}</td>
+              <td>
+                {post.draft ? <span class="pill pill--draft">Draft</span> : <span class="pill">Published</span>}
+              </td>
+              <td>
+                <div class="row-actions">
+                  <a class="btn btn--ghost btn--small" href={`/admin/posts/${post.id}`}>Edit</a>
+                  {!post.draft && (
+                    <a class="btn btn--subtle btn--small" href={`/blog/${post.slug}/`} target="_blank" rel="noopener">View</a>
+                  )}
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>
+
+<style>
+  .head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .head h1 { margin: 0; }
+  td a { color: inherit; text-decoration: none; }
+  td a:hover strong { text-decoration: underline; }
+</style>

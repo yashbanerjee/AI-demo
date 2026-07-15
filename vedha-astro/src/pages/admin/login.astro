@@ -1,0 +1,28 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+
+const error = Astro.url.searchParams.has("error");
+---
+<AdminLayout title="Log in" showNav={false}>
+  <div class="login">
+    <form class="panel form-grid" method="post" action="/api/admin/login">
+      <h1>Vedha Admin</h1>
+      {error && <p class="notice notice--error">Wrong password. Try again.</p>}
+      <label>
+        Password
+        <input type="password" name="password" required autofocus />
+      </label>
+      <button class="btn" type="submit">Log in</button>
+    </form>
+  </div>
+</AdminLayout>
+
+<style>
+  .login {
+    min-height: 70vh;
+    display: grid;
+    place-items: center;
+  }
+  .login form { width: min(24rem, 100%); }
+  .login h1 { margin-bottom: 0.3rem; }
+</style>

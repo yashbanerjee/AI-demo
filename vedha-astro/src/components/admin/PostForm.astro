@@ -1,0 +1,140 @@
+---
+import type { Post } from "../../lib/db";
+
+interface Props {
+  post?: Post | null;
+}
+const { post } = Astro.props;
+const isEdit = Boolean(post);
+const pubDate = (post?.pub_date ?? new Date()).toISOString().split("T")[0];
+---
+<form class="panel form-grid" method="post" action="/api/admin/posts">
+  <input type="hidden" name="_action" value={isEdit ? "update" : "create"} />
+  {isEdit && <input type="hidden" name="id" value={String(post!.id)} />}
+
+  <label>
+    Title
+    <input type="text" name="title" value={post?.title ?? ""} required />
+  </label>
+
+  <div class="form-row">
+    <label>
+      Slug <small>(leave empty to generate from title)</small>
+      <input type="text" name="slug" value={post?.slug ?? ""} placeholder="my-post-url" />
+    </label>
+    <label>
+      Publish date
+      <input type="date" name="pub_date" value={pubDate} required />
+    </label>
+  </div>
+
+  <label>
+    Meta description <small>(shown in Google results and social shares — aim for ≤160 characters)</small>
+    <textarea name="description" rows="2" required>{post?.description ?? ""}</textarea>
+  </label>
+
+  <div class="form-row">
+    <label>
+      Author
+      <input type="text" name="author" value={post?.author ?? "Vedha Team"} />
+    </label>
+    <label>
+      Tags <small>(comma-separated)</small>
+      <input type="text" name="tags" value={post?.tags.join(", ") ?? ""} placeholder="AI, Web Development" />
+    </label>
+  </div>
+
+  <label>
+    Cover image
+    <div class="upload-row">
+      <input type="text" name="cover_image" id="coverInput" value={post?.cover_image ?? ""} placeholder="/media/example.png" />
+      <button type="button" class="btn btn--ghost" data-upload-target="coverInput">Upload…</button>
+    </div>
+    <img id="coverPreview" class="cover-preview" src={post?.cover_image ?? ""} alt="" style={post?.cover_image ? "" : "display:none"} />
+  </label>
+
+  <label>
+    Content <small>(Markdown — use the button below to upload and insert images)</small>
+    <textarea name="content" id="contentArea" rows="22" required>{post?.content ?? ""}</textarea>
+  </label>
+  <div>
+    <button type="button" class="btn btn--ghost" data-upload-target="contentArea">Insert image into content…</button>
+  </div>
+
+  <label class="draft-toggle">
+    <span><input type="checkbox" name="draft" checked={post?.draft ?? false} /> Draft <small>(drafts are hidden from the public site)</small></span>
+  </label>
+
+  <div class="actions">
+    <button class="btn" type="submit">{isEdit ? "Save changes" : "Create post"}</button>
+    {isEdit && !post!.draft && (
+      <a class="btn btn--subtle" href={`/blog/${post!.slug}/`} target="_blank" rel="noopener">View post ↗</a>
+    )}
+  </div>
+</form>
+
+{isEdit && (
+  <form class="danger-zone" method="post" action="/api/admin/posts" onsubmit="return confirm('Delete this post permanently?')">
+    <input type="hidden" name="_action" value="delete" />
+    <input type="hidden" name="id" value={String(post!.id)} />
+    <button class="btn btn--danger" type="submit">Delete post</button>
+  </form>
+)}
+
+<input type="file" id="filePicker" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" hidden />
+
+<script>
+  const picker = document.getElementById("filePicker") as HTMLInputElement;
+  let target: HTMLElement | null = null;
+
+  document.querySelectorAll<HTMLButtonElement>("[data-upload-target]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      target = document.getElementById(btn.dataset.uploadTarget!);
+      picker.click();
+    });
+  });
+
+  picker.addEventListener("change", async () => {
+    const file = picker.files?.[0];
+    if (!file || !target) return;
+
+    const body = new FormData();
+    body.append("file", file);
+    const res = await fetch("/api/admin/upload", { method: "POST", body });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: "Upload failed" }));
+      alert(err.error ?? "Upload failed");
+      return;
+    }
+    const { url } = await res.json();
+
+    if (target instanceof HTMLTextAreaElement) {
+      const insert = `\n![](${url})\n`;
+      const pos = target.selectionStart ?? target.value.length;
+      target.value = target.value.slice(0, pos) + insert + target.value.slice(pos);
+      target.dispatchEvent(new Event("input"));
+    } else if (target instanceof HTMLInputElement) {
+      target.value = url;
+      const preview = document.getElementById("coverPreview") as HTMLImageElement | null;
+      if (preview) {
+        preview.src = url;
+        preview.style.display = "";
+      }
+    }
+    picker.value = "";
+  });
+</script>
+
+<style>
+  .upload-row { display: flex; gap: 0.6rem; }
+  .upload-row input { flex: 1; }
+  .cover-preview {
+    margin-top: 0.6rem;
+    max-height: 180px;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+  }
+  .draft-toggle input { width: auto; margin-right: 0.4rem; }
+  .actions { display: flex; gap: 0.8rem; align-items: center; }
+  .danger-zone { margin-top: 1.5rem; display: flex; justify-content: flex-end; }
+</style>

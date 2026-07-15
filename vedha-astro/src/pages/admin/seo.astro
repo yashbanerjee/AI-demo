@@ -1,0 +1,84 @@
+---
+import AdminLayout from "../../layouts/AdminLayout.astro";
+import { listSeo } from "../../lib/db";
+
+const entries = await listSeo();
+const saved = Astro.url.searchParams.has("saved");
+const error = Astro.url.searchParams.get("error");
+
+// Common pages, offered as quick-select suggestions in the form
+const knownPaths = ["/", "/blog", "/products", "/products/vedha-ai", "/products/vedha-commerce"];
+const suggestions = knownPaths.filter((p) => !entries.some((e) => e.path === p));
+---
+<AdminLayout title="SEO settings">
+  <h1>SEO settings</h1>
+  <p class="muted intro">
+    Override the title, meta description, and social-share image for any page on the site.
+    Pages without an override here keep the defaults defined in code. Blog posts manage their
+    own SEO from the post editor.
+  </p>
+
+  {saved && <p class="notice notice--ok">Saved.</p>}
+  {error === "path" && <p class="notice notice--error">Path must start with “/”.</p>}
+
+  <h2>Add / edit override</h2>
+  <form class="panel form-grid" method="post" action="/api/admin/seo">
+    <div class="form-row">
+      <label>
+        Page path
+        <input type="text" name="path" list="pathSuggestions" placeholder="/" required />
+        <datalist id="pathSuggestions">
+          {suggestions.map((p) => <option value={p} />)}
+        </datalist>
+      </label>
+      <label>
+        Title <small>(browser tab + search results)</small>
+        <input type="text" name="title" placeholder="Leave empty to keep default" />
+      </label>
+    </div>
+    <label>
+      Meta description <small>(aim for ≤160 characters)</small>
+      <textarea name="description" rows="2" placeholder="Leave empty to keep default"></textarea>
+    </label>
+    <label>
+      Social share image URL <small>(1200×630 recommended; upload via a blog post or use /og-image.png)</small>
+      <input type="text" name="og_image" placeholder="/og-image.png" />
+    </label>
+    <div><button class="btn" type="submit">Save override</button></div>
+  </form>
+
+  <h2>Current overrides</h2>
+  <div class="panel">
+    {entries.length === 0 ? (
+      <p class="muted">No overrides yet — every page is using its defaults.</p>
+    ) : (
+      <table>
+        <thead>
+          <tr><th>Path</th><th>Title</th><th>Description</th><th>OG image</th><th></th></tr>
+        </thead>
+        <tbody>
+          {entries.map((e) => (
+            <tr>
+              <td><code>{e.path}</code></td>
+              <td>{e.title ?? <span class="muted">default</span>}</td>
+              <td class="desc">{e.description ?? <span class="muted">default</span>}</td>
+              <td>{e.og_image ? <a href={e.og_image} target="_blank" rel="noopener">view</a> : <span class="muted">default</span>}</td>
+              <td>
+                <form method="post" action="/api/admin/seo" onsubmit="return confirm('Remove this override?')">
+                  <input type="hidden" name="_action" value="delete" />
+                  <input type="hidden" name="path" value={e.path} />
+                  <button class="btn btn--danger btn--small" type="submit">Remove</button>
+                </form>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>
+
+<style>
+  .intro { max-width: 44rem; margin-top: -0.8rem; margin-bottom: 1.5rem; }
+  .desc { max-width: 18rem; }
+</style>

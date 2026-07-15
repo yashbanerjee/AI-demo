@@ -1,0 +1,11 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import PostForm from "../../../components/admin/PostForm.astro";
+
+const error = Astro.url.searchParams.get("error");
+---
+<AdminLayout title="New post">
+  <h1>New post</h1>
+  {error === "missing" && <p class="notice notice--error">Title is required.</p>}
+  <PostForm />
+</AdminLayout>

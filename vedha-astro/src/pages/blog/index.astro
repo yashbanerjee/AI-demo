@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { listPosts } from "../../lib/db";
+
+const PAGE_SIZE = 10;
+const allPosts = await listPosts();
+const pageParam = Number(Astro.url.searchParams.get("page") ?? "1");
+const lastPage = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE));
+const currentPage = Math.min(Math.max(1, pageParam || 1), lastPage);
+const posts = allPosts.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+---
+<BaseLayout
+  title="Blog — VEDHA"
+  description="Smart insights on web development, AI, e-commerce and digital transformation from the Vedha team in Dubai."
+>
+  <section class="blog blog--page" id="news">
+    <header class="section-head">
+      <div>
+        <p class="kicker" data-reveal>(Blog)</p>
+        <h1 class="giant" data-reveal>Smart insights.</h1>
+      </div>
+    </header>
+    <ul class="blog__list">
+      {posts.map((post) => (
+        <li data-reveal>
+          <a href={`/blog/${post.slug}/`} class="blog-row">
+            <time datetime={post.pub_date.toISOString().split("T")[0]}>{formatDate(post.pub_date)}</time>
+            <h3>{post.title}</h3>
+            <span class="blog-row__arrow" aria-hidden="true">→</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    {lastPage > 1 && (
+      <nav class="blog-pagination" aria-label="Blog pagination">
+        {currentPage > 1 ? (
+          <a class="btn btn--ghost" href={`/blog/?page=${currentPage - 1}`}><span>← Newer</span></a>
+        ) : (
+          <span />
+        )}
+        <p>Page {currentPage} of {lastPage}</p>
+        {currentPage < lastPage ? (
+          <a class="btn btn--ghost" href={`/blog/?page=${currentPage + 1}`}><span>Older →</span></a>
+        ) : (
+          <span />
+        )}
+      </nav>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .blog--page {
+    padding-top: calc(4.5rem + clamp(2rem, 6vh, 4rem));
+    min-height: 70vh;
+  }
+  .blog-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 3rem;
+    color: var(--ink-soft);
+  }
+</style>

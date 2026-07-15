@@ -1,0 +1,107 @@
+---
+import { marked } from "marked";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getPostBySlug } from "../../lib/db";
+
+const post = await getPostBySlug(Astro.params.slug!);
+if (!post || post.draft) {
+  return new Response("Not found", { status: 404 });
+}
+
+const { title, description, content, author, tags, cover_image, pub_date, updated_date } = post;
+const html = marked.parse(content);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+
+const postSchema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: title,
+  description,
+  datePublished: pub_date.toISOString(),
+  ...(updated_date && { dateModified: updated_date.toISOString() }),
+  ...(cover_image && { image: new URL(cover_image, Astro.site).toString() }),
+  author: { "@type": "Organization", name: author, url: Astro.site?.toString() },
+  publisher: {
+    "@type": "Organization",
+    name: "Vedha Technologies",
+    logo: { "@type": "ImageObject", url: new URL("/images/vedha-logo.png", Astro.site).toString() },
+  },
+  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString(),
+};
+---
+<BaseLayout
+  title={`${title} — VEDHA Blog`}
+  description={description}
+  ogType="article"
+  publishedTime={pub_date}
+  modifiedTime={updated_date ?? undefined}
+  ogImage={cover_image ?? undefined}
+>
+  <article class="post">
+    <header class="post__header">
+      <p class="kicker" data-reveal>
+        (Blog)
+        {tags.length > 0 && <>&ensp;[{tags.join(" · ")}]</>}
+      </p>
+      <h1 class="giant" data-reveal>{title}</h1>
+      <p class="post__meta" data-reveal>
+        <time datetime={pub_date.toISOString().split("T")[0]}>{formatDate(pub_date)}</time>
+        &ensp;·&ensp;{author}
+      </p>
+    </header>
+    {cover_image && (
+      <figure class="post__cover" data-reveal>
+        <img src={cover_image} alt={title} loading="eager" />
+      </figure>
+    )}
+    <div class="post__prose" data-reveal set:html={html} />
+    <footer class="post__footer" data-reveal>
+      <a class="btn btn--ghost" href="/blog/"><span>← All posts</span></a>
+      <a class="btn btn--dark" href="/#contact"><span>Book a free consultation</span></a>
+    </footer>
+  </article>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(postSchema)} />
+</BaseLayout>
+
+<style>
+  .post {
+    padding: calc(4.5rem + clamp(2rem, 6vh, 4rem)) var(--gutter) clamp(3rem, 8vh, 6rem);
+    max-width: 52rem;
+  }
+  .post__header { display: grid; gap: 1.2rem; }
+  .post__meta { color: var(--ink-soft); }
+  .post__cover {
+    margin-top: clamp(2rem, 5vh, 3.5rem);
+    overflow: hidden;
+    border-radius: var(--radius, 8px);
+  }
+  .post__cover img { width: 100%; height: auto; display: block; }
+  .post__prose {
+    margin-top: clamp(2rem, 5vh, 3.5rem);
+    max-width: 42rem;
+    display: grid;
+    gap: 1.2rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--ink);
+  }
+  .post__prose :global(h2) {
+    margin-top: 1.5rem;
+    font-size: 1.5rem;
+    line-height: 1.25;
+  }
+  .post__prose :global(a) { text-decoration: underline; text-underline-offset: 3px; }
+  .post__prose :global(img) {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius, 8px);
+  }
+  .post__footer {
+    margin-top: clamp(2.5rem, 6vh, 4rem);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+</style>

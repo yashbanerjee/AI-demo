@@ -17,4 +17,6 @@ const products = defineCollection({
   }),
 });
 
+// Blog posts now live in Postgres (see src/lib/db.ts). The markdown files in
+// src/content/blog are kept only as the one-time seed for a fresh database.
 export const collections = { products };

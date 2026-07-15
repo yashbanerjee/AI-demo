@@ -1,0 +1,19 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import PostForm from "../../../components/admin/PostForm.astro";
+import { getPostById } from "../../../lib/db";
+
+const post = await getPostById(Number(Astro.params.id));
+if (!post) {
+  return Astro.redirect("/admin");
+}
+
+const saved = Astro.url.searchParams.has("saved");
+const error = Astro.url.searchParams.get("error");
+---
+<AdminLayout title={`Edit: ${post.title}`}>
+  <h1>Edit post</h1>
+  {saved && <p class="notice notice--ok">Saved.</p>}
+  {error === "missing" && <p class="notice notice--error">Title is required.</p>}
+  <PostForm post={post} />
+</AdminLayout>
