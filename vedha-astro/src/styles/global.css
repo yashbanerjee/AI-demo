@@ -400,18 +400,38 @@ body.menu-open .site-header__logo-img { filter: none; }
   pointer-events: none;
   will-change: opacity;
   z-index: 4;
+  overflow: hidden;
+}
+.hero-video__intro-logo {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: min(58vw, 28rem);
+  height: auto;
+  transform: translate(-50%, -50%);
+  opacity: 0.07;
+  filter: blur(14px) drop-shadow(0 0 2.5rem rgba(229, 255, 0, 0.2));
+  animation: hero-intro-breathe 5.5s ease-in-out infinite;
+  pointer-events: none;
+  user-select: none;
+  will-change: opacity;
 }
 .hero-video__intro span {
+  position: relative;
+  z-index: 1;
   font-size: 0.7rem; font-weight: 500;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: rgba(255, 255, 255, 0.75);
+}
+@keyframes hero-intro-breathe {
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.1; }
 }
 
 /* ============ Sections shared ============ */
 section { padding: clamp(4rem, 10vh, 8rem) var(--gutter); }
 
 /* Content sections share a centered max width; full-bleed scenes
-   (hero, showreel, testimonials, process) stay edge-to-edge. */
+   (hero, showreel, process) stay edge-to-edge. */
 .work,
 .studio,
 .services,
@@ -797,7 +817,10 @@ section { padding: clamp(4rem, 10vh, 8rem) var(--gutter); }
   padding: clamp(1.6rem, 4vw, 3rem);
   display: grid; gap: 1.4rem; justify-items: start;
 }
-.faq__more h4 { font-size: clamp(1.6rem, 4vw, 2.8rem); font-weight: 600; letter-spacing: -0.02em; max-width: 20ch; }
+.faq__more h4 {
+  font-size: clamp(1.6rem, 4vw, 2.8rem); font-weight: 600; letter-spacing: -0.02em;
+  max-width: 34ch;
+}
 
 /* ============ Testimonials ============ */
 .testimonials {
@@ -806,13 +829,19 @@ section { padding: clamp(4rem, 10vh, 8rem) var(--gutter); }
   display: flex; flex-direction: column; justify-content: space-between;
   gap: 3rem;
 }
-.t-slider { position: relative; flex: 1; display: grid; align-items: center; }
+/* Dark band stays full-bleed; copy/controls match other content sections */
+.testimonials > * {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  width: 100%;
+}
+.t-slider { position: relative; flex: 1; display: grid; align-items: center; width: 100%; }
 .t-slide {
   grid-area: 1 / 1;
   opacity: 0; transform: translateY(1.5rem);
   transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
   pointer-events: none;
-  max-width: 60rem;
+  max-width: min(60rem, 100%);
 }
 .t-slide.is-active { opacity: 1; transform: none; pointer-events: auto; }
 .t-slide p {
