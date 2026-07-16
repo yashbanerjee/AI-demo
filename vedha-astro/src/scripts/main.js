@@ -236,6 +236,7 @@
   const heroVideoMedia = document.getElementById("heroVideoMedia");
   const heroVideoEnd = document.getElementById("heroVideoEnd");
   const heroVideoIntro = document.getElementById("heroVideoIntro");
+  const heroVideoPoster = document.getElementById("heroVideoPoster");
   // Process: short 3D card stack
   const process = document.getElementById("vision");
   const processStage = document.getElementById("processStage");
@@ -253,6 +254,97 @@
 
   // Smoothed progress state per scene
   const scenes = { hero: 0, showreel: 0, heroVideo: 0, process: 0 };
+
+  // --- Hero video: pick a lighter source on phones, unlock for iOS seeking ---
+  let heroVideoReady = false;
+  let heroVideoFailed = false;
+  let heroSeekPending = null;
+  let heroLastSeek = -1;
+  const markHeroVideoReady = () => {
+    if (heroVideoReady || heroVideoFailed) return;
+    heroVideoReady = true;
+    heroVideo?.classList.add("is-video-ready");
+  };
+  const showHeroFallback = () => {
+    heroVideoFailed = true;
+    heroVideo?.classList.add("is-video-ready");
+    if (heroVideoPoster) heroVideoPoster.style.opacity = "0";
+    if (heroVideoIntro) heroVideoIntro.style.opacity = "0";
+    if (heroVideoEnd) {
+      heroVideoEnd.style.opacity = "1";
+      heroVideoEnd.classList.add("is-interactive");
+      heroVideoEnd.setAttribute("aria-hidden", "false");
+      const ctas = heroVideoEnd.querySelector(".hero-video__ctas");
+      if (ctas) { ctas.style.opacity = "1"; ctas.style.transform = "none"; }
+      const logo = heroVideoEnd.querySelector(".hero-video__logo");
+      if (logo) logo.style.transform = "none";
+    }
+  };
+  const unlockHeroVideo = async () => {
+    if (!heroVideoMedia || heroVideoFailed) return;
+    try {
+      heroVideoMedia.muted = true;
+      heroVideoMedia.defaultMuted = true;
+      heroVideoMedia.playsInline = true;
+      heroVideoMedia.setAttribute("playsinline", "");
+      heroVideoMedia.setAttribute("webkit-playsinline", "");
+      // iOS often refuses currentTime seeks until play() has been called once
+      const playPromise = heroVideoMedia.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        await playPromise;
+      }
+      heroVideoMedia.pause();
+      if (Number.isFinite(heroVideoMedia.duration) && heroVideoMedia.duration > 0) {
+        markHeroVideoReady();
+      }
+    } catch {
+      // Autoplay may still be blocked until a gesture — retry on first touch
+    }
+  };
+  const getHeroVideoSrc = () => {
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const effectiveWidth = Math.round(window.innerWidth * dpr);
+    // Pick the encode that best matches physical pixels (1920 desktop / 1280 mobile)
+    return effectiveWidth > 1350 ? "/videos/hero-3d.mp4" : "/videos/hero-3d-mobile.mp4";
+  };
+  const initHeroVideo = () => {
+    if (!heroVideoMedia) return;
+    const src = getHeroVideoSrc();
+    if (heroVideoMedia.dataset.src !== src) {
+      heroVideoMedia.dataset.src = src;
+      heroVideoMedia.src = src;
+      heroVideoMedia.load();
+    }
+    heroVideoMedia.muted = true;
+    heroVideoMedia.defaultMuted = true;
+    heroVideoMedia.playsInline = true;
+    heroVideoMedia.setAttribute("playsinline", "");
+    heroVideoMedia.setAttribute("webkit-playsinline", "");
+    heroVideoMedia.setAttribute("muted", "");
+
+    const onReady = () => {
+      markHeroVideoReady();
+      unlockHeroVideo();
+    };
+    heroVideoMedia.addEventListener("loadeddata", onReady, { once: true });
+    heroVideoMedia.addEventListener("canplay", onReady, { once: true });
+    heroVideoMedia.addEventListener("error", showHeroFallback, { once: true });
+    // Safety net: if the file never becomes seekable, show the logo end-state
+    setTimeout(() => {
+      if (!heroVideoReady && heroVideoMedia.readyState < 2) showHeroFallback();
+    }, 12000);
+
+    // First user gesture unlocks scrubbing on strict mobile browsers
+    const unlockOnce = () => {
+      unlockHeroVideo();
+      window.removeEventListener("touchstart", unlockOnce);
+      window.removeEventListener("scroll", unlockOnce);
+    };
+    window.addEventListener("touchstart", unlockOnce, { passive: true, once: true });
+    window.addEventListener("scroll", unlockOnce, { passive: true, once: true });
+    unlockHeroVideo();
+  };
+  if (sceneEls.heroVideo) initHeroVideo();
 
   // Mouse parallax for the process stage (fine pointers only)
   const processParallax = { x: 0, y: 0, tx: 0, ty: 0 };
@@ -276,7 +368,40 @@
   // finally the end overlay (bg colour + logo) fades in over the rest.
   const HERO_VIDEO_INTRO_END = 0.12;
   const HERO_VIDEO_SCRUB_END = 0.8;
+  const seekHeroVideo = (t) => {
+    if (!heroVideoMedia || heroVideoFailed) return;
+    if (!Number.isFinite(t)) return;
+    // Avoid hammering currentTime — mobile decoders drop frames / go blank
+    if (Math.abs(t - heroLastSeek) < 0.04) return;
+    if (heroVideoMedia.readyState < 2) {
+      heroSeekPending = t;
+      return;
+    }
+    try {
+      heroVideoMedia.currentTime = t;
+      heroLastSeek = t;
+      heroSeekPending = null;
+      if (heroVideoMedia.readyState >= 2) markHeroVideoReady();
+    } catch {
+      heroSeekPending = t;
+    }
+  };
+  if (heroVideoMedia) {
+    heroVideoMedia.addEventListener("seeked", () => {
+      markHeroVideoReady();
+      if (heroSeekPending != null && Math.abs(heroSeekPending - heroVideoMedia.currentTime) > 0.05) {
+        const next = heroSeekPending;
+        heroSeekPending = null;
+        seekHeroVideo(next);
+      }
+    });
+    heroVideoMedia.addEventListener("loadeddata", () => {
+      if (heroSeekPending != null) seekHeroVideo(heroSeekPending);
+    });
+  }
   const animateHeroVideo = (p) => {
+    if (heroVideoFailed) return;
+
     // Intro: black cover fades out while the video settles from a slight zoom
     const introLocal = clamp01(p / HERO_VIDEO_INTRO_END);
     if (heroVideoIntro) heroVideoIntro.style.opacity = String(1 - introLocal);
@@ -284,12 +409,9 @@
 
     const scrub = clamp01((p - HERO_VIDEO_INTRO_END) / (HERO_VIDEO_SCRUB_END - HERO_VIDEO_INTRO_END));
     const duration = heroVideoMedia.duration;
-    if (duration) {
+    if (Number.isFinite(duration) && duration > 0) {
       // Small back-off from the exact end so the final frame stays rendered
-      const t = scrub * Math.max(0, duration - 0.05);
-      if (Math.abs(heroVideoMedia.currentTime - t) > 0.02) {
-        heroVideoMedia.currentTime = t;
-      }
+      seekHeroVideo(scrub * Math.max(0, duration - 0.05));
     }
     // End state: fade the background in, settle the logo + CTAs into place
     const endLocal = clamp01((p - HERO_VIDEO_SCRUB_END) / (1 - HERO_VIDEO_SCRUB_END));
@@ -452,7 +574,9 @@
     window.addEventListener("touchmove", wake, { passive: true });
     // Once video metadata arrives, sync the frame to the current scroll position
     if (sceneEls.heroVideo) {
-      heroVideoMedia.addEventListener("loadedmetadata", wake, { once: true });
+      heroVideoMedia.addEventListener("loadedmetadata", wake);
+      heroVideoMedia.addEventListener("loadeddata", wake);
+      heroVideoMedia.addEventListener("canplay", wake, { once: true });
     }
   } else if (hasScenes) {
     // Static fallback: show final states

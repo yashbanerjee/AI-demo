@@ -1,14 +1,25 @@
 <!-- ===== Alternative Hero: 3D video scrubbed by scroll, ends on logo ===== -->
 <section class="hero-video" id="heroVideo">
   <div class="hero-video__sticky">
+    <!-- Poster stays visible until the video paints its first scrubbed frame -->
+    <img
+      class="hero-video__poster"
+      id="heroVideoPoster"
+      src="/videos/hero-3d-poster.jpg"
+      alt=""
+      width="1920"
+      height="1080"
+      decoding="async"
+      aria-hidden="true"
+    />
     <video
       class="hero-video__media"
       id="heroVideoMedia"
-      src="/videos/hero-3d.mp4"
-      poster="/videos/hero-3d-poster.jpg"
       muted
       playsinline
+      webkit-playsinline
       preload="auto"
+      poster="/videos/hero-3d-poster.jpg"
       aria-hidden="true"
     ></video>
     <!-- End state: page background + logo + CTAs, revealed once the video finishes -->
