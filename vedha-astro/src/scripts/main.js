@@ -428,7 +428,7 @@
     }
   };
 
-  // Process: cards crossfade in Z (no side collisions), then fan out into a lineup
+  // Process: cards slide side-to-side on scroll, then fan out into a lineup
   const PROCESS_SCRUB_END = 0.68;
   const animateProcess = (p) => {
     const n = processCards.length;
@@ -453,16 +453,16 @@
 
     processCards.forEach((card, i) => {
       const offset = i - index - local;
-
-      // Scrub: stay centered — sink in Z + fade. No lateral shift = no collisions.
       const absOff = Math.abs(offset);
-      const stackX = 0;
-      const stackY = 0;
-      const stackZ = -absOff * 380;
-      const stackRot = offset * -18;
-      const stackScale = 1 - Math.min(absOff, 1) * 0.06;
-      // Squared falloff so two cards are almost never both readable at once
-      const stackOpacity = absOff < 1 ? (1 - absOff) ** 2 : 0;
+
+      // Scrub: enter from the right, exit to the left (vertical: bottom → top)
+      const slideAmt = 118;
+      const stackX = vertical ? 0 : offset * slideAmt;
+      const stackY = vertical ? offset * slideAmt : 0;
+      const stackZ = 0;
+      const stackRot = 0;
+      const stackScale = 1;
+      const stackOpacity = absOff < 1 ? 1 : 0;
 
       // Lineup: fan out from the center so paths never cross
       const lineX = vertical ? 0 : ((i - mid) * centerGap / window.innerWidth) * 100;
@@ -473,14 +473,12 @@
       const z = lerp(stackZ, 0, lineup);
       const rot = lerp(stackRot, 0, lineup);
       const scale = lerp(stackScale, lineScale, lineup);
-      // During early lineup, bring every card up from its scrub opacity
       const opacity = lerp(stackOpacity, 1, clamp01(lineup * 1.4));
 
       card.style.opacity = String(opacity);
       card.style.transform =
         `translate3d(${x}vw, ${y}vh, ${z}px) rotateY(${rot}deg) scale(${scale})`;
-      card.classList.toggle("is-active", lineup > 0.2 || absOff < 0.5);
-      // Keep front-most card on top during scrub; even z-index in lineup
+      card.classList.toggle("is-active", lineup > 0.2 || absOff < 1);
       card.style.zIndex = String(
         lineup > 0.2 ? i + 1 : Math.round((1 - absOff) * 10)
       );
