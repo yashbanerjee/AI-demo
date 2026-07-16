@@ -444,21 +444,23 @@
     const mid = (n - 1) / 2;
     const lineScale = vertical ? 0.7 : 0.62;
     const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    const cardW = Math.min(window.innerWidth * 0.88, 34 * rem) * lineScale;
+    const scrubCardW = Math.min(window.innerWidth * 0.88, 34 * rem);
+    const cardW = scrubCardW * lineScale;
     const pad = vertical ? window.innerHeight * 0.08 : window.innerWidth * 0.04;
     const available = vertical
       ? window.innerHeight - pad * 2
       : window.innerWidth - pad * 2;
     const centerGap = (available - cardW) / Math.max(n - 1, 1);
+    // Slide just past one card width so neighbors stay close mid-transition
+    const slideAmt = ((scrubCardW + window.innerWidth * 0.03) / window.innerWidth) * 100;
 
     processCards.forEach((card, i) => {
       const offset = i - index - local;
       const absOff = Math.abs(offset);
 
-      // Scrub: enter from the right, exit to the left (vertical: bottom → top)
-      const slideAmt = 118;
-      const stackX = vertical ? 0 : offset * slideAmt;
-      const stackY = vertical ? offset * slideAmt : 0;
+      // Scrub: enter from the right, exit to the left (horizontal on all sizes)
+      const stackX = offset * slideAmt;
+      const stackY = 0;
       const stackZ = 0;
       const stackRot = 0;
       const stackScale = 1;
