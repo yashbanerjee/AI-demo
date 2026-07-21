@@ -128,7 +128,409 @@
   }, { threshold: 0.5 });
   document.querySelectorAll("[data-count]").forEach((el) => counterObserver.observe(el));
 
-  // === FAQ: smooth height animation for <details> ===
+  // === Services: pillar tab switching + live search ===
+  const svcTabs = [...document.querySelectorAll("[data-svc-tab]")];
+  const svcPanels = [...document.querySelectorAll("[data-svc-panel]")];
+  const svcSearch = document.getElementById("svcSearch");
+  const svcSearchClear = document.getElementById("svcSearchClear");
+  const svcResults = document.getElementById("svcResults");
+  const svcResultsMeta = document.getElementById("svcResultsMeta");
+  const svcResultsGroups = document.getElementById("svcResultsGroups");
+  const svcLayout = document.querySelector(".svc-layout");
+
+  const exitSvcSearch = () => {
+    if (svcSearch) svcSearch.value = "";
+    if (svcSearchClear) svcSearchClear.hidden = true;
+    if (svcResults) svcResults.hidden = true;
+    svcLayout?.classList.remove("is-searching");
+  };
+
+  if (svcTabs.length && svcPanels.length) {
+    svcTabs.forEach((tab) => {
+      tab.addEventListener("click", () => {
+        exitSvcSearch();
+        const idx = tab.dataset.svcTab;
+        svcTabs.forEach((t) => {
+          const active = t.dataset.svcTab === idx;
+          t.classList.toggle("is-active", active);
+          t.setAttribute("aria-selected", String(active));
+        });
+        svcPanels.forEach((p) => {
+          const active = p.dataset.svcPanel === idx;
+          p.classList.toggle("is-active", active);
+          p.setAttribute("aria-hidden", String(!active));
+        });
+      });
+    });
+  }
+
+  if (svcSearch && svcResults && svcLayout) {
+    // Flat index built from the rendered panels: pillar → category → services
+    const svcIndex = svcPanels.flatMap((panel) => {
+      const pillarName = panel.dataset.svcPillarName || "";
+      return [...panel.querySelectorAll(".svc-card")].map((card) => ({
+        pillar: pillarName,
+        category: card.querySelector("h4")?.textContent.trim() || "",
+        services: [...card.querySelectorAll("li")].map((li) => li.textContent.trim()),
+      }));
+    });
+
+    // Words too generic to carry intent on their own
+    const svcStopwords = new Set([
+      "i", "we", "a", "an", "the", "to", "for", "my", "our", "your", "of", "and",
+      "or", "in", "on", "with", "want", "wants", "need", "needs", "needed", "help",
+      "me", "us", "get", "that", "this", "it", "is", "are", "do", "does", "can",
+      "how", "what", "some", "new", "please", "would", "like", "looking", "have",
+      "has", "you", "be", "so", "at", "as", "am", "was", "will", "should", "could",
+      "let", "us", "from", "by", "into", "about", "more", "very", "really", "just",
+    ]);
+
+    // Everyday language → service vocabulary
+    const svcSynonyms = {
+      sell: ["e-commerce", "commerce", "online store", "ordering"],
+      selling: ["e-commerce", "commerce", "online store"],
+      shop: ["e-commerce", "commerce", "store"],
+      store: ["e-commerce", "commerce", "store"],
+      online: ["e-commerce", "online", "website"],
+      product: ["product", "e-commerce", "catalogue"],
+      products: ["product", "e-commerce", "catalogue"],
+      app: ["app", "application", "mobile"],
+      apps: ["app", "application", "mobile"],
+      mobile: ["mobile", "app", "ios", "android"],
+      iphone: ["ios"],
+      android: ["android"],
+      website: ["website", "web", "landing"],
+      web: ["web", "website"],
+      site: ["website", "web"],
+      chatbot: ["assistant", "ai", "support"],
+      bot: ["assistant", "ai", "agent"],
+      assistant: ["assistant", "ai"],
+      ai: ["ai", "intelligence", "predictive", "assistant"],
+      automate: ["automation", "workflow", "robotic"],
+      automation: ["automation", "workflow"],
+      manual: ["automation", "data-entry", "workflow"],
+      repetitive: ["automation", "robotic", "workflow"],
+      paperwork: ["document", "automation", "processing"],
+      documents: ["document", "extraction", "processing"],
+      report: ["report", "dashboard", "analytics"],
+      reports: ["report", "dashboard", "analytics"],
+      reporting: ["reporting", "dashboard"],
+      insights: ["analytics", "dashboard", "intelligence"],
+      analytics: ["analytics", "dashboard", "intelligence"],
+      dashboard: ["dashboard"],
+      dashboards: ["dashboard"],
+      numbers: ["dashboard", "analytics", "reporting"],
+      customers: ["customer", "crm", "support", "portal"],
+      customer: ["customer", "crm", "support"],
+      clients: ["customer", "crm", "account"],
+      leads: ["lead", "crm", "capture"],
+      sales: ["sales", "crm", "pipeline", "lead"],
+      pipeline: ["pipeline", "crm", "sales"],
+      followup: ["follow-up", "automation"],
+      marketing: ["marketing", "campaign", "email", "lead"],
+      campaign: ["campaign", "marketing", "landing"],
+      email: ["email", "automation", "marketing"],
+      newsletter: ["email", "marketing"],
+      seo: ["seo", "search", "visibility"],
+      google: ["seo", "search", "visibility"],
+      ranking: ["seo", "search", "visibility"],
+      traffic: ["seo", "search", "conversion"],
+      visibility: ["visibility", "seo", "search"],
+      cloud: ["cloud", "infrastructure", "deployment"],
+      server: ["server", "infrastructure", "deployment", "hosting"],
+      hosting: ["cloud", "deployment", "infrastructure"],
+      deploy: ["deployment", "ci/cd", "cloud"],
+      devops: ["devops", "ci/cd", "infrastructure"],
+      security: ["security", "compliance", "encryption"],
+      secure: ["security", "encryption", "authentication"],
+      hacked: ["security", "vulnerability", "incident"],
+      compliance: ["compliance", "security", "policies"],
+      slow: ["performance", "optimisation", "speed"],
+      fast: ["performance", "optimisation"],
+      speed: ["performance", "optimisation"],
+      performance: ["performance", "optimisation"],
+      old: ["legacy", "modernisation", "redesign"],
+      legacy: ["legacy", "modernisation", "migration"],
+      outdated: ["legacy", "modernisation", "redesign"],
+      modernise: ["modernisation", "legacy", "migration"],
+      modernize: ["modernisation", "legacy", "migration"],
+      upgrade: ["modernisation", "migration", "enhancement"],
+      migrate: ["migration", "cloud"],
+      integrate: ["integration", "api", "middleware"],
+      integration: ["integration", "api"],
+      connect: ["integration", "api", "synchronisation"],
+      sync: ["synchronisation", "integration", "data"],
+      api: ["api", "integration", "webhook"],
+      data: ["data", "database", "analytics"],
+      database: ["database", "data"],
+      excel: ["data", "reporting", "dashboard", "automation"],
+      spreadsheets: ["data", "reporting", "automation"],
+      design: ["design", "ux", "ui"],
+      redesign: ["redesign", "design", "interface"],
+      ux: ["ux", "design", "usability"],
+      ui: ["ui", "design", "interface"],
+      prototype: ["prototyping", "wireframing"],
+      brand: ["brand", "identity", "logo"],
+      branding: ["brand", "identity", "logo"],
+      logo: ["logo", "brand", "identity"],
+      identity: ["identity", "brand"],
+      erp: ["erp"],
+      crm: ["crm", "sales"],
+      saas: ["saas", "product", "subscription", "multi-tenant"],
+      startup: ["mvp", "product", "startup", "validation"],
+      mvp: ["mvp", "product discovery", "validation"],
+      idea: ["product discovery", "mvp", "validation", "feasibility"],
+      invoice: ["invoice", "payment", "billing"],
+      invoices: ["invoice", "payment", "billing"],
+      billing: ["billing", "subscription", "invoice", "payment"],
+      payments: ["payment", "billing", "gateway"],
+      pay: ["payment", "billing"],
+      subscription: ["subscription", "billing", "membership"],
+      booking: ["booking", "scheduling", "appointment"],
+      bookings: ["booking", "scheduling"],
+      appointment: ["booking", "scheduling"],
+      schedule: ["booking", "scheduling"],
+      track: ["tracking", "logistics", "monitoring"],
+      tracking: ["tracking", "logistics", "delivery"],
+      delivery: ["delivery", "logistics", "tracking"],
+      logistics: ["logistics", "delivery", "fleet"],
+      shipping: ["logistics", "delivery", "tracking"],
+      inventory: ["inventory", "stock"],
+      stock: ["inventory"],
+      warehouse: ["inventory", "warehouse", "logistics"],
+      hotel: ["hospitality", "booking"],
+      restaurant: ["hospitality", "ordering"],
+      clinic: ["healthcare", "booking"],
+      hospital: ["healthcare"],
+      healthcare: ["healthcare"],
+      school: ["education", "learning"],
+      education: ["education", "learning"],
+      course: ["learning", "education", "membership"],
+      learning: ["learning", "education", "training"],
+      construction: ["construction"],
+      property: ["property", "real estate"],
+      retail: ["retail", "e-commerce"],
+      factory: ["manufacturing"],
+      manufacturing: ["manufacturing"],
+      train: ["training", "adoption", "workshops"],
+      training: ["training", "adoption", "documentation"],
+      onboarding: ["onboarding", "adoption", "training"],
+      documentation: ["documentation", "manuals", "knowledge"],
+      docs: ["documentation", "knowledge"],
+      team: ["team", "dedicated", "staff", "augmentation"],
+      developers: ["development teams", "staff", "augmentation"],
+      developer: ["development", "staff", "augmentation"],
+      hire: ["dedicated", "staff", "augmentation", "fractional"],
+      cto: ["cto", "fractional"],
+      support: ["support", "maintenance", "monitoring"],
+      maintain: ["maintenance", "support", "updates"],
+      maintenance: ["maintenance", "support"],
+      fix: ["bug", "maintenance", "remediation"],
+      bugs: ["bug", "testing", "maintenance"],
+      broken: ["bug", "maintenance", "remediation"],
+      test: ["testing", "qa"],
+      testing: ["testing", "qa"],
+      qa: ["qa", "testing", "quality"],
+      quality: ["quality", "qa", "testing"],
+      portal: ["portal"],
+      portals: ["portal"],
+      login: ["authentication", "identity", "role"],
+      users: ["user", "role", "permission"],
+      permissions: ["role", "permission", "access"],
+      voice: ["voice"],
+      whatsapp: ["whatsapp"],
+      workflow: ["workflow", "automation", "approval"],
+      workflows: ["workflow", "automation", "approval"],
+      approvals: ["approval", "workflow"],
+      strategy: ["strategy", "roadmap", "consulting"],
+      consulting: ["consulting", "strategy", "advisory"],
+      advice: ["consulting", "advisory", "strategy"],
+      audit: ["audit", "assessment"],
+      assessment: ["assessment", "audit"],
+      roadmap: ["roadmap", "strategy"],
+      cost: ["cost optimisation", "pricing"],
+      cheaper: ["cost optimisation"],
+      grow: ["scale", "growth", "optimisation"],
+      scale: ["scale", "scaling", "growth"],
+      marketplace: ["marketplace"],
+      membership: ["membership", "subscription"],
+      event: ["event", "attendee"],
+      events: ["event", "attendee"],
+      loyalty: ["loyalty"],
+      search: ["search", "seo"],
+      recommendations: ["recommendation"],
+      personalisation: ["personalisation", "recommendation"],
+      predictions: ["predictive", "forecasting"],
+      forecast: ["forecasting", "predictive"],
+    };
+
+    const svcTokenize = (raw) => {
+      const tokens = raw
+        .toLowerCase()
+        .split(/[^a-z0-9/&-]+/)
+        .filter((t) => t.length > 1 && !svcStopwords.has(t));
+      return [...new Set(tokens)];
+    };
+
+    const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    const highlightTerms = (text, regex) => {
+      const span = document.createElement("span");
+      if (!regex) {
+        span.textContent = text;
+        return span;
+      }
+      let last = 0;
+      for (const m of text.matchAll(regex)) {
+        span.append(document.createTextNode(text.slice(last, m.index)));
+        span.append(Object.assign(document.createElement("mark"), { textContent: m[0] }));
+        last = m.index + m[0].length;
+      }
+      span.append(document.createTextNode(text.slice(last)));
+      return span;
+    };
+
+    const runSvcSearch = () => {
+      const rawQuery = svcSearch.value.trim();
+      const q = rawQuery.toLowerCase();
+      svcSearchClear.hidden = q.length === 0;
+      if (!q) {
+        exitSvcSearch();
+        return;
+      }
+      svcLayout.classList.add("is-searching");
+      svcResults.hidden = false;
+      svcResultsGroups.textContent = "";
+
+      // Each token matches directly (weight 1) or through synonyms (weight 0.7)
+      const tokens = svcTokenize(q);
+      const tokenVariants = tokens.map((t) => {
+        const variants = [{ term: t, weight: 1 }];
+        if (t.length > 3 && t.endsWith("s")) variants.push({ term: t.slice(0, -1), weight: 1 });
+        (svcSynonyms[t] || []).forEach((syn) => variants.push({ term: syn, weight: 0.7 }));
+        return variants;
+      });
+
+      const scoreText = (service, category, pillar) => {
+        const s = service.toLowerCase();
+        const c = category.toLowerCase();
+        const p = pillar.toLowerCase();
+        let score = 0;
+        if (q.length >= 5 && (s.includes(q) || c.includes(q))) score += 6;
+        for (const variants of tokenVariants) {
+          let best = 0;
+          for (const { term, weight } of variants) {
+            if (s.includes(term)) best = Math.max(best, 3 * weight);
+            else if (c.includes(term)) best = Math.max(best, 2 * weight);
+            else if (p.includes(term)) best = Math.max(best, 0.5 * weight);
+          }
+          score += best;
+        }
+        return score;
+      };
+
+      let serviceCount = 0;
+      const groups = [];
+      svcIndex.forEach((cat) => {
+        const scored = cat.services
+          .map((s) => ({ text: s, score: scoreText(s, cat.category, cat.pillar) }))
+          .filter((s) => s.score >= 1.4)
+          .sort((a, b) => b.score - a.score);
+        if (scored.length) {
+          groups.push({
+            ...cat,
+            hits: scored.map((s) => s.text),
+            score: scored.reduce((n, s) => n + s.score, 0) + (cat.category.toLowerCase().includes(q) ? 8 : 0),
+          });
+          serviceCount += scored.length;
+        }
+      });
+      groups.sort((a, b) => b.score - a.score);
+
+      // Highlight both typed words and the synonyms that matched
+      const highlightList = [
+        ...new Set(
+          tokenVariants.flat().map((v) => v.term).filter((t) => t.length >= 3)
+        ),
+      ];
+      const markRegex = highlightList.length
+        ? new RegExp(`(${highlightList.map(escapeRegex).join("|")})`, "gi")
+        : null;
+
+      if (!groups.length) {
+        svcResultsMeta.textContent = "No matches";
+        const empty = document.createElement("div");
+        empty.className = "svc-results__empty";
+        const p = document.createElement("p");
+        p.append(
+          document.createTextNode("Nothing found for \u201C"),
+          Object.assign(document.createElement("b"), { textContent: rawQuery }),
+          document.createTextNode("\u201D — but if you can describe it, we can likely build it.")
+        );
+        const link = document.createElement("a");
+        link.className = "btn btn--dark";
+        link.href = "/#contact";
+        link.innerHTML = "<span>Ask us about it</span>";
+        empty.append(p, link);
+        svcResultsGroups.append(empty);
+        return;
+      }
+
+      svcResultsMeta.textContent =
+        `${serviceCount} service${serviceCount === 1 ? "" : "s"} \u00B7 ${groups.length} practice${groups.length === 1 ? "" : "s"}`;
+      groups.forEach((group) => {
+        const wrap = document.createElement("div");
+        wrap.className = "svc-results__group";
+        const h4 = document.createElement("h4");
+        h4.append(
+          highlightTerms(group.category, markRegex),
+          Object.assign(document.createElement("span"), { textContent: group.pillar })
+        );
+        const ul = document.createElement("ul");
+        group.hits.forEach((s) => {
+          const li = document.createElement("li");
+          li.append(highlightTerms(s, markRegex));
+          ul.append(li);
+        });
+        wrap.append(h4, ul);
+        svcResultsGroups.append(wrap);
+      });
+    };
+
+    // Rotate through personal prompts while the field sits empty
+    const svcPrompts = [
+      "What do you want to build?",
+      "An AI assistant for your team?",
+      "An ERP that fits how you work?",
+      "A mobile app your customers love?",
+      "Dashboards that answer questions?",
+      "A brand that gets remembered?",
+      "Workflows that run themselves?",
+    ];
+    let svcPromptIdx = 0;
+    if (!reduceMotion) {
+      setInterval(() => {
+        if (svcSearch.value || document.activeElement === svcSearch) return;
+        svcPromptIdx = (svcPromptIdx + 1) % svcPrompts.length;
+        svcSearch.placeholder = svcPrompts[svcPromptIdx];
+      }, 3200);
+    }
+
+    let svcSearchTimer;
+    svcSearch.addEventListener("input", () => {
+      clearTimeout(svcSearchTimer);
+      svcSearchTimer = setTimeout(runSvcSearch, 120);
+    });
+    svcSearch.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") exitSvcSearch();
+    });
+    svcSearchClear.addEventListener("click", () => {
+      exitSvcSearch();
+      svcSearch.focus();
+    });
+  }
+
+  // === Smooth height animation for <details> (FAQ) ===
   document.querySelectorAll(".faq__item").forEach((item) => {
     const summary = item.querySelector("summary");
     let animating = false;
@@ -145,7 +547,7 @@
       const endH = closing ? summary.offsetHeight : item.scrollHeight;
       item.style.setProperty("--faq-height", `${startH}px`);
       item.classList.add("is-animating");
-      if (closing) item.classList.add("is-closing"); // fades the answer out
+      if (closing) item.classList.add("is-closing"); // fades the content out
       requestAnimationFrame(() => {
         item.style.setProperty("--faq-height", `${endH}px`);
       });

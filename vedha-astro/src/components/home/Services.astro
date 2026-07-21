@@ -1,15 +1,93 @@
-<!-- ===== Services ===== -->
+---
+import { pillars } from "../../data/services.js";
+
+const totalCategories = pillars.reduce((n, p) => n + p.categories.length, 0);
+const slugOf = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+---
+
+<!-- ===== Services: pillar tabs + practice grid ===== -->
 <section class="services" id="services">
   <header class="section-head section-head--split">
     <p class="kicker" data-reveal>(Services)</p>
-    <p class="kicker" data-reveal>[Get Started]</p>
+    <p class="kicker" data-reveal>[{pillars.length} pillars &middot; {totalCategories} practices]</p>
   </header>
-  <ul class="services__list">
-    <li class="service-row" data-reveal><span>(001)</span><h3>Web Development &amp; CMS</h3></li>
-    <li class="service-row" data-reveal><span>(002)</span><h3>UI/UX Design</h3></li>
-    <li class="service-row" data-reveal><span>(003)</span><h3>E-Commerce Development</h3></li>
-    <li class="service-row" data-reveal><span>(004)</span><h3>AI Development</h3></li>
-    <li class="service-row" data-reveal><span>(005)</span><h3>Web Applications &amp; Integrations</h3></li>
-    <li class="service-row" data-reveal><span>(006)</span><h3>Brand, Support &amp; Growth</h3></li>
-  </ul>
+
+  <div class="svc-search" data-reveal>
+    <svg class="svc-search__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="7" cy="7" r="5.25" stroke="currentColor" stroke-width="1.5" />
+      <path d="M11 11L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+    </svg>
+    <input
+      type="search"
+      id="svcSearch"
+      placeholder="What do you want to build?"
+      autocomplete="off"
+      spellcheck="false"
+      aria-label="Search services"
+    />
+    <button class="svc-search__clear" id="svcSearchClear" type="button" aria-label="Clear search" hidden>&times;</button>
+  </div>
+
+  <div class="svc-layout" data-reveal>
+    <nav class="svc-nav" aria-label="Service pillars" role="tablist">
+      {pillars.map((pillar, i) => (
+        <button
+          class:list={["svc-tab", { "is-active": i === 0 }]}
+          role="tab"
+          aria-selected={i === 0 ? "true" : "false"}
+          data-svc-tab={String(i)}
+        >
+          <span class="svc-tab__num">{String(i + 1).padStart(2, "0")}</span>
+          <span class="svc-tab__name">{pillar.name}</span>
+          <span class="svc-tab__count">{pillar.categories.length}</span>
+        </button>
+      ))}
+    </nav>
+
+    <div class="svc-main">
+    <div class="svc-panels">
+      {pillars.map((pillar, i) => (
+        <div
+          class:list={["svc-panel", { "is-active": i === 0 }]}
+          role="tabpanel"
+          data-svc-panel={String(i)}
+          data-svc-pillar-name={pillar.name}
+          aria-hidden={i === 0 ? "false" : "true"}
+        >
+          <p class="svc-panel__blurb">{pillar.blurb}</p>
+          <div class="svc-panel__grid">
+            {pillar.categories.map((cat) => (
+              <article class="svc-card">
+                <figure class="svc-card__media">
+                  <img
+                    src={`https://picsum.photos/seed/vedha-${slugOf(cat.name)}/640/720`}
+                    alt=""
+                    width="640"
+                    height="720"
+                    loading="lazy"
+                    aria-hidden="true"
+                  />
+                  <figcaption>
+                    <span class="svc-card__count">({cat.services.length})</span>
+                  </figcaption>
+                </figure>
+                <div class="svc-card__body">
+                  <h4>{cat.name}</h4>
+                  <ul>
+                    {cat.services.map((s) => <li>{s}</li>)}
+                  </ul>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <div class="svc-results" id="svcResults" hidden>
+      <p class="svc-results__meta" id="svcResultsMeta"></p>
+      <div class="svc-results__groups" id="svcResultsGroups"></div>
+    </div>
+    </div>
+  </div>
 </section>
