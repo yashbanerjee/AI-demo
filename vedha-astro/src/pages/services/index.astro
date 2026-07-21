@@ -1,101 +1,253 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { pillars, getAllCategories, slugOf } from "../../data/services.js";
+import { pillars, slugOf } from "../../data/services.js";
 
-const categories = getAllCategories();
+const totalCategories = pillars.reduce((n, p) => n + p.categories.length, 0);
+
+const blurbThemes = [
+  "linear-gradient(120deg, #1a1a1a 0%, #5c4a3a 42%, #c4a574 100%)",
+  "linear-gradient(135deg, #0f1724 0%, #3d5a6c 48%, #b8c5ce 100%)",
+  "linear-gradient(125deg, #1c1410 0%, #6b3f2a 45%, #d4a574 100%)",
+  "linear-gradient(140deg, #141414 0%, #3a3a3a 40%, #9a8f7e 100%)",
+  "linear-gradient(120deg, #0e1a1f 0%, #2f5d5a 50%, #c5b89a 100%)",
+  "linear-gradient(130deg, #1a1220 0%, #4a3560 46%, #c9b8a0 100%)",
+  "linear-gradient(115deg, #161616 0%, #4a5560 44%, #d0c4b0 100%)",
+  "linear-gradient(145deg, #1a100c 0%, #7a4e2d 50%, #e0c49a 100%)",
+];
 ---
 <BaseLayout
   title="Services — VEDHA"
   description="Vedha's service practices across Consult, Design, Build, Automate, Intelligence, Connect, Scale, and Support — each defined with the services we deliver."
 >
-  <section class="svc-index">
-    <header class="section-head">
-      <div>
-        <p class="kicker" data-reveal>(Services)</p>
-        <h1 class="giant" data-reveal>
-          Services <sup>({categories.length})</sup>
-        </h1>
-      </div>
-      <p class="section-head__sub" data-reveal>
-        Eight pillars. Twenty-four practices. Every service defined.
-      </p>
-    </header>
+  <section class="svc-index" id="svcIndexPage">
+    <figure class="scene-banner" data-scene-banner>
+      <img
+        src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80"
+        alt=""
+        width="1800"
+        height="1000"
+        loading="eager"
+        decoding="async"
+        aria-hidden="true"
+      />
+      <h1 class="scene-banner__title">Services <sup>({totalCategories})</sup></h1>
+      <figcaption class="scene-banner__meta">
+        <span>{pillars.length} pillars</span>
+        <span>{totalCategories} practices</span>
+      </figcaption>
+    </figure>
 
-    <div class="svc-index__pillars">
-      {pillars.map((pillar) => (
-        <section class="svc-index__pillar" data-reveal>
+    <div class="svc-search" data-reveal>
+      <svg class="svc-search__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="7" cy="7" r="5.25" stroke="currentColor" stroke-width="1.5" />
+        <path d="M11 11L14.5 14.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+      <input
+        type="search"
+        id="svcIndexSearch"
+        placeholder="What do you want to build?"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Search services"
+      />
+      <button class="svc-search__clear" id="svcIndexSearchClear" type="button" aria-label="Clear search" hidden>&times;</button>
+    </div>
+
+    <nav class="svc-index__pills" aria-label="Service categories" data-reveal>
+      {pillars.map((pillar) => {
+        const id = `pillar-${slugOf(pillar.name)}`;
+        return (
+          <a class="svc-index__pill" href={`#${id}`} data-svc-index-pill data-pillar={pillar.name}>
+            <span>{pillar.name}</span>
+            <em>({pillar.categories.length})</em>
+          </a>
+        );
+      })}
+    </nav>
+
+    <p class="svc-index__status" id="svcIndexStatus" hidden></p>
+
+    <div class="svc-index__pillars" id="svcIndexBrowse">
+      {pillars.map((pillar, i) => {
+        const pillarId = `pillar-${slugOf(pillar.name)}`;
+        return (
+        <section
+          class="svc-index__pillar"
+          id={pillarId}
+          data-svc-index-pillar
+          data-pillar={pillar.name}
+          data-reveal
+        >
           <header class="svc-index__pillar-head">
+            <p class="svc-index__pillar-num">{String(i + 1).padStart(2, "0")}</p>
             <h2>{pillar.name}</h2>
             <p>{pillar.blurb}</p>
           </header>
-          <ul class="svc-index__cats">
-            {pillar.categories.map((cat) => (
-              <li>
-                <a href={`/services/${slugOf(cat.name)}/`}>
-                  <span class="svc-index__cat-name">{cat.name}</span>
-                  <span class="svc-index__cat-count">({cat.services.length})</span>
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div class="svc-panel__grid">
+            {pillar.categories.map((cat, ci) => {
+              const slug = slugOf(cat.name);
+              const haystack = [
+                pillar.name,
+                pillar.blurb,
+                cat.name,
+                ...cat.services.map((s) => s.name),
+              ].join(" ").toLowerCase();
+              return (
+                <article
+                  class="svc-card"
+                  data-svc-index-card
+                  data-svc-slug={slug}
+                  data-search={haystack}
+                  style={`--cat-gradient: ${blurbThemes[ci % blurbThemes.length]}`}
+                >
+                  <a class="svc-card__media" href={`/services/${slug}/`}>
+                    <img
+                      src={`https://picsum.photos/seed/vedha-${slug}/640/720`}
+                      alt=""
+                      width="640"
+                      height="720"
+                      loading="lazy"
+                      aria-hidden="true"
+                    />
+                    <span class="svc-card__count">({cat.services.length})</span>
+                  </a>
+                  <div class="svc-card__body">
+                    <h4>
+                      <a class="svc-card__link" href={`/services/${slug}/`}>
+                        <span class="svc-card__title">{cat.name}</span>
+                        <span class="svc-card__link-icon" aria-hidden="true">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </a>
+                    </h4>
+                    <ul>
+                      {cat.services.map((s) => (
+                        <li>
+                          <button
+                            type="button"
+                            class="svc-ask"
+                            data-svc-enquire
+                            data-category={cat.name}
+                            data-service={s.name}
+                            data-tooltip="Ask about this service"
+                          >{s.name}</button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </section>
-      ))}
+        );
+      })}
     </div>
   </section>
 </BaseLayout>
 
 <style>
   .svc-index {
-    padding-top: calc(4.5rem + clamp(2rem, 6vh, 4rem));
-    padding-bottom: clamp(3rem, 8vh, 5rem);
+    max-width: var(--content-max);
+    width: 100%;
+    margin-inline: auto;
+    padding:
+      calc(4.5rem + clamp(1.2rem, 3vh, 2rem))
+      var(--gutter)
+      clamp(3rem, 8vh, 5rem);
+  }
+  .svc-index .scene-banner {
+    margin-bottom: clamp(1.8rem, 4vh, 2.8rem);
+  }
+  .svc-index .svc-search {
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  .svc-index__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin: 0 0 clamp(1.5rem, 3vh, 2.2rem);
+  }
+  .svc-index__pill {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.55em 0.95em;
+    border: 1px solid rgba(17, 17, 17, 0.12);
+    border-radius: calc(var(--radius) * 0.65);
+    background: var(--card);
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    transition:
+      color 0.25s,
+      border-color 0.25s,
+      background 0.25s,
+      transform 0.3s var(--ease-out);
+  }
+  .svc-index__pill em {
+    font-style: normal;
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+    opacity: 0.65;
+  }
+  .svc-index__pill:hover,
+  .svc-index__pill:focus-visible {
+    color: var(--ink);
+    border-color: rgba(17, 17, 17, 0.28);
+    transform: translateY(-1px);
+  }
+  .svc-index__pill.is-active {
+    color: #fff;
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .svc-index__pill.is-active em { opacity: 0.7; color: #fff; }
+  .svc-index__status {
+    margin: 0 0 clamp(1.5rem, 3vh, 2rem);
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
   }
   .svc-index__pillars {
     display: grid;
-    gap: clamp(2.5rem, 6vh, 4rem);
-    margin-top: clamp(2rem, 5vh, 3.5rem);
+    gap: clamp(3rem, 7vh, 5rem);
+  }
+  .svc-index__pillar.is-hidden { display: none; }
+  .svc-index__pillar {
+    scroll-margin-top: 6rem;
   }
   .svc-index__pillar-head {
     display: grid;
-    gap: 0.5rem;
-    margin-bottom: 1rem;
-    max-width: 36rem;
+    gap: 0.45rem;
+    margin-bottom: clamp(1.4rem, 3vh, 2rem);
+    max-width: 40rem;
+  }
+  .svc-index__pillar-num {
+    margin: 0;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: rgba(17, 17, 17, 0.35);
+    font-variant-numeric: tabular-nums;
   }
   .svc-index__pillar-head h2 {
     margin: 0;
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    font-weight: 500;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 600;
     letter-spacing: -0.03em;
   }
-  .svc-index__pillar-head p {
+  .svc-index__pillar-head p:last-child {
     margin: 0;
     color: var(--ink-soft);
     line-height: 1.5;
+    font-size: 1rem;
   }
-  .svc-index__cats {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .svc-index__cats a {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
-    padding-block: 1rem;
-    border-bottom: 1px solid var(--line);
-    color: var(--ink);
-    text-decoration: none;
-    transition: padding-left 0.25s var(--ease-out);
-  }
-  .svc-index__cats li:first-child a { border-top: 1px solid var(--line); }
-  .svc-index__cats a:hover { padding-left: 0.5rem; }
-  .svc-index__cat-name {
-    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
-    letter-spacing: -0.02em;
-  }
-  .svc-index__cat-count {
-    color: var(--ink-soft);
-    font-size: 0.9rem;
-    flex-shrink: 0;
-  }
+  .svc-card.is-hidden { display: none; }
 </style>

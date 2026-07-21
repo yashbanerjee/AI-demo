@@ -597,6 +597,92 @@
     });
   }
 
+  // === Services index page (/services/) — filter cards by search ===
+  const svcIndexPage = document.getElementById("svcIndexPage");
+  const svcIndexSearch = document.getElementById("svcIndexSearch");
+  const svcIndexSearchClear = document.getElementById("svcIndexSearchClear");
+  const svcIndexStatus = document.getElementById("svcIndexStatus");
+  if (svcIndexPage && svcIndexSearch) {
+    const pillars = [...svcIndexPage.querySelectorAll("[data-svc-index-pillar]")];
+    const cards = [...svcIndexPage.querySelectorAll("[data-svc-index-card]")];
+    const pills = [...svcIndexPage.querySelectorAll("[data-svc-index-pill]")];
+    const setActivePill = (name) => {
+      pills.forEach((pill) => {
+        pill.classList.toggle("is-active", pill.dataset.pillar === name);
+      });
+    };
+    const runIndexSearch = () => {
+      const q = svcIndexSearch.value.trim().toLowerCase();
+      const tokens = q.split(/\s+/).filter(Boolean);
+      if (svcIndexSearchClear) svcIndexSearchClear.hidden = !q;
+      let visibleCards = 0;
+      cards.forEach((card) => {
+        const hay = card.dataset.search || "";
+        const show = !tokens.length || tokens.every((t) => hay.includes(t));
+        card.classList.toggle("is-hidden", !show);
+        if (show) visibleCards += 1;
+      });
+      pillars.forEach((pillar) => {
+        const any = [...pillar.querySelectorAll("[data-svc-index-card]")].some(
+          (c) => !c.classList.contains("is-hidden")
+        );
+        pillar.classList.toggle("is-hidden", !any);
+      });
+      if (svcIndexStatus) {
+        if (!q) {
+          svcIndexStatus.hidden = true;
+          svcIndexStatus.textContent = "";
+        } else {
+          svcIndexStatus.hidden = false;
+          svcIndexStatus.textContent =
+            visibleCards === 0
+              ? `No matches for “${svcIndexSearch.value.trim()}”`
+              : `${visibleCards} practice${visibleCards === 1 ? "" : "s"} match`;
+        }
+      }
+    };
+    let indexTimer;
+    svcIndexSearch.addEventListener("input", () => {
+      clearTimeout(indexTimer);
+      indexTimer = setTimeout(runIndexSearch, 100);
+    });
+    svcIndexSearch.addEventListener("keydown", (e) => {
+      if (e.key !== "Escape") return;
+      svcIndexSearch.value = "";
+      runIndexSearch();
+    });
+    svcIndexSearchClear?.addEventListener("click", () => {
+      svcIndexSearch.value = "";
+      runIndexSearch();
+      svcIndexSearch.focus();
+    });
+    pills.forEach((pill) => {
+      pill.addEventListener("click", (e) => {
+        const href = pill.getAttribute("href") || "";
+        const target = href.startsWith("#")
+          ? document.getElementById(href.slice(1))
+          : null;
+        if (!target) return;
+        e.preventDefault();
+        if (svcIndexSearch.value) {
+          svcIndexSearch.value = "";
+          runIndexSearch();
+        }
+        setActivePill(pill.dataset.pillar || "");
+        const top =
+          target.getBoundingClientRect().top +
+          window.scrollY -
+          (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 80);
+        window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
+        history.replaceState(null, "", href);
+      });
+    });
+    if (location.hash) {
+      const hashPill = pills.find((p) => p.getAttribute("href") === location.hash);
+      if (hashPill) setActivePill(hashPill.dataset.pillar || "");
+    }
+  }
+
   // === Smooth height animation for <details> (FAQ) ===
   document.querySelectorAll(".faq__item").forEach((item) => {
     const summary = item.querySelector("summary");
