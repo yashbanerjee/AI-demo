@@ -1,0 +1,101 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { pillars, getAllCategories, slugOf } from "../../data/services.js";
+
+const categories = getAllCategories();
+---
+<BaseLayout
+  title="Services — VEDHA"
+  description="Vedha's service practices across Consult, Design, Build, Automate, Intelligence, Connect, Scale, and Support — each defined with the services we deliver."
+>
+  <section class="svc-index">
+    <header class="section-head">
+      <div>
+        <p class="kicker" data-reveal>(Services)</p>
+        <h1 class="giant" data-reveal>
+          Services <sup>({categories.length})</sup>
+        </h1>
+      </div>
+      <p class="section-head__sub" data-reveal>
+        Eight pillars. Twenty-four practices. Every service defined.
+      </p>
+    </header>
+
+    <div class="svc-index__pillars">
+      {pillars.map((pillar) => (
+        <section class="svc-index__pillar" data-reveal>
+          <header class="svc-index__pillar-head">
+            <h2>{pillar.name}</h2>
+            <p>{pillar.blurb}</p>
+          </header>
+          <ul class="svc-index__cats">
+            {pillar.categories.map((cat) => (
+              <li>
+                <a href={`/services/${slugOf(cat.name)}/`}>
+                  <span class="svc-index__cat-name">{cat.name}</span>
+                  <span class="svc-index__cat-count">({cat.services.length})</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .svc-index {
+    padding-top: calc(4.5rem + clamp(2rem, 6vh, 4rem));
+    padding-bottom: clamp(3rem, 8vh, 5rem);
+  }
+  .svc-index__pillars {
+    display: grid;
+    gap: clamp(2.5rem, 6vh, 4rem);
+    margin-top: clamp(2rem, 5vh, 3.5rem);
+  }
+  .svc-index__pillar-head {
+    display: grid;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    max-width: 36rem;
+  }
+  .svc-index__pillar-head h2 {
+    margin: 0;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+  }
+  .svc-index__pillar-head p {
+    margin: 0;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .svc-index__cats {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .svc-index__cats a {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    transition: padding-left 0.25s var(--ease-out);
+  }
+  .svc-index__cats li:first-child a { border-top: 1px solid var(--line); }
+  .svc-index__cats a:hover { padding-left: 0.5rem; }
+  .svc-index__cat-name {
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    letter-spacing: -0.02em;
+  }
+  .svc-index__cat-count {
+    color: var(--ink-soft);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+</style>

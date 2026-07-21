@@ -42,8 +42,28 @@
   }
 
   // === Header: hide on scroll down, show on scroll up ===
+  // Also flips to a seamless light-on-dark look over black scenes.
   const header = document.getElementById("siteHeader");
+  const darkHeaderZones = [
+    document.getElementById("heroVideo"),
+    document.getElementById("showreel"),
+    document.getElementById("vision"),
+    document.querySelector(".site-footer"),
+    ...document.querySelectorAll("[data-scene-banner]"),
+  ].filter(Boolean);
   let lastY = window.scrollY;
+  const syncHeaderTheme = () => {
+    if (!header) return;
+    const y = window.scrollY;
+    header.classList.toggle("is-scrolled", y > 24);
+    // Sample just below the header bar — if a dark section covers that band, go light
+    const probe = header.offsetHeight + 8;
+    const onDark = darkHeaderZones.some((el) => {
+      const r = el.getBoundingClientRect();
+      return r.top <= probe && r.bottom > probe;
+    });
+    header.classList.toggle("is-on-dark", onDark);
+  };
   window.addEventListener("scroll", () => {
     const y = window.scrollY;
     const delta = y - lastY;
@@ -52,7 +72,32 @@
       header.classList.toggle("is-hidden", delta > 0 && y > 120 && !document.body.classList.contains("menu-open"));
       lastY = y;
     }
+    syncHeaderTheme();
   }, { passive: true });
+  window.addEventListener("resize", syncHeaderTheme, { passive: true });
+  syncHeaderTheme();
+
+  // === Scene banners: titles only fade in on appear (no fade-out) ===
+  const sceneBanners = [...document.querySelectorAll("[data-scene-banner]")];
+  const syncSceneBanners = () => {
+    if (!sceneBanners.length) return;
+    const vh = window.innerHeight || 1;
+    sceneBanners.forEach((banner) => {
+      if (banner.classList.contains("is-title-in")) return;
+      if (reduceMotion) {
+        banner.classList.add("is-title-in");
+        return;
+      }
+      const rect = banner.getBoundingClientRect();
+      // Trigger when the banner is meaningfully in view
+      if (rect.top < vh * 0.78 && rect.bottom > vh * 0.12) {
+        banner.classList.add("is-title-in");
+      }
+    });
+  };
+  window.addEventListener("scroll", syncSceneBanners, { passive: true });
+  window.addEventListener("resize", syncSceneBanners, { passive: true });
+  syncSceneBanners();
 
   // === Menu overlay ===
   const menuToggle = document.getElementById("menuToggle");
@@ -170,8 +215,11 @@
       const pillarName = panel.dataset.svcPillarName || "";
       return [...panel.querySelectorAll(".svc-card")].map((card) => ({
         pillar: pillarName,
-        category: card.querySelector("h4")?.textContent.trim() || "",
-        services: [...card.querySelectorAll("li")].map((li) => li.textContent.trim()),
+        category: card.querySelector(".svc-card__title")?.textContent.trim() || "",
+        slug: card.dataset.svcSlug || "",
+        services: [...card.querySelectorAll("[data-svc-enquire]")].map(
+          (el) => el.dataset.service || el.textContent.trim()
+        ),
       }));
     });
 
@@ -482,14 +530,33 @@
         const wrap = document.createElement("div");
         wrap.className = "svc-results__group";
         const h4 = document.createElement("h4");
-        h4.append(
-          highlightTerms(group.category, markRegex),
-          Object.assign(document.createElement("span"), { textContent: group.pillar })
-        );
+        const catLabel = highlightTerms(group.category, markRegex);
+        if (group.slug) {
+          const catLink = document.createElement("a");
+          catLink.href = `/services/${group.slug}/`;
+          catLink.append(catLabel);
+          h4.append(
+            catLink,
+            Object.assign(document.createElement("span"), { textContent: group.pillar })
+          );
+        } else {
+          h4.append(
+            catLabel,
+            Object.assign(document.createElement("span"), { textContent: group.pillar })
+          );
+        }
         const ul = document.createElement("ul");
         group.hits.forEach((s) => {
           const li = document.createElement("li");
-          li.append(highlightTerms(s, markRegex));
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.className = "svc-ask";
+          btn.dataset.svcEnquire = "";
+          btn.dataset.category = group.category;
+          btn.dataset.service = s;
+          btn.dataset.tooltip = "Ask about this service";
+          btn.append(highlightTerms(s, markRegex));
+          li.append(btn);
           ul.append(li);
         });
         wrap.append(h4, ul);
@@ -709,8 +776,21 @@
     // Pick the encode that best matches physical pixels (1920 desktop / 1280 mobile)
     return effectiveWidth > 1350 ? "/videos/hero-3d.mp4" : "/videos/hero-3d-mobile.mp4";
   };
+  const shouldSkipHeroVideo = () => {
+    // Data-saver / very slow networks: skip heavy scrub video, show end state
+    const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (navigator.deviceMemory && navigator.deviceMemory <= 2) return true;
+    if (!conn) return false;
+    if (conn.saveData) return true;
+    const type = String(conn.effectiveType || "");
+    return type === "slow-2g" || type === "2g";
+  };
   const initHeroVideo = () => {
     if (!heroVideoMedia) return;
+    if (shouldSkipHeroVideo()) {
+      showHeroFallback();
+      return;
+    }
     const src = getHeroVideoSrc();
     if (heroVideoMedia.dataset.src !== src) {
       heroVideoMedia.dataset.src = src;
@@ -765,10 +845,10 @@
     }, { passive: true });
   }
 
-  // Video hero timing: a black intro cover fades first so the video emerges
-  // from the dark, the video then scrubs over the middle of the scroll, and
-  // finally the end overlay (bg colour + logo) fades in over the rest.
-  const HERO_VIDEO_INTRO_END = 0.12;
+  // Video hero timing: intro cover opens from the logo (radial reveal),
+  // the video then scrubs over the middle of the scroll, and finally the
+  // end overlay (bg colour + logo) fades in over the rest.
+  const HERO_VIDEO_INTRO_END = 0.16;
   const HERO_VIDEO_SCRUB_END = 0.8;
   const seekHeroVideo = (t) => {
     if (!heroVideoMedia || heroVideoFailed) return;
@@ -804,10 +884,28 @@
   const animateHeroVideo = (p) => {
     if (heroVideoFailed) return;
 
-    // Intro: black cover fades out while the video settles from a slight zoom
+    // Intro: mark is a video-filled portal; scroll expands that window outward
     const introLocal = clamp01(p / HERO_VIDEO_INTRO_END);
-    if (heroVideoIntro) heroVideoIntro.style.opacity = String(1 - introLocal);
-    heroVideoMedia.style.transform = `scale(${1.08 - introLocal * 0.08})`;
+    if (heroVideoIntro) {
+      // Negative start keeps the radial mask fully opaque until scroll begins
+      const reveal = -45 + introLocal * 195;
+      heroVideoIntro.style.setProperty("--reveal", String(reveal));
+      heroVideoIntro.classList.toggle("is-revealing", introLocal > 0.02);
+      heroVideoIntro.style.opacity = String(introLocal > 0.9 ? 1 - (introLocal - 0.9) / 0.1 : 1);
+      const mark = heroVideoIntro.querySelector(".hero-video__intro-mark");
+      const cta = heroVideoIntro.querySelector(".hero-video__intro-cta");
+      const fade = 1 - clamp01((introLocal - 0.12) / 0.5);
+      const bloom = 1 + introLocal * 0.35;
+      if (mark) {
+        mark.style.opacity = String(fade);
+        mark.style.transform = `translate(-50%, -50%) scale(${bloom})`;
+      }
+      if (cta) cta.style.opacity = String(fade);
+    }
+    // Background eases out from a tighter crop centered on the mark
+    const mediaScale = 1.18 - introLocal * 0.18;
+    heroVideoMedia.style.transform = `scale(${mediaScale})`;
+    if (heroVideoPoster) heroVideoPoster.style.transform = `scale(${mediaScale})`;
 
     const scrub = clamp01((p - HERO_VIDEO_INTRO_END) / (HERO_VIDEO_SCRUB_END - HERO_VIDEO_INTRO_END));
     const duration = heroVideoMedia.duration;
@@ -1047,20 +1145,92 @@
       }
     });
   });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && bookingModal && !bookingModal.hidden) {
-      closeBooking();
-      if (location.hash === "#book") {
-        history.replaceState(null, "", location.pathname + location.search);
-      }
-    }
-  });
   // Deep-link: /#book opens the booking popup
   const openBookingFromHash = () => {
     if (location.hash === "#book") openBooking();
   };
   openBookingFromHash();
   window.addEventListener("hashchange", openBookingFromHash);
+
+  // === Service enquiry modal (from list item → popup) ===
+  const enquiryModal = document.getElementById("enquiryModal");
+  const enquiryForm = document.getElementById("svcEnquiry");
+  const enquiryCategory = document.getElementById("enquiryCategory");
+  const enquiryService = document.getElementById("enquiryService");
+  const enquiryCategoryLabel = document.getElementById("enquiryCategoryLabel");
+  const enquiryServiceLabel = document.getElementById("enquiryServiceLabel");
+  let enquiryLastFocus = null;
+  const openEnquiry = (trigger) => {
+    if (!enquiryModal || !enquiryForm) return;
+    enquiryLastFocus = trigger || document.activeElement;
+    const category = trigger?.dataset?.category || "";
+    const service = trigger?.dataset?.service || "";
+    if (enquiryCategory) enquiryCategory.value = category;
+    if (enquiryService) enquiryService.value = service;
+    if (enquiryCategoryLabel) enquiryCategoryLabel.textContent = category;
+    if (enquiryServiceLabel) enquiryServiceLabel.textContent = service;
+    const desc = enquiryForm.querySelector('[name="description"]');
+    if (desc && !desc.value) {
+      desc.placeholder = service
+        ? `Tell us about your needs for ${service}`
+        : "Tell us what you need";
+    }
+    const rect = trigger?.getBoundingClientRect?.();
+    const fromX = rect ? rect.left + rect.width * 0.35 : window.innerWidth / 2;
+    const fromY = rect ? rect.top + rect.height / 2 : window.innerHeight / 2;
+    enquiryModal.style.setProperty("--from-x", `${fromX}px`);
+    enquiryModal.style.setProperty("--from-y", `${fromY}px`);
+    enquiryModal.hidden = false;
+    enquiryModal.setAttribute("aria-hidden", "false");
+    document.body.classList.add("enquiry-open");
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => enquiryModal.classList.add("is-open"));
+    });
+    const nameInput = enquiryForm.querySelector('[name="name"]');
+    if (nameInput) nameInput.focus();
+  };
+  const closeEnquiry = () => {
+    if (!enquiryModal || enquiryModal.hidden) return;
+    enquiryModal.classList.remove("is-open");
+    document.body.classList.remove("enquiry-open");
+    enquiryModal.setAttribute("aria-hidden", "true");
+    const finish = () => {
+      enquiryModal.hidden = true;
+      if (enquiryForm) {
+        const name = enquiryForm.querySelector('[name="name"]');
+        const email = enquiryForm.querySelector('[name="email"]');
+        const desc = enquiryForm.querySelector('[name="description"]');
+        if (name) name.value = "";
+        if (email) email.value = "";
+        if (desc) desc.value = "";
+      }
+      if (enquiryLastFocus && enquiryLastFocus.focus) enquiryLastFocus.focus();
+    };
+    enquiryModal.addEventListener("transitionend", finish, { once: true });
+    setTimeout(finish, 450);
+  };
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest("[data-svc-enquire]");
+    if (!trigger) return;
+    e.preventDefault();
+    openEnquiry(trigger);
+  });
+  enquiryModal?.querySelectorAll("[data-enquiry-close]").forEach((el) => {
+    el.addEventListener("click", closeEnquiry);
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Escape") return;
+    if (enquiryModal && !enquiryModal.hidden) {
+      closeEnquiry();
+      return;
+    }
+    if (bookingModal && !bookingModal.hidden) {
+      closeBooking();
+      if (location.hash === "#book") {
+        history.replaceState(null, "", location.pathname + location.search);
+      }
+    }
+  });
 
   // === Forms (demo only — no backend) ===
   document.querySelectorAll("form").forEach((form) => {
@@ -1070,9 +1240,21 @@
       if (btn) {
         const original = btn.textContent;
         btn.textContent = "Thank you!";
-        setTimeout(() => { btn.textContent = original; }, 2500);
+        setTimeout(() => {
+          btn.textContent = original;
+          if (form.id === "svcEnquiry") closeEnquiry();
+        }, 1200);
       }
-      form.reset();
+      if (form.id === "svcEnquiry") {
+        const name = form.querySelector('[name="name"]');
+        const email = form.querySelector('[name="email"]');
+        const desc = form.querySelector('[name="description"]');
+        if (name) name.value = "";
+        if (email) email.value = "";
+        if (desc) desc.value = "";
+      } else {
+        form.reset();
+      }
     });
   });
 })();

@@ -11,7 +11,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "db:start": "node db/start.mjs",
-    "start": "node dist/server/entry.mjs"
+    "start": "node dist/server/entry.mjs",
+    "icons": "node scripts/generate-pwa-icons.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^11.0.2",
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@types/pg": "^8.20.0",
-    "embedded-postgres": "^18.4.0-beta.17"
+    "embedded-postgres": "^18.4.0-beta.17",
+    "sharp": "^0.34.5"
   }
 }

@@ -3,9 +3,12 @@ title: "Designing digital systems that scale your business"
 description: "Websites are projects; systems are assets. How to invest in digital infrastructure that compounds instead of decaying."
 pubDate: 2025-04-10
 tags: ["Strategy", "Digital Transformation"]
+image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80"
 ---
 
 Most businesses buy websites the way they buy furniture: a one-time purchase that starts aging the day it arrives. The businesses that pull ahead treat their digital presence differently — as a system that compounds, where every improvement builds on the last.
+
+![Modern office with collaborative workspace](https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1400&q=80)
 
 ## Projects decay; systems compound
 

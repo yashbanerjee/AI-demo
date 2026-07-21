@@ -3,9 +3,12 @@ title: "Where AI genuinely adds value in web development"
 description: "Beyond the hype: the specific places AI meaningfully improves web projects — and where a skilled team still makes the difference."
 pubDate: 2025-11-11
 tags: ["AI", "Web Development"]
+image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80"
 ---
 
 AI is everywhere in the conversation about software right now, and most of that conversation is noise. After shipping AI-assisted projects for clients across the UAE, we've developed a clear view of where it genuinely moves the needle in web development — and where it doesn't.
+
+![Abstract digital network visualisation](https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=1400&q=80)
 
 ## Where AI earns its place
 

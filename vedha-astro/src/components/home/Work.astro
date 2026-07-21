@@ -1,25 +1,84 @@
+---
+const projects = [
+  {
+    title: "COP 28 UAE",
+    meta: "(App · Platform)",
+    desc: "A unified app and platform for the global climate summit experience.",
+    img: "/images/work-cop28.png",
+    alt: "COP 28 UAE unified app and platform case study",
+    w: 914,
+    h: 1024,
+  },
+  {
+    title: "DUNKIN’",
+    meta: "(Mobile · Web)",
+    desc: "Mobile ordering and web journeys built for speed and everyday loyalty.",
+    img: "/images/work-dunkin.png",
+    alt: "Dunkin' mobile and web platform case study",
+    w: 914,
+    h: 1024,
+  },
+  {
+    title: "DET",
+    meta: "(AI · Events)",
+    desc: "An AI-assisted digital ecosystem for Dubai’s economy and tourism events.",
+    img: "https://picsum.photos/seed/mono-w3/900/1100",
+    alt: "Dubai Economy & Tourism digital ecosystem case study",
+    w: 900,
+    h: 1100,
+  },
+  {
+    title: "BASKIN ROBBINS",
+    meta: "(App · Web)",
+    desc: "App and web experiences that make finding and ordering treats effortless.",
+    img: "https://picsum.photos/seed/mono-w4/900/1100",
+    alt: "Baskin Robbins app and web experience case study",
+    w: 900,
+    h: 1100,
+  },
+];
+---
+
 <!-- ===== Work ===== -->
 <section class="work" id="work">
-  <header class="section-head">
-    <h2 class="giant" data-reveal>Work <sup>(4)</sup></h2>
-    <a class="btn btn--ghost" href="/#work"><span>View all work</span></a>
-  </header>
+  <figure class="scene-banner" data-scene-banner>
+    <img
+      src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1800&q=80"
+      alt=""
+      width="1800"
+      height="1000"
+      loading="lazy"
+      aria-hidden="true"
+    />
+    <h2 class="scene-banner__title">Work <sup>(4)</sup></h2>
+    <figcaption class="scene-banner__meta">
+      <span>Selected projects</span>
+      <a href="/#work">View all work</a>
+    </figcaption>
+  </figure>
   <div class="work__grid">
-    <a class="work-card" href="https://vedha.ae/portfolio/product-design/" target="_blank" rel="noopener noreferrer" data-reveal>
-      <figure><img src="/images/work-cop28.png" alt="COP 28 UAE unified app and platform case study" width="914" height="1024" loading="lazy" /></figure>
-      <p><strong>COP 28 UAE</strong><span>(App · Platform)</span></p>
-    </a>
-    <a class="work-card" href="https://vedha.ae/portfolio/product-design/" target="_blank" rel="noopener noreferrer" data-reveal>
-      <figure><img src="/images/work-dunkin.png" alt="Dunkin' mobile and web platform case study" width="914" height="1024" loading="lazy" /></figure>
-      <p><strong>DUNKIN’</strong><span>(Mobile · Web)</span></p>
-    </a>
-    <a class="work-card" href="https://vedha.ae/portfolio/product-design/" target="_blank" rel="noopener noreferrer" data-reveal>
-      <figure><img src="https://picsum.photos/seed/mono-w3/900/1100" alt="Dubai Economy & Tourism digital ecosystem case study" width="900" height="1100" loading="lazy" /></figure>
-      <p><strong>DET</strong><span>(AI · Events)</span></p>
-    </a>
-    <a class="work-card" href="https://vedha.ae/portfolio/product-design/" target="_blank" rel="noopener noreferrer" data-reveal>
-      <figure><img src="https://picsum.photos/seed/mono-w4/900/1100" alt="Baskin Robbins app and web experience case study" width="900" height="1100" loading="lazy" /></figure>
-      <p><strong>BASKIN ROBBINS</strong><span>(App · Web)</span></p>
-    </a>
+    {projects.map((project) => (
+      <a
+        class="work-card"
+        href="https://vedha.ae/portfolio/product-design/"
+        target="_blank"
+        rel="noopener noreferrer"
+        data-reveal
+      >
+        <figure>
+          <img
+            src={project.img}
+            alt={project.alt}
+            width={project.w}
+            height={project.h}
+            loading="lazy"
+          />
+        </figure>
+        <div class="work-card__meta">
+          <p class="work-card__title"><strong>{project.title}</strong><span>{project.meta}</span></p>
+          <p class="work-card__desc">{project.desc}</p>
+        </div>
+      </a>
+    ))}
   </div>
 </section>

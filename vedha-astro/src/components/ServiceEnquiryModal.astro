@@ -1,0 +1,57 @@
+<!-- Contextual enquiry popup — opened from a service list item -->
+<div class="enquiry-modal" id="enquiryModal" hidden aria-hidden="true">
+  <div class="enquiry-modal__backdrop" data-enquiry-close tabindex="-1"></div>
+  <div
+    class="enquiry-modal__dialog"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="enquiryModalTitle"
+  >
+    <header class="enquiry-modal__head">
+      <h2 class="enquiry-modal__title" id="enquiryModalTitle">Ask about this service</h2>
+      <button
+        type="button"
+        class="enquiry-modal__close"
+        data-enquiry-close
+        aria-label="Close enquiry form"
+      >
+        <span></span><span></span>
+      </button>
+    </header>
+
+    <form class="enquiry-modal__form" id="svcEnquiry">
+      <div class="enquiry-modal__meta">
+        <div class="enquiry-modal__meta-row">
+          <span class="enquiry-modal__meta-label">Category</span>
+          <span class="enquiry-modal__meta-value" id="enquiryCategoryLabel"></span>
+        </div>
+        <div class="enquiry-modal__meta-row">
+          <span class="enquiry-modal__meta-label">Service</span>
+          <span class="enquiry-modal__meta-value" id="enquiryServiceLabel"></span>
+        </div>
+        <input type="hidden" name="category" id="enquiryCategory" />
+        <input type="hidden" name="service" id="enquiryService" />
+      </div>
+
+      <div class="enquiry-modal__fields">
+        <label class="enquiry-modal__field">
+          <span>Name</span>
+          <input type="text" name="name" placeholder="Your name" required autocomplete="name" />
+        </label>
+        <label class="enquiry-modal__field">
+          <span>Email</span>
+          <input type="email" name="email" placeholder="you@company.com" required autocomplete="email" />
+        </label>
+        <label class="enquiry-modal__field">
+          <span>Message</span>
+          <textarea name="description" rows="4" placeholder="Tell us what you need" required></textarea>
+        </label>
+      </div>
+
+      <div class="enquiry-modal__actions">
+        <button class="btn btn--dark btn--wide" type="submit"><span>Send enquiry</span></button>
+        <p class="enquiry-modal__terms">By contacting us, you accept our Terms and Privacy Policy.</p>
+      </div>
+    </form>
+  </div>
+</div>

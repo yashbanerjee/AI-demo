@@ -8,19 +8,39 @@ const formatDate = (date: Date) =>
 ---
 <!-- ===== Blog ===== -->
 <section class="blog" id="news">
-  <header class="section-head">
-    <div>
-      <p class="kicker" data-reveal>(Blog)</p>
-      <h2 class="giant" data-reveal>Smart insights.</h2>
-    </div>
-    <a class="btn btn--ghost" href="/blog/"><span>See all</span></a>
-  </header>
+  <figure class="scene-banner" data-scene-banner>
+    <img
+      src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1800&q=80"
+      alt=""
+      width="1800"
+      height="1000"
+      loading="lazy"
+      aria-hidden="true"
+    />
+    <h2 class="scene-banner__title">Smart insights.</h2>
+    <figcaption class="scene-banner__meta">
+      <span>Blog</span>
+      <a href="/blog/">See all</a>
+    </figcaption>
+  </figure>
   <ul class="blog__list">
-    {posts.map((post) => (
+    {posts.map((post, i) => (
       <li data-reveal>
         <a href={`/blog/${post.slug}/`} class="blog-row">
-          <time datetime={post.pub_date.toISOString().split("T")[0]}>{formatDate(post.pub_date)}</time>
-          <h3>{post.title}</h3>
+          <figure class="blog-row__media">
+            <img
+              src={post.cover_image || `https://picsum.photos/seed/vedha-blog-${post.slug}/480/360`}
+              alt=""
+              width="480"
+              height="360"
+              loading={i === 0 ? "eager" : "lazy"}
+              aria-hidden="true"
+            />
+          </figure>
+          <div class="blog-row__copy">
+            <time datetime={post.pub_date.toISOString().split("T")[0]}>{formatDate(post.pub_date)}</time>
+            <h3>{post.title}</h3>
+          </div>
           <span class="blog-row__arrow" aria-hidden="true">→</span>
         </a>
       </li>

@@ -1,16 +1,62 @@
 ---
-import { pillars } from "../../data/services.js";
+import { pillars, slugOf } from "../../data/services.js";
 
 const totalCategories = pillars.reduce((n, p) => n + p.categories.length, 0);
-const slugOf = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
+
+/* Text fill vs band wash — paired opposites (warm text / cool box, etc.) */
+const blurbThemes = [
+  {
+    text: "linear-gradient(120deg, #1a1a1a 0%, #5c4a3a 42%, #c4a574 100%)",
+    band: "linear-gradient(135deg, #e8eef2 0%, #dce6ec 48%, #f2ebe3 100%)",
+  },
+  {
+    text: "linear-gradient(135deg, #0f1724 0%, #3d5a6c 48%, #b8c5ce 100%)",
+    band: "linear-gradient(140deg, #f3ebe3 0%, #ebe0d4 45%, #e8e4ef 100%)",
+  },
+  {
+    text: "linear-gradient(125deg, #1c1410 0%, #6b3f2a 45%, #d4a574 100%)",
+    band: "linear-gradient(125deg, #e6eef0 0%, #d8e4e6 50%, #f0ebe4 100%)",
+  },
+  {
+    text: "linear-gradient(140deg, #141414 0%, #3a3a3a 40%, #9a8f7e 100%)",
+    band: "linear-gradient(130deg, #ece8f0 0%, #e4e0ea 42%, #e8ece8 100%)",
+  },
+  {
+    text: "linear-gradient(120deg, #0e1a1f 0%, #2f5d5a 50%, #c5b89a 100%)",
+    band: "linear-gradient(145deg, #f2e8e4 0%, #ebe0dc 48%, #e4e8f0 100%)",
+  },
+  {
+    text: "linear-gradient(130deg, #1a1220 0%, #4a3560 46%, #c9b8a0 100%)",
+    band: "linear-gradient(120deg, #e8f0ec 0%, #dde8e4 46%, #f0ebe4 100%)",
+  },
+  {
+    text: "linear-gradient(115deg, #161616 0%, #4a5560 44%, #d0c4b0 100%)",
+    band: "linear-gradient(150deg, #f0e8e0 0%, #ebe2d8 40%, #e4e8ee 100%)",
+  },
+  {
+    text: "linear-gradient(145deg, #1a100c 0%, #7a4e2d 50%, #e0c49a 100%)",
+    band: "linear-gradient(135deg, #e4ecf0 0%, #dce6ec 50%, #ece8f2 100%)",
+  },
+];
 ---
 
 <!-- ===== Services: pillar tabs + practice grid ===== -->
 <section class="services" id="services">
-  <header class="section-head section-head--split">
-    <p class="kicker" data-reveal>(Services)</p>
-    <p class="kicker" data-reveal>[{pillars.length} pillars &middot; {totalCategories} practices]</p>
-  </header>
+  <figure class="scene-banner" data-scene-banner>
+    <img
+      src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80"
+      alt=""
+      width="1800"
+      height="1000"
+      loading="lazy"
+      aria-hidden="true"
+    />
+    <h2 class="scene-banner__title">Services <sup>({totalCategories})</sup></h2>
+    <figcaption class="scene-banner__meta">
+      <span>{pillars.length} pillars</span>
+      <span>{totalCategories} practices</span>
+    </figcaption>
+  </figure>
 
   <div class="svc-search" data-reveal>
     <svg class="svc-search__icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -54,31 +100,65 @@ const slugOf = (name) => name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
           data-svc-pillar-name={pillar.name}
           aria-hidden={i === 0 ? "false" : "true"}
         >
-          <p class="svc-panel__blurb">{pillar.blurb}</p>
+          <div
+            class="svc-panel__blurb-band"
+            style={`--band-gradient: ${blurbThemes[i % blurbThemes.length].band}`}
+          >
+            <p
+              class="svc-panel__blurb"
+              style={`--blurb-gradient: ${blurbThemes[i % blurbThemes.length].text}`}
+            >{pillar.blurb}</p>
+          </div>
           <div class="svc-panel__grid">
-            {pillar.categories.map((cat) => (
-              <article class="svc-card">
-                <figure class="svc-card__media">
-                  <img
-                    src={`https://picsum.photos/seed/vedha-${slugOf(cat.name)}/640/720`}
-                    alt=""
-                    width="640"
-                    height="720"
-                    loading="lazy"
-                    aria-hidden="true"
-                  />
-                  <figcaption>
+            {pillar.categories.map((cat, ci) => {
+              const slug = slugOf(cat.name);
+              const catGradient = blurbThemes[ci % blurbThemes.length].text;
+              return (
+                <article
+                  class="svc-card"
+                  data-svc-slug={slug}
+                  style={`--cat-gradient: ${catGradient}`}
+                >
+                  <a class="svc-card__media" href={`/services/${slug}/`}>
+                    <img
+                      src={`https://picsum.photos/seed/vedha-${slug}/640/720`}
+                      alt=""
+                      width="640"
+                      height="720"
+                      loading="lazy"
+                      aria-hidden="true"
+                    />
                     <span class="svc-card__count">({cat.services.length})</span>
-                  </figcaption>
-                </figure>
-                <div class="svc-card__body">
-                  <h4>{cat.name}</h4>
-                  <ul>
-                    {cat.services.map((s) => <li>{s}</li>)}
-                  </ul>
-                </div>
-              </article>
-            ))}
+                  </a>
+                  <div class="svc-card__body">
+                    <h4>
+                      <a class="svc-card__link" href={`/services/${slug}/`}>
+                        <span class="svc-card__title">{cat.name}</span>
+                        <span class="svc-card__link-icon" aria-hidden="true">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                            <path d="M3 7h8M7.5 3.5 11 7l-3.5 3.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </span>
+                      </a>
+                    </h4>
+                    <ul>
+                      {cat.services.map((s) => (
+                        <li>
+                          <button
+                            type="button"
+                            class="svc-ask"
+                            data-svc-enquire
+                            data-category={cat.name}
+                            data-service={s.name}
+                            data-tooltip="Ask about this service"
+                          >{s.name}</button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </article>
+              );
+            })}
           </div>
         </div>
       ))}

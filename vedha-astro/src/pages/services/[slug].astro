@@ -1,0 +1,208 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllCategories, getCategoryBySlug } from "../../data/services.js";
+
+const category = getCategoryBySlug(Astro.params.slug!);
+if (!category) {
+  return new Response("Not found", { status: 404 });
+}
+
+const siblings = getAllCategories().filter(
+  (c) => c.pillar === category.pillar && c.slug !== category.slug
+);
+
+const description = category.description;
+---
+<BaseLayout
+  title={`${category.name} — VEDHA`}
+  description={description}
+>
+  <section class="svc-cat-hero">
+    <p class="kicker" data-reveal>(Services)&ensp;[{category.pillar}]</p>
+    <h1 class="giant" data-reveal>{category.name}</h1>
+    <p class="svc-cat-hero__lede" data-reveal>{description}</p>
+    <p class="svc-cat-hero__meta" data-reveal>
+      {category.services.length} services
+    </p>
+  </section>
+
+  <section class="svc-cat-list" aria-label={`Services in ${category.name}`}>
+    <ol class="svc-def-list">
+      {category.services.map((service, i) => (
+        <li class="svc-def" data-reveal>
+          <span class="svc-def__num">{String(i + 1).padStart(2, "0")}</span>
+          <div class="svc-def__body">
+            <h2 class="svc-def__name">{service.name}</h2>
+            <p class="svc-def__desc">{service.description}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="svc-cat-cta" data-reveal>
+    <p class="svc-cat-cta__copy">
+      Need help scoping this practice for your organisation?
+    </p>
+    <a class="btn btn--dark" href="/#book" data-book-consultation>
+      <span>Book a free consultation</span>
+    </a>
+  </section>
+
+  {siblings.length > 0 && (
+    <section class="svc-cat-related">
+      <p class="kicker" data-reveal>Also in {category.pillar}</p>
+      <ul class="svc-cat-related__list" data-reveal>
+        {siblings.map((sib) => (
+          <li>
+            <a href={`/services/${sib.slug}/`}>
+              {sib.name}
+              <span>({sib.services.length})</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <nav class="svc-cat-back" aria-label="Services navigation">
+    <a href="/services/" data-reveal>All services</a>
+    <a href="/#services" data-reveal>Back to homepage</a>
+  </nav>
+</BaseLayout>
+
+<style>
+  .svc-cat-hero {
+    padding-top: calc(4.5rem + clamp(2rem, 6vh, 4rem));
+    padding-bottom: clamp(2rem, 5vh, 3.5rem);
+    display: grid;
+    gap: 1.1rem;
+    border-bottom: 1px solid var(--line);
+  }
+  .svc-cat-hero__lede {
+    color: var(--ink-soft);
+    font-size: clamp(1.05rem, 2vw, 1.35rem);
+    line-height: 1.55;
+    max-width: 40rem;
+  }
+  .svc-cat-hero__meta {
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .svc-cat-list {
+    padding-block: clamp(2.5rem, 7vh, 5rem);
+  }
+  .svc-def-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+  .svc-def {
+    display: grid;
+    grid-template-columns: 2.5rem minmax(0, 1fr);
+    gap: 1rem clamp(1.25rem, 3vw, 2.5rem);
+    padding-block: clamp(1.4rem, 3vh, 2rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .svc-def:first-child { border-top: 1px solid var(--line); }
+  .svc-def__num {
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    padding-top: 0.35rem;
+  }
+  .svc-def__body {
+    display: grid;
+    gap: 0.45rem;
+    max-width: 44rem;
+  }
+  .svc-def__name {
+    margin: 0;
+    font-size: clamp(1.15rem, 2.2vw, 1.45rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+  .svc-def__desc {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    line-height: 1.65;
+  }
+
+  @media (min-width: 48rem) {
+    .svc-def {
+      grid-template-columns: 3rem minmax(0, 1fr);
+    }
+    .svc-def__body {
+      grid-template-columns: minmax(12rem, 18rem) minmax(0, 1fr);
+      gap: 1.5rem 2.5rem;
+      max-width: none;
+      align-items: start;
+    }
+    .svc-def__name { font-size: clamp(1.2rem, 1.6vw, 1.4rem); }
+    .svc-def__desc { padding-top: 0.15rem; }
+  }
+
+  .svc-cat-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding-block: clamp(2rem, 5vh, 3rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .svc-cat-cta__copy {
+    margin: 0;
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    letter-spacing: -0.02em;
+    max-width: 28rem;
+  }
+
+  .svc-cat-related {
+    padding-block: clamp(2.5rem, 6vh, 4rem);
+    display: grid;
+    gap: 1.25rem;
+  }
+  .svc-cat-related__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0;
+  }
+  .svc-cat-related__list a {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    text-decoration: none;
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
+    transition: padding-left 0.25s var(--ease-out);
+  }
+  .svc-cat-related__list li:first-child a { border-top: 1px solid var(--line); }
+  .svc-cat-related__list a span { color: var(--ink-soft); font-size: 0.9rem; }
+  .svc-cat-related__list a:hover { padding-left: 0.5rem; }
+
+  .svc-cat-back {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    padding-block: clamp(1.5rem, 4vh, 2.5rem) clamp(3rem, 8vh, 5rem);
+  }
+  .svc-cat-back a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .svc-cat-back a:hover { color: var(--ink); }
+</style>

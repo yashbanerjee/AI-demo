@@ -1,55 +1,84 @@
+---
+const cards = [
+  {
+    label: "Years of experience",
+    count: 10,
+    suffix: "+",
+    blurb: "Strategy, tech, and a touch of clever.",
+    tag: "Boutique, senior-led",
+    quote: "We work with a limited number of clients to keep senior-level oversight on every project.",
+  },
+  {
+    label: "Solutions delivered",
+    count: 120,
+    suffix: "+",
+    blurb: "Driving outcomes across industries.",
+    tag: "Future-ready tech",
+    quote: "Scalable platforms with clean architecture — AI only where it genuinely adds value.",
+  },
+  {
+    label: "Client satisfaction",
+    count: 98,
+    suffix: "%",
+    blurb: "Partnerships built on trust.",
+    tag: "Clear communication",
+    quote: "Transparent process, simple updates — clients always know what’s happening and why.",
+  },
+  {
+    label: "Long-term clients",
+    count: 100,
+    suffix: "+",
+    blurb: "Built for lasting partnerships.",
+    tag: "Beyond launch",
+    quote: "We prioritise relationships that keep delivering value well after go-live.",
+  },
+];
+---
+
 <!-- ===== Stats ===== -->
 <section class="stats" id="stats">
-  <header class="section-head">
-    <div>
-      <p class="kicker" data-reveal>(Stats)</p>
-      <h2 class="giant" data-reveal>Vedha stands behind the data.</h2>
-    </div>
-    <div class="section-head__aside">
-      <p data-reveal>Our success is reflected in the numbers we achieve for our clients. Every project is designed with measurable growth at its core.</p>
-      <a class="btn btn--dark" href="/#contact"><span>Let’s talk</span></a>
-    </div>
-  </header>
+  <figure class="scene-banner" data-scene-banner>
+    <img
+      src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1800&q=80"
+      alt=""
+      width="1800"
+      height="1000"
+      loading="lazy"
+      aria-hidden="true"
+    />
+    <h2 class="scene-banner__title">Vedha stands behind the data.</h2>
+    <figcaption class="scene-banner__meta">
+      <span>Outcomes</span>
+      <a href="/#contact">Let’s talk</a>
+    </figcaption>
+  </figure>
+  <p class="stats__lead" data-reveal>
+    Our success is reflected in the numbers we achieve for our clients. Every project is designed with measurable growth at its core.
+  </p>
   <div class="stats__grid">
-    <article class="stat-card" data-reveal>
-      <p class="kicker">(Years of experience)</p>
-      <p class="stat-card__num" data-count="10" data-suffix="+">10+</p>
-      <p>Strategy, tech, and a touch of clever.</p>
-      <div class="stat-card__quote">
-        <p class="kicker">(001) · Boutique, senior-led · ★★★★★</p>
-        <p>“We work with a limited number of clients to keep senior-level oversight on every project.”</p>
-        <b>Vedha Team</b>
-      </div>
-    </article>
-    <article class="stat-card" data-reveal>
-      <p class="kicker">(Solutions delivered)</p>
-      <p class="stat-card__num" data-count="120" data-suffix="+">120+</p>
-      <p>Driving outcomes across industries.</p>
-      <div class="stat-card__quote">
-        <p class="kicker">(002) · Future-ready tech · ★★★★★</p>
-        <p>“Scalable platforms with clean architecture, with AI integrated where it genuinely adds value.”</p>
-        <b>Vedha Team</b>
-      </div>
-    </article>
-    <article class="stat-card" data-reveal>
-      <p class="kicker">(Client satisfaction rate)</p>
-      <p class="stat-card__num" data-count="98" data-suffix="%">98%</p>
-      <p>Building lasting partnerships built on trust.</p>
-      <div class="stat-card__quote">
-        <p class="kicker">(003) · Clear coms, no guesswork · ★★★★★</p>
-        <p>“Transparent processes and simple communication — clients always know what’s happening and why.”</p>
-        <b>Vedha Team</b>
-      </div>
-    </article>
-    <article class="stat-card" data-reveal>
-      <p class="kicker">(New friends made)</p>
-      <p class="stat-card__num" data-count="100" data-suffix="+">100+</p>
-      <p>Built for long-term partnerships.</p>
-      <div class="stat-card__quote">
-        <p class="kicker">(004) · Beyond launch · ★★★★★</p>
-        <p>“We prioritise long-term relationships, delivering value well beyond launch.”</p>
-        <b>Vedha Team</b>
-      </div>
-    </article>
+    {cards.map((card, i) => (
+      <article class="stat-card" data-reveal>
+        <header class="stat-card__top">
+          <p class="stat-card__label">{card.label}</p>
+          <p
+            class="stat-card__num"
+            data-count={String(card.count)}
+            data-suffix={card.suffix}
+          >{card.count}{card.suffix}</p>
+          <p class="stat-card__blurb">{card.blurb}</p>
+        </header>
+        <footer class="stat-card__quote">
+          <div class="stat-card__tag">
+            <span class="stat-card__index">{String(i + 1).padStart(3, "0")}</span>
+            <span class="stat-card__topic">{card.tag}</span>
+          </div>
+          <p class="stat-card__stars" aria-label="5 out of 5">
+            <span aria-hidden="true">★★★★★</span>
+          </p>
+          <p class="stat-card__text">“{card.quote}”</p>
+          <cite class="stat-card__author">Vedha Team</cite>
+        </footer>
+      </article>
+    ))}
   </div>
 </section>

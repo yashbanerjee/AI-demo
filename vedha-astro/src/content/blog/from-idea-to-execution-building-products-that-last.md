@@ -3,11 +3,14 @@ title: "From idea to execution: building products that last"
 description: "Most digital products fail after launch, not before. How we structure discovery, scope, and iteration so yours doesn't."
 pubDate: 2025-07-10
 tags: ["Product", "Process"]
+image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80"
 ---
 
 Every product starts as a conviction: *this should exist.* The distance between that conviction and software people rely on every day is where most projects quietly fail — not at launch, but in the months after, when reality starts disagreeing with the plan.
 
 Here's how we structure that journey for our clients.
+
+![Product workshop with sticky notes and sketches](https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1400&q=80)
 
 ## Discovery is cheap; rework is not
 
