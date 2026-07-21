@@ -53,18 +53,12 @@ const projects = [
     <h2 class="scene-banner__title">Work <sup>(4)</sup></h2>
     <figcaption class="scene-banner__meta">
       <span>Selected projects</span>
-      <a href="/#work">View all work</a>
+      <span>View all work</span>
     </figcaption>
   </figure>
   <div class="work__grid">
     {projects.map((project) => (
-      <a
-        class="work-card"
-        href="https://vedha.ae/portfolio/product-design/"
-        target="_blank"
-        rel="noopener noreferrer"
-        data-reveal
-      >
+      <article class="work-card" data-reveal>
         <figure>
           <img
             src={project.img}
@@ -78,7 +72,7 @@ const projects = [
           <p class="work-card__title"><strong>{project.title}</strong><span>{project.meta}</span></p>
           <p class="work-card__desc">{project.desc}</p>
         </div>
-      </a>
+      </article>
     ))}
   </div>
 </section>
