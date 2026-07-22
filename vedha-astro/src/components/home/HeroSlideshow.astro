@@ -1,0 +1,39 @@
+---
+const slides = [
+  { src: "/images/hero-slide-city.jpg", alt: "Dubai city skyline at night", title: "Digital infrastructure" },
+  { src: "/images/hero-slide-mountains.jpg", alt: "Mountain range above a cloud layer", title: "Cloud intelligence" },
+  { src: "/images/hero-slide-interchange.jpg", alt: "Aerial view of a city interchange at night", title: "Connected systems" },
+  { src: "/images/hero-slide-fields.jpg", alt: "Green agricultural fields", title: "Growth by design" },
+];
+---
+
+<section class="hero-slideshow" id="heroSlideshow">
+  <div class="hero-slideshow__sticky">
+    <div class="hero-slideshow__slides" aria-hidden="true">
+      {slides.map((slide, index) => (
+        <figure
+          class="hero-slideshow__slide"
+          style={`--slide-index: ${index}; --slide-image: url("${slide.src}")`}
+        >
+          <img src={slide.src} alt="" width="1024" height="683" fetchpriority={index === 0 ? "high" : undefined} />
+          <span class="hero-slideshow__veil"></span>
+          <span class="hero-slideshow__mark"></span>
+          <span class="hero-slideshow__title">{slide.title}</span>
+        </figure>
+      ))}
+    </div>
+
+    <p class="hero-slideshow__scroll">Scroll to reveal</p>
+
+    <div class="hero-slideshow__end" id="heroSlideshowEnd" aria-hidden="true">
+      <div class="hero-slideshow__end-inner">
+        <img class="hero-slideshow__wordmark" src="/images/vedha-logo.png" alt="VEDHA" width="1483" height="158" />
+        <div class="hero-slideshow__ctas">
+          <a class="btn btn--dark" href="/#book" data-book-consultation><span>Book free consultation</span></a>
+          <a class="btn btn--ghost" href="/#enquiry"><span>Send us an enquiry</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h1 class="visually-hidden">VEDHA — Your Complete Technology Partner for Digital Success</h1>
+</section>

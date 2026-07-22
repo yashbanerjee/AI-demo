@@ -1,8 +1,36 @@
+---
+import { faqPageSchema } from "../../lib/schema";
+
+const questions = [
+  {
+    question: "What services does Vedha offer?",
+    answer:
+      "Eight pillars spanning Consult, Design, Build, Automate, Intelligence, Connect, Scale, and Support — covering strategy, AI, automation, enterprise software, product design, integrations, infrastructure, and ongoing managed teams.",
+  },
+  {
+    question: "How do you determine the right strategy?",
+    answer:
+      "We follow a five-step process — Discover, Chart, Validate, Engineer, Scale. We dig into your brand and workflows first, then combine data, experience and your insider knowledge to map the smartest path forward.",
+  },
+  {
+    question: "How much does it cost to work with you?",
+    answer:
+      "Costs depend on scope, features and complexity. We price projects based on business goals and technical requirements, so you pay for what your business actually needs.",
+  },
+  {
+    question: "Do you work with businesses outside Dubai?",
+    answer:
+      "Yes. While based in Dubai, we work with businesses across the UAE and internationally, with processes designed for smooth remote collaboration.",
+  },
+];
+const schema = faqPageSchema(questions);
+---
+
 <!-- ===== FAQ ===== -->
 <section class="faq" id="faq">
   <figure class="scene-banner" data-scene-banner>
     <img
-      src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1800&q=80"
+      src="/images/hero-collage-8.png"
       alt=""
       width="1800"
       height="1000"
@@ -17,20 +45,20 @@
   </figure>
   <div class="faq__list">
     <details class="faq__item" data-reveal>
-      <summary><span>01</span>What services does Vedha offer?<i aria-hidden="true"></i></summary>
-      <p>Eight pillars spanning Consult, Design, Build, Automate, Intelligence, Connect, Scale, and Support — covering strategy, AI, automation, enterprise software, product design, integrations, infrastructure, and ongoing managed teams.</p>
+      <summary><span>01</span>{questions[0].question}<i aria-hidden="true"></i></summary>
+      <p>{questions[0].answer}</p>
     </details>
     <details class="faq__item" data-reveal>
-      <summary><span>02</span>How do you determine the right strategy?<i aria-hidden="true"></i></summary>
-      <p>We follow a five-step process — Discover, Chart, Validate, Engineer, Scale. We dig into your brand and workflows first, then combine data, experience and your insider knowledge to map the smartest path forward.</p>
+      <summary><span>02</span>{questions[1].question}<i aria-hidden="true"></i></summary>
+      <p>{questions[1].answer}</p>
     </details>
     <details class="faq__item" data-reveal>
-      <summary><span>03</span>How much does it cost to work with you?<i aria-hidden="true"></i></summary>
-      <p>Costs depend on scope, features and complexity. We price projects based on business goals and technical requirements, so you pay for what your business actually needs.</p>
+      <summary><span>03</span>{questions[2].question}<i aria-hidden="true"></i></summary>
+      <p>{questions[2].answer}</p>
     </details>
     <details class="faq__item" data-reveal>
-      <summary><span>04</span>Do you work with businesses outside Dubai?<i aria-hidden="true"></i></summary>
-      <p>Yes. While based in Dubai, we work with businesses across the UAE and internationally, with processes designed for smooth remote collaboration.</p>
+      <summary><span>04</span>{questions[3].question}<i aria-hidden="true"></i></summary>
+      <p>{questions[3].answer}</p>
     </details>
   </div>
   <aside class="faq__more" data-reveal>
@@ -43,4 +71,5 @@
       <a class="btn btn--dark" href="/#book" data-book-consultation><span>Book a free consultation</span></a>
     </div>
   </aside>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
 </section>

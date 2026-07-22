@@ -9,28 +9,18 @@ const lastPage = Math.max(1, Math.ceil(allPosts.length / PAGE_SIZE));
 const currentPage = Math.min(Math.max(1, pageParam || 1), lastPage);
 const posts = allPosts.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
-const coverFallback: Record<string, string> = {
-  "from-idea-to-execution-building-products-that-last":
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80",
-  "where-ai-adds-value-in-web-development":
-    "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80",
-  "ecommerce-that-balances-experience-with-efficiency":
-    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
-  "designing-digital-systems-that-scale-your-business":
-    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80",
-};
-
 const coverOf = (slug: string, img: string | null) =>
   img ||
-  coverFallback[slug] ||
-  `https://picsum.photos/seed/vedha-blog-${slug}/480/360`;
+  "/images/showreel-dubai.png";
 
 const formatDate = (date: Date) =>
   date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 ---
 <BaseLayout
-  title="Blog — VEDHA"
+  title={currentPage > 1 ? `Blog — Page ${currentPage} — VEDHA` : "Blog — VEDHA"}
   description="Smart insights on web development, AI, e-commerce and digital transformation from the Vedha team in Dubai."
+  prevPage={currentPage > 1 ? (currentPage === 2 ? "/blog/" : `/blog/?page=${currentPage - 1}`) : undefined}
+  nextPage={currentPage < lastPage ? `/blog/?page=${currentPage + 1}` : undefined}
 >
   <section class="blog blog--page" id="news">
     <header class="section-head">
@@ -46,7 +36,7 @@ const formatDate = (date: Date) =>
             <figure class="blog-row__media">
               <img
                 src={coverOf(post.slug, post.cover_image)}
-                alt=""
+                alt={`${post.title} article cover`}
                 width="480"
                 height="360"
                 loading="lazy"

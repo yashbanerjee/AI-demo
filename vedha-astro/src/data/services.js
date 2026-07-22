@@ -1,7 +1,7 @@
 // Vedha service taxonomy — pillars → categories → services.
 // Homepage Services.astro and category pages both consume this data; keep names and slugs in sync.
 
-export const pillars = [
+const servicePillars = [
   {
     name: "Consult",
     blurb: "Clarity before code — strategy, audits, and roadmaps that de-risk every build.",
@@ -2163,6 +2163,12 @@ export const pillars = [
       },
     ],
   },
+];
+
+// Keep Build as the lead practice wherever the shared service taxonomy is rendered.
+export const pillars = [
+  ...servicePillars.filter((pillar) => pillar.name === "Build"),
+  ...servicePillars.filter((pillar) => pillar.name !== "Build"),
 ];
 
 export const slugOf = (name) =>

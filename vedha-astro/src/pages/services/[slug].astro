@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getAllCategories, getCategoryBySlug } from "../../data/services.js";
+import { breadcrumbSchema, serviceSchema } from "../../lib/schema";
 
 const category = getCategoryBySlug(Astro.params.slug!);
 if (!category) {
@@ -17,12 +18,28 @@ const related =
     : all.filter((c) => c.slug !== category.slug).slice(0, 3);
 
 const description = category.description;
-const cover = `https://picsum.photos/seed/vedha-${category.slug}/1800/1000`;
+const cover = "/images/showreel-dubai.png";
+const pagePath = `/services/${category.slug}/`;
+const schema = [
+  breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services/" },
+    { name: category.name, path: pagePath },
+  ]),
+  serviceSchema({
+    name: category.name,
+    description,
+    path: pagePath,
+    services: category.services,
+  }),
+];
+const serviceId = (name: string) =>
+  `service-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/-$/, "")}`;
 ---
 <BaseLayout
   title={`${category.name} — VEDHA`}
   description={description}
-  ogImage={cover}
+  ogImage="/og-image.png"
 >
   <article class="svc-cat" id="svcCatPage">
     <figure class="scene-banner" data-scene-banner>
@@ -81,7 +98,7 @@ const cover = `https://picsum.photos/seed/vedha-${category.slug}/1800/1000`;
         {category.services.map((service, i) => {
           const haystack = `${service.name} ${service.description}`.toLowerCase();
           return (
-            <li data-svc-cat-item data-search={haystack}>
+            <li id={serviceId(service.name)} data-svc-cat-item data-search={haystack}>
               <button
                 type="button"
                 class="svc-cat__card"
@@ -117,7 +134,7 @@ const cover = `https://picsum.photos/seed/vedha-${category.slug}/1800/1000`;
           {related.map((sib) => (
             <a class="svc-cat__related-card" href={`/services/${sib.slug}/`}>
               <img
-                src={`https://picsum.photos/seed/vedha-${sib.slug}/640/480`}
+                src="/images/showreel-dubai.png"
                 alt=""
                 width="640"
                 height="480"
@@ -139,6 +156,7 @@ const cover = `https://picsum.photos/seed/vedha-${category.slug}/1800/1000`;
       <a href="/#services">Back to homepage</a>
     </nav>
   </article>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
 </BaseLayout>
 
 <style>

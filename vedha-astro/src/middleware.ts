@@ -3,6 +3,7 @@ import { SESSION_COOKIE, verifyToken } from "./lib/auth";
 
 export const onRequest = defineMiddleware((context, next) => {
   const { pathname } = context.url;
+
   const isAdminPage = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
   const isAdminApi = pathname.startsWith("/api/admin") && !pathname.startsWith("/api/admin/login");
 

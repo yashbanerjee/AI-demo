@@ -10,7 +10,7 @@ const formatDate = (date: Date) =>
 <section class="blog" id="news">
   <figure class="scene-banner" data-scene-banner>
     <img
-      src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w=1800&q=80"
+      src="/images/showreel-dubai.png"
       alt=""
       width="1800"
       height="1000"
@@ -29,12 +29,11 @@ const formatDate = (date: Date) =>
         <a href={`/blog/${post.slug}/`} class="blog-row">
           <figure class="blog-row__media">
             <img
-              src={post.cover_image || `https://picsum.photos/seed/vedha-blog-${post.slug}/480/360`}
-              alt=""
+              src={post.cover_image || "/images/showreel-dubai.png"}
+              alt={`${post.title} article cover`}
               width="480"
               height="360"
-              loading={i === 0 ? "eager" : "lazy"}
-              aria-hidden="true"
+              loading="lazy"
             />
           </figure>
           <div class="blog-row__copy">

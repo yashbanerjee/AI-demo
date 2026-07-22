@@ -2,7 +2,8 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 // Original hero kept for easy rollback — swap the imports + usage below to restore it.
 // import Hero from "../components/home/Hero.astro";
-import HeroVideo from "../components/home/HeroVideo.astro";
+// import HeroVideo from "../components/home/HeroVideo.astro";
+import HeroSlideshow from "../components/home/HeroSlideshow.astro";
 import Work from "../components/home/Work.astro";
 import Studio from "../components/home/Studio.astro";
 import Vision from "../components/home/Vision.astro";
@@ -15,9 +16,12 @@ import Story from "../components/home/Story.astro";
 import Blog from "../components/home/Blog.astro";
 import Contact from "../components/home/Contact.astro";
 ---
-<BaseLayout title="VEDHA — Your Complete Technology Partner for Digital Success">
-  {/* Original hero (commented out while testing the video hero): <Hero /> */}
-  <HeroVideo />
+<BaseLayout
+  title="VEDHA — Your Complete Technology Partner for Digital Success"
+  preloadHeroImage="/images/hero-slide-city.jpg"
+>
+  {/* Previous hero variants (kept for easy rollback): <Hero /> <HeroVideo /> */}
+  <HeroSlideshow />
   <Studio />
   <Work />
   <Services />

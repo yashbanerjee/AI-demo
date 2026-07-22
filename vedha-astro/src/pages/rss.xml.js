@@ -2,7 +2,12 @@ import rss from '@astrojs/rss';
 import { listPosts } from '../lib/db';
 
 export async function GET(context) {
-  const posts = await listPosts();
+  let posts = [];
+  try {
+    posts = await listPosts();
+  } catch (error) {
+    console.error('Unable to include posts in RSS:', error);
+  }
   return rss({
     title: 'VEDHA Blog',
     description:

@@ -49,6 +49,20 @@ input, summary { touch-action: manipulation; }
 
 :focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
 
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 999;
+  padding: 0.7rem 1rem;
+  background: var(--dark);
+  color: #fff;
+  border-radius: 999px;
+  transform: translateY(-160%);
+  transition: transform 0.2s var(--ease-out);
+}
+.skip-link:focus { transform: none; }
+
 .visually-hidden {
   position: absolute; width: 1px; height: 1px;
   clip-path: inset(50%); overflow: hidden; white-space: nowrap;
@@ -506,6 +520,195 @@ body.menu-open .site-header__logo-img { filter: none; }
   0% { background-position: 0% 40%; }
   50% { background-position: 100% 60%; }
   100% { background-position: 0% 40%; }
+}
+
+/* ============ Alternative Hero: image slideshow → white reveal ============ */
+.hero-slideshow {
+  height: 180vh;
+  padding: 0;
+  position: relative;
+  background: #080808;
+}
+.hero-slideshow__sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: #080808;
+}
+.hero-slideshow__slides,
+.hero-slideshow__slide,
+.hero-slideshow__end {
+  position: absolute;
+  inset: 0;
+}
+.hero-slideshow__slide {
+  margin: 0;
+  overflow: hidden;
+  opacity: 0;
+  animation: hero-slide-fade 32s infinite;
+  animation-delay: calc(var(--slide-index) * 8s - 1.6s);
+  will-change: opacity, transform;
+}
+.hero-slideshow__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.06);
+  animation: hero-slide-drift 32s infinite;
+  animation-delay: calc(var(--slide-index) * 8s - 1.6s);
+}
+.hero-slideshow__veil {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.18) 42%, rgba(0, 0, 0, 0.58) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.24), transparent 36%, rgba(0, 0, 0, 0.26));
+}
+/* The mark stays fixed while the banner texture flows inside it. */
+.hero-slideshow__mark {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: min(29vw, 19rem);
+  aspect-ratio: 566 / 493;
+  background-image:
+    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.62), transparent 34%),
+    linear-gradient(115deg, rgba(255, 255, 255, 0.08), rgba(255, 214, 150, 0.36) 48%, rgba(170, 220, 255, 0.16)),
+    var(--slide-image);
+  background-position: 18% 20%, 50% 50%, 50% 50%;
+  background-size: 160% 160%, 220% 220%, 145% auto;
+  -webkit-mask: url("/images/vedha-mark-mask.svg") center / contain no-repeat;
+  mask: url("/images/vedha-mark-mask.svg") center / contain no-repeat;
+  filter:
+    drop-shadow(0 0 1.2rem rgba(255, 237, 204, 0.26))
+    drop-shadow(0 0 3.5rem rgba(120, 190, 255, 0.15));
+  transform: scale(1);
+  opacity: 0;
+  animation:
+    hero-mark-merge 32s infinite,
+    hero-mark-flow 10s ease-in-out infinite;
+  animation-delay: calc(var(--slide-index) * 8s - 1.6s);
+  will-change: opacity, background-position, filter;
+}
+.hero-slideshow__mark::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, transparent 28%, rgba(255, 255, 255, 0.52) 48%, transparent 68%);
+  background-size: 220% 100%;
+  background-position: 130% 0;
+  -webkit-mask: url("/images/vedha-mark-mask.svg") center / contain no-repeat;
+  mask: url("/images/vedha-mark-mask.svg") center / contain no-repeat;
+  mix-blend-mode: screen;
+  opacity: 0.56;
+  animation: hero-mark-sheen 5s ease-in-out infinite;
+}
+.hero-slideshow__scroll {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: max(2rem, calc(env(safe-area-inset-bottom) + 1.25rem));
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  transition: opacity 0.4s var(--ease-out);
+}
+.hero-slideshow__title {
+  position: absolute;
+  z-index: 1;
+  left: max(var(--gutter), env(safe-area-inset-left));
+  bottom: max(2rem, calc(env(safe-area-inset-bottom) + 1.25rem));
+  color: rgba(255, 255, 255, 0.42);
+  font-size: clamp(1.35rem, 2.6vw, 2.4rem);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.22);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+.hero-slideshow__end {
+  --transition: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  background: var(--bg);
+  opacity: 0;
+  pointer-events: none;
+  overflow: hidden;
+  backdrop-filter: blur(calc(var(--transition) * 16px)) saturate(calc(1 + var(--transition) * 0.16));
+  -webkit-backdrop-filter: blur(calc(var(--transition) * 16px)) saturate(calc(1 + var(--transition) * 0.16));
+  will-change: opacity, backdrop-filter;
+}
+.hero-slideshow__end::before {
+  content: "";
+  position: absolute;
+  inset: -18%;
+  background:
+    radial-gradient(ellipse at 50% 44%, rgba(255, 255, 255, 0.85), transparent 47%),
+    linear-gradient(115deg, transparent 32%, rgba(255, 255, 255, 0.55) 50%, transparent 68%);
+  background-size: 100% 100%, 180% 100%;
+  background-position: center, calc(115% - var(--transition) * 150%) center;
+  opacity: calc(var(--transition) * 0.5);
+  pointer-events: none;
+  will-change: opacity, background-position;
+}
+.hero-slideshow__end.is-interactive { pointer-events: auto; }
+.hero-slideshow__end-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: clamp(2.4rem, 7vh, 4.2rem);
+  padding: 0 var(--gutter);
+}
+.hero-slideshow__wordmark {
+  width: min(72vw, 46rem);
+  height: auto;
+  opacity: var(--transition);
+  clip-path: inset(0 calc((1 - var(--transition)) * 46%) 0 calc((1 - var(--transition)) * 46%));
+  filter: brightness(0.07) blur(calc((1 - var(--transition)) * 10px));
+  transform: scale(0.94);
+  will-change: transform, opacity, filter, clip-path;
+}
+.hero-slideshow__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  opacity: 0;
+  transform: translateY(0.8rem);
+  filter: blur(calc((1 - var(--transition)) * 8px));
+  will-change: opacity, transform, filter;
+}
+@keyframes hero-slide-fade {
+  0% { opacity: 0; }
+  5%, 25% { opacity: 1; }
+  30%, 100% { opacity: 0; }
+}
+@keyframes hero-slide-drift {
+  0%, 4% { transform: scale(1.1); }
+  28%, 100% { transform: scale(1.02); }
+}
+@keyframes hero-mark-merge {
+  0% { opacity: 0; filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0)); }
+  5%, 25% { opacity: 1; filter: drop-shadow(0 0 2.5rem rgba(255, 255, 255, 0.32)); }
+  30%, 100% { opacity: 0; filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0)); }
+}
+@keyframes hero-mark-flow {
+  0%, 100% { background-position: 18% 20%, 45% 48%, 47% 52%; }
+  50% { background-position: 76% 66%, 58% 44%, 56% 46%; }
+}
+@keyframes hero-mark-sheen {
+  0%, 25% { background-position: 130% 0; }
+  70%, 100% { background-position: -35% 0; }
 }
 
 /* ============ Sections shared ============ */
@@ -1239,7 +1442,7 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
   min-width: 0;
   padding-block: 0.15rem;
 }
-.svc-card h4 {
+.svc-card h3 {
   font-size: clamp(1.35rem, 2vw, 1.75rem);
   font-weight: 600; letter-spacing: -0.02em; line-height: 1.2;
   padding-bottom: 1rem;
@@ -2161,6 +2364,7 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
 @supports (height: 100svh) {
   .hero { height: 260svh; }
   .hero-video { height: 420svh; }
+  .hero-slideshow { height: 180svh; }
   .process { height: 280svh; }
   .showreel { height: 180svh; }
 }
@@ -2168,12 +2372,15 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
 /* Shorter scroll scenes on small phones — less thumb travel */
 @media (max-width: 47.99rem) {
   .hero-video { height: 320vh; }
+  .hero-slideshow { height: 160vh; }
+  .hero-slideshow__mark { width: min(54vw, 15rem); }
   .process { height: 220vh; }
   .showreel { height: 140vh; }
 }
 @supports (height: 100svh) {
   @media (max-width: 47.99rem) {
     .hero-video { height: 320svh; }
+    .hero-slideshow { height: 160svh; }
     .process { height: 220svh; }
     .showreel { height: 140svh; }
   }

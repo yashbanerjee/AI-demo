@@ -10,30 +10,18 @@ if (!post || post.draft) {
 
 const { title, description, content, author, tags, cover_image, pub_date, updated_date, slug } = post;
 const html = marked.parse(content);
+const wordCount = content.replace(/[#*_`>\[\]()]/g, " ").trim().split(/\s+/).filter(Boolean).length;
 
 const allPosts = await listPosts();
 const otherPosts = allPosts.filter((p) => p.slug !== slug);
 
-const coverFallback: Record<string, string> = {
-  "from-idea-to-execution-building-products-that-last":
-    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80",
-  "where-ai-adds-value-in-web-development":
-    "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80",
-  "ecommerce-that-balances-experience-with-efficiency":
-    "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=1600&q=80",
-  "designing-digital-systems-that-scale-your-business":
-    "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80",
-};
-
 const cover =
   cover_image ||
-  coverFallback[slug] ||
-  `https://picsum.photos/seed/vedha-blog-${slug}/1600/900`;
+  "/images/showreel-dubai.png";
 
 const thumbOf = (s: string, img: string | null) =>
   img ||
-  coverFallback[s] ||
-  `https://picsum.photos/seed/vedha-blog-${s}/480/360`;
+  "/images/showreel-dubai.png";
 
 const formatDate = (date: Date) =>
   date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
@@ -46,9 +34,12 @@ const postSchema = {
   "@type": "BlogPosting",
   headline: title,
   description,
+  keywords: tags.join(", "),
+  articleSection: tags[0] ?? "Insights",
+  wordCount,
   datePublished: pub_date.toISOString(),
   ...(updated_date && { dateModified: updated_date.toISOString() }),
-  image: new URL(cover, Astro.site).toString(),
+  image: new URL("/og-image.png", Astro.site).toString(),
   author: { "@type": "Organization", name: author, url: Astro.site?.toString() },
   publisher: {
     "@type": "Organization",
@@ -64,7 +55,7 @@ const postSchema = {
   ogType="article"
   publishedTime={pub_date}
   modifiedTime={updated_date ?? undefined}
-  ogImage={cover}
+  ogImage="/og-image.png"
 >
   <div class="post-layout">
     <aside class="post-aside" data-reveal>
@@ -76,7 +67,7 @@ const postSchema = {
               <a href={`/blog/${p.slug}/`} class="post-aside__link">
                 <img
                   src={thumbOf(p.slug, p.cover_image)}
-                  alt=""
+                  alt={`${p.title} article cover`}
                   width="96"
                   height="72"
                   loading="lazy"
@@ -108,7 +99,7 @@ const postSchema = {
       </header>
 
       <figure class="post__cover">
-        <img src={cover} alt="" width="1600" height="900" loading="eager" />
+        <img src={cover} alt={`${title} article cover`} width="1600" height="900" loading="eager" />
       </figure>
 
       <div class="post__prose" set:html={html} />

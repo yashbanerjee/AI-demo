@@ -21,18 +21,23 @@
   // === Preloader ===
   const preloader = document.getElementById("preloader");
   const counter = document.getElementById("preloaderCount");
-  if (reduceMotion) {
-    preloader.remove();
+  let hasSeenPreloader = false;
+  try {
+    hasSeenPreloader = sessionStorage.getItem("vedha-preloader-seen") === "1";
+  } catch {}
+  if (!preloader || reduceMotion || hasSeenPreloader) {
+    preloader?.remove();
   } else {
     document.body.style.overflow = "hidden";
     const start = performance.now();
-    const DURATION = 1200;
+    const DURATION = 500;
     const tick = (now) => {
       const p = clamp01((now - start) / DURATION);
-      counter.textContent = String(Math.round(p * 100));
+      if (counter) counter.textContent = String(Math.round(p * 100));
       if (p < 1) {
         requestAnimationFrame(tick);
       } else {
+        try { sessionStorage.setItem("vedha-preloader-seen", "1"); } catch {}
         preloader.classList.add("is-done");
         document.body.style.overflow = "";
         preloader.addEventListener("transitionend", () => preloader.remove(), { once: true });
@@ -46,6 +51,7 @@
   const header = document.getElementById("siteHeader");
   const darkHeaderZones = [
     document.getElementById("heroVideo"),
+    document.getElementById("heroSlideshow"),
     document.getElementById("showreel"),
     document.getElementById("vision"),
     document.querySelector(".site-footer"),
@@ -59,6 +65,7 @@
     // Sample just below the header bar — if a dark section covers that band, go light
     const probe = header.offsetHeight + 8;
     const onDark = darkHeaderZones.some((el) => {
+      if (el.classList.contains("is-light")) return false;
       const r = el.getBoundingClientRect();
       return r.top <= probe && r.bottom > probe;
     });
@@ -792,6 +799,9 @@
   const heroVideoEnd = document.getElementById("heroVideoEnd");
   const heroVideoIntro = document.getElementById("heroVideoIntro");
   const heroVideoPoster = document.getElementById("heroVideoPoster");
+  const heroSlideshow = document.getElementById("heroSlideshow");
+  const heroSlideshowEnd = document.getElementById("heroSlideshowEnd");
+  const heroSlideshowScroll = document.querySelector(".hero-slideshow__scroll");
   // Process: short 3D card stack
   const process = document.getElementById("vision");
   const processStage = document.getElementById("processStage");
@@ -804,11 +814,12 @@
   if (hero && heroCard && collage) sceneEls.hero = hero;
   if (showreel && showreelMedia) sceneEls.showreel = showreel;
   if (heroVideo && heroVideoMedia) sceneEls.heroVideo = heroVideo;
+  if (heroSlideshow && heroSlideshowEnd) sceneEls.heroSlideshow = heroSlideshow;
   if (process && processStage && processCards.length) sceneEls.process = process;
   const hasScenes = Object.keys(sceneEls).length > 0;
 
   // Smoothed progress state per scene
-  const scenes = { hero: 0, showreel: 0, heroVideo: 0, process: 0 };
+  const scenes = { hero: 0, showreel: 0, heroVideo: 0, heroSlideshow: 0, process: 0 };
 
   // --- Hero video: pick a lighter source on phones, unlock for iOS seeking ---
   let heroVideoReady = false;
@@ -871,8 +882,10 @@
     const type = String(conn.effectiveType || "");
     return type === "slow-2g" || type === "2g";
   };
+  let heroVideoInitialized = false;
   const initHeroVideo = () => {
-    if (!heroVideoMedia) return;
+    if (!heroVideoMedia || heroVideoInitialized) return;
+    heroVideoInitialized = true;
     if (shouldSkipHeroVideo()) {
       showHeroFallback();
       return;
@@ -910,9 +923,20 @@
     };
     window.addEventListener("touchstart", unlockOnce, { passive: true, once: true });
     window.addEventListener("scroll", unlockOnce, { passive: true, once: true });
-    unlockHeroVideo();
   };
-  if (sceneEls.heroVideo) initHeroVideo();
+  if (sceneEls.heroVideo) {
+    // The poster is the LCP asset. Fetch the large scrub video only after the
+    // visitor signals intent to explore, rather than competing on first paint.
+    const startHeroVideo = () => {
+      initHeroVideo();
+      window.removeEventListener("scroll", startHeroVideo);
+      window.removeEventListener("pointerdown", startHeroVideo);
+      window.removeEventListener("touchstart", startHeroVideo);
+    };
+    window.addEventListener("scroll", startHeroVideo, { passive: true, once: true });
+    window.addEventListener("pointerdown", startHeroVideo, { passive: true, once: true });
+    window.addEventListener("touchstart", startHeroVideo, { passive: true, once: true });
+  }
 
   // Mouse parallax for the process stage (fine pointers only)
   const processParallax = { x: 0, y: 0, tx: 0, ty: 0 };
@@ -1014,6 +1038,32 @@
     }
   };
 
+  // The photos progress independently; the scroll only carries the visitor
+  // from the cinematic slideshow into the clean brand / CTA end state.
+  const animateHeroSlideshow = (p) => {
+    if (!heroSlideshowEnd) return;
+    const endLocal = clamp01((p - 0.52) / 0.48);
+    heroSlideshowEnd.style.opacity = String(endLocal);
+    heroSlideshowEnd.style.setProperty("--transition", String(endLocal));
+    heroSlideshowEnd.classList.toggle("is-interactive", endLocal > 0.85);
+    heroSlideshowEnd.setAttribute("aria-hidden", String(endLocal < 0.5));
+    heroSlideshow?.classList.toggle("is-light", endLocal > 0.8);
+    syncHeaderTheme();
+    if (heroSlideshowScroll) heroSlideshowScroll.style.opacity = String(1 - endLocal * 2);
+
+    const logo = heroSlideshowEnd.querySelector(".hero-slideshow__wordmark");
+    if (logo) {
+      logo.style.transform =
+        `scale(${0.94 + endLocal * 0.06}) translateY(${(1 - endLocal) * 1.2}rem)`;
+    }
+    const ctas = heroSlideshowEnd.querySelector(".hero-slideshow__ctas");
+    if (ctas) {
+      const ctaLocal = clamp01((endLocal - 0.32) / 0.68);
+      ctas.style.opacity = String(ctaLocal);
+      ctas.style.transform = `translateY(${(1 - ctaLocal) * 0.8}rem)`;
+    }
+  };
+
   // Process: cards slide side-to-side on scroll, then fan out into a lineup
   const PROCESS_SCRUB_END = 0.68;
   const animateProcess = (p) => {
@@ -1104,6 +1154,7 @@
     }
 
     if (sceneEls.heroVideo) animateHeroVideo(scenes.heroVideo);
+    if (sceneEls.heroSlideshow) animateHeroSlideshow(scenes.heroSlideshow);
     if (sceneEls.process) animateProcess(scenes.process);
 
     if (sceneEls.showreel) {
@@ -1173,6 +1224,16 @@
       const ctas = heroVideoEnd.querySelector(".hero-video__ctas");
       if (ctas) { ctas.style.opacity = "1"; ctas.style.transform = "none"; }
       if (heroVideoIntro) heroVideoIntro.style.opacity = "0";
+    }
+    if (sceneEls.heroSlideshow) {
+      heroSlideshowEnd.style.opacity = "1";
+      heroSlideshowEnd.style.setProperty("--transition", "1");
+      heroSlideshowEnd.classList.add("is-interactive");
+      heroSlideshowEnd.setAttribute("aria-hidden", "false");
+      heroSlideshow.classList.add("is-light");
+      syncHeaderTheme();
+      const ctas = heroSlideshowEnd.querySelector(".hero-slideshow__ctas");
+      if (ctas) { ctas.style.opacity = "1"; ctas.style.transform = "none"; }
     }
     if (sceneEls.process) {
       processCards.forEach((card, i) => {

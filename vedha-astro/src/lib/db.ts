@@ -14,7 +14,15 @@ const g = globalThis as unknown as { __vedhaPool?: pg.Pool; __vedhaReady?: Promi
 export const pool: pg.Pool = (g.__vedhaPool ??= new pg.Pool({ connectionString, max: 10 }));
 
 export function ensureDb(): Promise<void> {
-  return (g.__vedhaReady ??= init());
+  if (!g.__vedhaReady) {
+    g.__vedhaReady = init().catch((error) => {
+      // Do not cache a transient startup failure: the embedded database can
+      // become ready after Astro has already started.
+      g.__vedhaReady = undefined;
+      throw error;
+    });
+  }
+  return g.__vedhaReady;
 }
 
 async function init() {

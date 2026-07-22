@@ -1,13 +1,21 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { getAllCategories } from "../data/services.js";
-import { listPosts } from "../lib/db";
+import { listPosts, type Post } from "../lib/db";
 
 export const GET: APIRoute = async ({ site }) => {
+  if (!site) {
+    return new Response("Site URL is not configured.", { status: 500 });
+  }
   const staticPaths = ["/", "/products/", "/services/", "/blog/"];
   const products = await getCollection("products", ({ data }) => !data.draft);
   const categories = getAllCategories();
-  const posts = await listPosts();
+  let posts: Post[] = [];
+  try {
+    posts = await listPosts();
+  } catch (error) {
+    console.error("Unable to include blog posts in sitemap:", error);
+  }
 
   const urls = [
     ...staticPaths.map((p) => ({ loc: p })),

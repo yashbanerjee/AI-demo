@@ -22,7 +22,7 @@ const blurbThemes = [
   <section class="svc-index" id="svcIndexPage">
     <figure class="scene-banner" data-scene-banner>
       <img
-        src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1800&q=80"
+        src="/images/showreel-dubai.png"
         alt=""
         width="1800"
         height="1000"
@@ -102,7 +102,7 @@ const blurbThemes = [
                 >
                   <a class="svc-card__media" href={`/services/${slug}/`}>
                     <img
-                      src={`https://picsum.photos/seed/vedha-${slug}/640/720`}
+                      src={`/images/hero-collage-${(ci % 10) + 1}.png`}
                       alt=""
                       width="640"
                       height="720"
@@ -112,7 +112,7 @@ const blurbThemes = [
                     <span class="svc-card__count">({cat.services.length})</span>
                   </a>
                   <div class="svc-card__body">
-                    <h4>
+                    <h3>
                       <a class="svc-card__link" href={`/services/${slug}/`}>
                         <span class="svc-card__title">{cat.name}</span>
                         <span class="svc-card__link-icon" aria-hidden="true">
@@ -121,7 +121,7 @@ const blurbThemes = [
                           </svg>
                         </span>
                       </a>
-                    </h4>
+                    </h3>
                     <ul>
                       {cat.services.map((s) => (
                         <li>
