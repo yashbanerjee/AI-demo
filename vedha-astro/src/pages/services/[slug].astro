@@ -18,7 +18,7 @@ const related =
     : all.filter((c) => c.slug !== category.slug).slice(0, 3);
 
 const description = category.description;
-const cover = "/images/showreel-dubai.png";
+const cover = "/images/photo-summit-dusk.jpg";
 const pagePath = `/services/${category.slug}/`;
 const schema = [
   breadcrumbSchema([
@@ -134,10 +134,10 @@ const serviceId = (name: string) =>
           {related.map((sib) => (
             <a class="svc-cat__related-card" href={`/services/${sib.slug}/`}>
               <img
-                src="/images/showreel-dubai.png"
+                src="/images/photo-moon-peaks.jpg"
                 alt=""
-                width="640"
-                height="480"
+                width="1920"
+                height="1280"
                 loading="lazy"
                 aria-hidden="true"
               />

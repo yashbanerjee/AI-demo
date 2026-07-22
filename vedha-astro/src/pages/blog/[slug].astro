@@ -2,6 +2,7 @@
 import { marked } from "marked";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPostBySlug, listPosts } from "../../lib/db";
+import { coverFor } from "../../lib/covers";
 
 const post = await getPostBySlug(Astro.params.slug!);
 if (!post || post.draft) {
@@ -15,13 +16,9 @@ const wordCount = content.replace(/[#*_`>\[\]()]/g, " ").trim().split(/\s+/).fil
 const allPosts = await listPosts();
 const otherPosts = allPosts.filter((p) => p.slug !== slug);
 
-const cover =
-  cover_image ||
-  "/images/showreel-dubai.png";
+const cover = coverFor(slug, cover_image);
 
-const thumbOf = (s: string, img: string | null) =>
-  img ||
-  "/images/showreel-dubai.png";
+const thumbOf = (s: string, img: string | null) => coverFor(s, img);
 
 const formatDate = (date: Date) =>
   date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });

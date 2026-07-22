@@ -3,6 +3,20 @@ import { pillars, slugOf } from "../../data/services.js";
 
 const totalCategories = pillars.reduce((n, p) => n + p.categories.length, 0);
 
+/* HD natural-landscape photography for practice cards — cycled per category */
+const practicePhotos = [
+  "/images/photo-moraine-lake.jpg",
+  "/images/photo-mountain-mist.jpg",
+  "/images/photo-waterfall.jpg",
+  "/images/photo-forest-light.jpg",
+  "/images/photo-cliff-coast.jpg",
+  "/images/photo-lake-reflection.jpg",
+  "/images/photo-alpine-glow.jpg",
+  "/images/photo-misty-forest.jpg",
+  "/images/photo-lake-jetty.jpg",
+  "/images/photo-moon-peaks.jpg",
+];
+
 /* Text fill vs band wash — paired opposites (warm text / cool box, etc.) */
 const blurbThemes = [
   {
@@ -44,10 +58,10 @@ const blurbThemes = [
 <section class="services" id="services">
   <figure class="scene-banner" data-scene-banner>
     <img
-      src="/images/showreel-dubai.png"
+      src="/images/photo-ridge-mist.jpg"
       alt=""
-      width="1800"
-      height="1000"
+      width="1920"
+      height="1119"
       loading="lazy"
       aria-hidden="true"
     />
@@ -121,10 +135,10 @@ const blurbThemes = [
                 >
                   <a class="svc-card__media" href={`/services/${slug}/`}>
                     <img
-                      src={`/images/hero-collage-${(ci % 10) + 1}.png`}
+                      src={practicePhotos[ci % practicePhotos.length]}
                       alt=""
-                      width="640"
-                      height="720"
+                      width="1920"
+                      height="1280"
                       loading="lazy"
                       aria-hidden="true"
                     />
