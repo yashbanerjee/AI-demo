@@ -2374,6 +2374,31 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
   .hero-video { height: 320vh; }
   .hero-slideshow { height: 160vh; }
   .hero-slideshow__mark { width: min(54vw, 15rem); }
+  .hero-slideshow__title {
+    left: max(1.15rem, env(safe-area-inset-left));
+    bottom: max(4.6rem, calc(env(safe-area-inset-bottom) + 4rem));
+    max-width: 11ch;
+    font-size: clamp(1.2rem, 6vw, 1.65rem);
+    line-height: 1.04;
+  }
+  .hero-slideshow__scroll {
+    left: auto;
+    right: max(1.15rem, env(safe-area-inset-right));
+    bottom: max(1.55rem, calc(env(safe-area-inset-bottom) + 1rem));
+    transform: none;
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+  }
+  .hero-slideshow__end-inner {
+    width: min(100%, 24rem);
+    gap: clamp(2rem, 6vh, 3.2rem);
+  }
+  .hero-slideshow__wordmark { width: min(82vw, 22rem); }
+  .hero-slideshow__ctas {
+    width: min(100%, 19rem);
+    flex-direction: column;
+  }
+  .hero-slideshow__ctas .btn { width: 100%; }
   .process { height: 220vh; }
   .showreel { height: 140vh; }
 }
