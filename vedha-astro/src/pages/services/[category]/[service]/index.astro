@@ -1,0 +1,518 @@
+---
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import {
+  getServiceBySlugs,
+  getSiblingServices,
+  servicePath,
+} from "../../../../data/services.js";
+import { buildServiceLanding } from "../../../../lib/serviceLanding";
+import {
+  breadcrumbSchema,
+  faqPageSchema,
+  leafServiceSchema,
+} from "../../../../lib/schema";
+
+const categorySlug = Astro.params.category!;
+const serviceSlug = Astro.params.service!;
+const service = getServiceBySlugs(categorySlug, serviceSlug);
+
+if (!service) {
+  return new Response("Not found", { status: 404 });
+}
+
+const landing = buildServiceLanding(service);
+const related = getSiblingServices(categorySlug, serviceSlug, 6);
+const pagePath = service.path;
+const categoryPath = `/services/${service.categorySlug}/`;
+
+const schema = [
+  breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Services", path: "/services/" },
+    { name: service.categoryName, path: categoryPath },
+    { name: service.name, path: pagePath },
+  ]),
+  leafServiceSchema({
+    name: service.name,
+    description: landing.seoDescription,
+    path: pagePath,
+    category: service.categoryName,
+    image: landing.cover,
+  }),
+  faqPageSchema(landing.faqs),
+];
+---
+<BaseLayout
+  title={landing.seoTitle}
+  description={landing.seoDescription}
+  ogImage={landing.cover}
+  preloadHeroImage={landing.cover}
+>
+  <article class="svc-leaf">
+    <figure class="scene-banner" data-scene-banner>
+      <img
+        src={landing.cover}
+        alt=""
+        width="1800"
+        height="1000"
+        loading="eager"
+        decoding="async"
+        aria-hidden="true"
+      />
+      <h1 class="scene-banner__title">{landing.h1}</h1>
+      <figcaption class="scene-banner__meta">
+        <span>{service.pillar}</span>
+        <a href={categoryPath}>{service.categoryName}</a>
+      </figcaption>
+    </figure>
+
+    <nav class="svc-leaf__crumbs" aria-label="Breadcrumb">
+      <a href="/services/">Services</a>
+      <span aria-hidden="true">/</span>
+      <a href={categoryPath}>{service.categoryName}</a>
+      <span aria-hidden="true">/</span>
+      <span>{service.name}</span>
+    </nav>
+
+    <header class="svc-leaf__intro">
+      <div class="svc-leaf__intro-copy">
+        <p class="kicker">(Services)&ensp;[{service.pillar}] · {service.categoryName}</p>
+        <p class="svc-leaf__lede">{landing.lede}</p>
+        <p class="svc-leaf__summary">{service.description}</p>
+      </div>
+      <div class="svc-leaf__intro-actions">
+        <a class="btn btn--dark" href="/#book" data-book-consultation>
+          <span>Book a free consultation</span>
+        </a>
+        <button
+          type="button"
+          class="btn btn--ghost"
+          data-svc-enquire
+          data-category={service.categoryName}
+          data-service={service.name}
+        >
+          <span>Ask about this service</span>
+        </button>
+      </div>
+    </header>
+
+    <section class="svc-leaf__section" aria-labelledby="why-heading">
+      <header class="svc-leaf__section-head">
+        <p class="kicker">Why it matters</p>
+        <h2 id="why-heading">Why {service.name} is important</h2>
+      </header>
+      <div class="svc-leaf__prose">
+        {landing.whyImportant.map((p) => <p>{p}</p>)}
+      </div>
+      <ul class="svc-leaf__benefits">
+        {landing.benefits.map((b) => (
+          <li>{b}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="svc-leaf__section" aria-labelledby="process-heading">
+      <header class="svc-leaf__section-head">
+        <p class="kicker">How we deliver</p>
+        <h2 id="process-heading">Our {service.name} process</h2>
+        <p>A clear sequence from discovery to outcomes — tailored for {service.categoryName}.</p>
+      </header>
+      <ol class="svc-leaf__process">
+        {landing.process.map((step, i) => (
+          <li>
+            <span class="svc-leaf__step-num">{String(i + 1).padStart(2, "0")}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="svc-leaf__section" aria-labelledby="outcomes-heading">
+      <header class="svc-leaf__section-head">
+        <p class="kicker">What you get</p>
+        <h2 id="outcomes-heading">Outcomes from {service.name}</h2>
+      </header>
+      <ul class="svc-leaf__outcomes">
+        {landing.outcomes.map((o) => (
+          <li>{o}</li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="svc-leaf__section" aria-labelledby="faq-heading">
+      <header class="svc-leaf__section-head">
+        <p class="kicker">FAQ</p>
+        <h2 id="faq-heading">Questions about {service.name}</h2>
+      </header>
+      <div class="svc-leaf__faq">
+        {landing.faqs.map((faq) => (
+          <details class="faq__item">
+            <summary>{faq.question}</summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <section class="svc-leaf__cta" aria-label="Enquire">
+      <div>
+        <p class="kicker">Next step</p>
+        <h2>Ready to discuss {service.name}?</h2>
+        <p>Tell us about your context — we will respond with a clear scope and next step.</p>
+      </div>
+      <div class="svc-leaf__intro-actions">
+        <button
+          type="button"
+          class="btn btn--dark"
+          data-svc-enquire
+          data-category={service.categoryName}
+          data-service={service.name}
+        >
+          <span>Enquire about {service.name}</span>
+        </button>
+        <a class="btn btn--ghost" href={categoryPath}>
+          <span>All {service.categoryName}</span>
+        </a>
+      </div>
+    </section>
+
+    {related.length > 0 && (
+      <section class="svc-leaf__related" aria-labelledby="related-heading">
+        <header class="svc-leaf__section-head">
+          <p class="kicker">Also in {service.categoryName}</p>
+          <h2 id="related-heading">Related services</h2>
+        </header>
+        <ul class="svc-leaf__related-list">
+          {related.map((sib) => (
+            <li>
+              <a href={servicePath(sib.categorySlug, sib.slug)}>
+                <strong>{sib.name}</strong>
+                <span>{sib.description}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <nav class="svc-leaf__back" aria-label="Services navigation">
+      <a href={categoryPath}>← {service.categoryName}</a>
+      <a href="/services/">All services</a>
+    </nav>
+  </article>
+
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+</BaseLayout>
+
+<style>
+  .svc-leaf {
+    max-width: min(var(--content-max), 72rem);
+    width: 100%;
+    margin-inline: auto;
+    padding:
+      calc(4.5rem + clamp(1.2rem, 3vh, 2rem))
+      var(--gutter)
+      clamp(3rem, 8vh, 5rem);
+  }
+  .svc-leaf .scene-banner {
+    margin-bottom: clamp(1.4rem, 3vh, 2rem);
+  }
+  .svc-leaf .scene-banner__title {
+    width: min(96%, 18ch);
+    font-size: clamp(2.2rem, 5.5vw, 4.4rem);
+  }
+
+  .svc-leaf__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.65rem;
+    margin: 0 0 clamp(1.2rem, 2.5vh, 1.8rem);
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+  }
+  .svc-leaf__crumbs a {
+    color: var(--ink-soft);
+    text-decoration: none;
+  }
+  .svc-leaf__crumbs a:hover { color: var(--ink); }
+  .svc-leaf__crumbs span:last-child { color: var(--ink); }
+
+  .svc-leaf__intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    margin-bottom: clamp(2.4rem, 6vh, 3.5rem);
+    padding-bottom: clamp(1.8rem, 4vh, 2.5rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .svc-leaf__intro-copy {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 44rem;
+  }
+  .svc-leaf__lede {
+    margin: 0;
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+  .svc-leaf__summary {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    line-height: 1.55;
+  }
+  .svc-leaf__intro-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .svc-leaf__section {
+    margin-bottom: clamp(2.6rem, 7vh, 4rem);
+    padding: 0;
+    max-width: none;
+    width: 100%;
+  }
+  .svc-leaf__section-head {
+    display: grid;
+    gap: 0.4rem;
+    margin-bottom: 1.35rem;
+    max-width: 40rem;
+  }
+  .svc-leaf__section-head h2 {
+    margin: 0;
+    font-size: clamp(1.45rem, 2.6vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .svc-leaf__section-head p:not(.kicker) {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.98rem;
+    line-height: 1.5;
+  }
+
+  .svc-leaf__prose {
+    display: grid;
+    gap: 1rem;
+    max-width: 48rem;
+    margin-bottom: 1.5rem;
+  }
+  .svc-leaf__prose p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 1.02rem;
+    line-height: 1.6;
+  }
+
+  .svc-leaf__benefits {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: 1fr;
+  }
+  .svc-leaf__benefits li {
+    padding: 1rem 1.15rem;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: calc(var(--radius) * 0.7);
+    background: var(--card);
+    font-size: 0.95rem;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  .svc-leaf__process {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.85rem;
+  }
+  .svc-leaf__process > li {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1rem 1.25rem;
+    padding: 1.2rem 1.25rem;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: calc(var(--radius) * 0.75);
+    background: var(--card);
+  }
+  .svc-leaf__step-num {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: rgba(17, 17, 17, 0.38);
+    font-variant-numeric: tabular-nums;
+    padding-top: 0.2rem;
+  }
+  .svc-leaf__process h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.08rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .svc-leaf__process p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.94rem;
+    line-height: 1.55;
+  }
+
+  .svc-leaf__outcomes {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+  }
+  .svc-leaf__outcomes li {
+    position: relative;
+    padding: 0.85rem 0 0.85rem 1.4rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  .svc-leaf__outcomes li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.25em;
+    width: 0.55rem;
+    height: 1px;
+    background: var(--ink);
+  }
+
+  .svc-leaf__faq {
+    display: grid;
+    gap: 0.55rem;
+    max-width: 48rem;
+  }
+  .svc-leaf__faq .faq__item {
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: calc(var(--radius) * 0.65);
+    background: var(--card);
+    padding: 0.2rem 1.1rem;
+  }
+  .svc-leaf__faq .faq__item summary {
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    padding: 1rem 0;
+  }
+  .svc-leaf__faq .faq__item p {
+    margin: 0 0 1rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+    font-size: 0.95rem;
+  }
+
+  .svc-leaf__cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+    margin: clamp(1rem, 3vh, 2rem) 0 clamp(2.5rem, 6vh, 3.5rem);
+    padding: clamp(1.5rem, 3.5vh, 2.2rem);
+    border-radius: calc(var(--radius) * 0.85);
+    background: var(--dark);
+    color: #fff;
+  }
+  .svc-leaf__cta .kicker { color: rgba(255, 255, 255, 0.5); }
+  .svc-leaf__cta h2 {
+    margin: 0.35rem 0 0.5rem;
+    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+  .svc-leaf__cta p:not(.kicker) {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.7);
+    max-width: 36rem;
+    line-height: 1.5;
+  }
+  .svc-leaf__cta .btn--dark {
+    background: #fff;
+    color: var(--ink);
+  }
+  .svc-leaf__cta .btn--dark:hover { background: #f0f0ee; }
+  .svc-leaf__cta .btn--ghost {
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+  }
+  .svc-leaf__cta .btn--ghost:hover {
+    background: #fff;
+    color: var(--ink);
+  }
+
+  .svc-leaf__related {
+    margin-bottom: clamp(2rem, 5vh, 3rem);
+    padding: 0;
+    max-width: none;
+  }
+  .svc-leaf__related-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .svc-leaf__related-list a {
+    display: grid;
+    gap: 0.35rem;
+    padding: 1.1rem 1.2rem;
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: calc(var(--radius) * 0.7);
+    background: var(--card);
+    text-decoration: none;
+    transition: border-color 0.25s, transform 0.3s var(--ease-out);
+  }
+  .svc-leaf__related-list a:hover {
+    border-color: rgba(17, 17, 17, 0.2);
+    transform: translateY(-1px);
+  }
+  .svc-leaf__related-list strong {
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  .svc-leaf__related-list span {
+    font-size: 0.88rem;
+    color: var(--ink-soft);
+    line-height: 1.45;
+  }
+
+  .svc-leaf__back {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2rem;
+    padding-top: clamp(1.5rem, 3vh, 2rem);
+    border-top: 1px solid var(--line);
+  }
+  .svc-leaf__back a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+  .svc-leaf__back a:hover { color: var(--ink); }
+
+  @media (min-width: 700px) {
+    .svc-leaf__benefits {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .svc-leaf__related-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>

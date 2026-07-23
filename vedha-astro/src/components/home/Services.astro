@@ -1,5 +1,5 @@
 ---
-import { pillars, slugOf } from "../../data/services.js";
+import { pillars, slugOf, servicePath } from "../../data/services.js";
 
 const totalCategories = pillars.reduce((n, p) => n + p.categories.length, 0);
 
@@ -158,14 +158,12 @@ const blurbThemes = [
                     <ul>
                       {cat.services.map((s) => (
                         <li>
-                          <button
-                            type="button"
+                          <a
                             class="svc-ask"
-                            data-svc-enquire
-                            data-category={cat.name}
+                            href={servicePath(slug, slugOf(s.name))}
                             data-service={s.name}
-                            data-tooltip="Ask about this service"
-                          >{s.name}</button>
+                            data-tooltip="View service page"
+                          >{s.name}</a>
                         </li>
                       ))}
                     </ul>

@@ -2188,3 +2188,42 @@ export function getAllCategories() {
 export function getCategoryBySlug(slug) {
   return getAllCategories().find((c) => c.slug === slug) ?? null;
 }
+
+export function servicePath(categorySlug, serviceSlug) {
+  return `/services/${categorySlug}/${serviceSlug}/`;
+}
+
+export function getAllServices() {
+  return getAllCategories().flatMap((category) =>
+    category.services.map((service, index) => {
+      const slug = slugOf(service.name);
+      return {
+        ...service,
+        slug,
+        index,
+        pillar: category.pillar,
+        pillarBlurb: category.pillarBlurb,
+        categoryName: category.name,
+        categorySlug: category.slug,
+        categoryDescription: category.description,
+        path: servicePath(category.slug, slug),
+      };
+    })
+  );
+}
+
+export function getServiceBySlugs(categorySlug, serviceSlug) {
+  return (
+    getAllServices().find(
+      (s) => s.categorySlug === categorySlug && s.slug === serviceSlug
+    ) ?? null
+  );
+}
+
+export function getSiblingServices(categorySlug, serviceSlug, limit = 6) {
+  return getAllServices()
+    .filter(
+      (s) => s.categorySlug === categorySlug && s.slug !== serviceSlug
+    )
+    .slice(0, limit);
+}

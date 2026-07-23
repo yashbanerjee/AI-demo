@@ -1526,9 +1526,10 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
   border: none; background: none;
   font: inherit; color: inherit;
   text-align: left;
-  cursor: pointer;
-  position: relative;
-  transition: color 0.25s;
+  text-decoration: none;
+}
+a.svc-ask {
+  text-decoration: none;
 }
 .svc-ask:hover,
 .svc-ask:focus-visible { color: var(--ink); }

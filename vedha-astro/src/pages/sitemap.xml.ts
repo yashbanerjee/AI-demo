@@ -1,6 +1,6 @@
 import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
-import { getAllCategories } from "../data/services.js";
+import { getAllCategories, getAllServices } from "../data/services.js";
 import { listPosts, type Post } from "../lib/db";
 
 export const GET: APIRoute = async ({ site }) => {
@@ -10,6 +10,7 @@ export const GET: APIRoute = async ({ site }) => {
   const staticPaths = ["/", "/products/", "/services/", "/blog/"];
   const products = await getCollection("products", ({ data }) => !data.draft);
   const categories = getAllCategories();
+  const services = getAllServices();
   let posts: Post[] = [];
   try {
     posts = await listPosts();
@@ -21,6 +22,7 @@ export const GET: APIRoute = async ({ site }) => {
     ...staticPaths.map((p) => ({ loc: p })),
     ...products.map((p) => ({ loc: `/products/${p.id}/` })),
     ...categories.map((c) => ({ loc: `/services/${c.slug}/` })),
+    ...services.map((s) => ({ loc: s.path })),
     ...posts.map((p) => ({
       loc: `/blog/${p.slug}/`,
       lastmod: (p.updated_date ?? p.pub_date).toISOString(),

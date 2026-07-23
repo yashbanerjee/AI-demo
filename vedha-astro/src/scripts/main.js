@@ -224,9 +224,10 @@
         pillar: pillarName,
         category: card.querySelector(".svc-card__title")?.textContent.trim() || "",
         slug: card.dataset.svcSlug || "",
-        services: [...card.querySelectorAll("[data-svc-enquire]")].map(
-          (el) => el.dataset.service || el.textContent.trim()
-        ),
+        services: [...card.querySelectorAll(".svc-ask")].map((el) => ({
+          name: el.dataset.service || el.textContent.trim(),
+          href: el.getAttribute("href") || "",
+        })),
       }));
     });
 
@@ -466,8 +467,8 @@
         return variants;
       });
 
-      const scoreText = (service, category, pillar) => {
-        const s = service.toLowerCase();
+      const scoreText = (serviceName, category, pillar) => {
+        const s = serviceName.toLowerCase();
         const c = category.toLowerCase();
         const p = pillar.toLowerCase();
         let score = 0;
@@ -488,13 +489,17 @@
       const groups = [];
       svcIndex.forEach((cat) => {
         const scored = cat.services
-          .map((s) => ({ text: s, score: scoreText(s, cat.category, cat.pillar) }))
+          .map((s) => ({
+            name: s.name,
+            href: s.href,
+            score: scoreText(s.name, cat.category, cat.pillar),
+          }))
           .filter((s) => s.score >= 1.4)
           .sort((a, b) => b.score - a.score);
         if (scored.length) {
           groups.push({
             ...cat,
-            hits: scored.map((s) => s.text),
+            hits: scored,
             score: scored.reduce((n, s) => n + s.score, 0) + (cat.category.toLowerCase().includes(q) ? 8 : 0),
           });
           serviceCount += scored.length;
@@ -555,15 +560,12 @@
         const ul = document.createElement("ul");
         group.hits.forEach((s) => {
           const li = document.createElement("li");
-          const btn = document.createElement("button");
-          btn.type = "button";
-          btn.className = "svc-ask";
-          btn.dataset.svcEnquire = "";
-          btn.dataset.category = group.category;
-          btn.dataset.service = s;
-          btn.dataset.tooltip = "Ask about this service";
-          btn.append(highlightTerms(s, markRegex));
-          li.append(btn);
+          const link = document.createElement("a");
+          link.className = "svc-ask";
+          link.href = s.href || (group.slug ? `/services/${group.slug}/` : "/services/");
+          link.dataset.tooltip = "View service page";
+          link.append(highlightTerms(s.name, markRegex));
+          li.append(link);
           ul.append(li);
         });
         wrap.append(h4, ul);

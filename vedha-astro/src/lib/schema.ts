@@ -25,7 +25,7 @@ export const serviceSchema = ({
   name: string;
   description: string;
   path: string;
-  services: Array<{ name: string; description: string }>;
+  services?: Array<{ name: string; description: string }>;
 }) => ({
   "@context": "https://schema.org",
   "@type": "Service",
@@ -41,17 +41,57 @@ export const serviceSchema = ({
     { "@type": "City", name: "Dubai" },
     { "@type": "Country", name: "United Arab Emirates" },
   ],
-  hasOfferCatalog: {
-    "@type": "OfferCatalog",
-    name: `${name} services`,
-    itemListElement: services.map((service) => ({
-      "@type": "Offer",
-      itemOffered: {
-        "@type": "Service",
-        name: service.name,
-        description: service.description,
-      },
-    })),
+  ...(services?.length
+    ? {
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: `${name} services`,
+          itemListElement: services.map((service) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: service.name,
+              description: service.description,
+            },
+          })),
+        },
+      }
+    : {}),
+});
+
+export const leafServiceSchema = ({
+  name,
+  description,
+  path,
+  category,
+  image,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  category: string;
+  image?: string;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "Service",
+  name,
+  description,
+  url: absoluteUrl(path),
+  category,
+  ...(image ? { image: absoluteUrl(image) } : {}),
+  provider: {
+    "@type": "Organization",
+    name: "Vedha Technologies",
+    url: siteUrl,
+  },
+  areaServed: [
+    { "@type": "City", name: "Dubai" },
+    { "@type": "Country", name: "United Arab Emirates" },
+  ],
+  offers: {
+    "@type": "Offer",
+    availability: "https://schema.org/InStock",
+    url: absoluteUrl(path),
   },
 });
 
