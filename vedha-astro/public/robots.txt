@@ -1,6 +1,57 @@
+# Allow public pages for search and answer engines
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api
 
+# AI / answer-engine crawlers (AEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# XML sitemaps
 Sitemap: https://vedha.ae/sitemap.xml
+Sitemap: https://vedha.ae/sitemap-pages.xml
+Sitemap: https://vedha.ae/sitemap-services.xml
+Sitemap: https://vedha.ae/sitemap-products.xml
+Sitemap: https://vedha.ae/sitemap-blog.xml
+
+# AI agent maps (llms.txt convention)
+# https://vedha.ae/llms.txt
+# https://vedha.ae/llms-full.txt
+# https://vedha.ae/services.json

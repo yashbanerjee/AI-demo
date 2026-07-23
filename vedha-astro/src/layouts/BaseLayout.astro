@@ -90,6 +90,9 @@ const websiteSchema = {
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
   <link rel="sitemap" href="/sitemap.xml" />
+  <link rel="alternate" type="text/plain" title="LLMs.txt" href="/llms.txt" />
+  <link rel="alternate" type="text/plain" title="LLMs full catalogue" href="/llms-full.txt" />
+  <link rel="alternate" type="application/json" title="Services JSON" href="/services.json" />
   <link rel="alternate" type="application/rss+xml" title="VEDHA Blog" href={new URL("/rss.xml", Astro.site)} />
   {prevPage && <link rel="prev" href={new URL(prevPage, Astro.site)} />}
   {nextPage && <link rel="next" href={new URL(nextPage, Astro.site)} />}
