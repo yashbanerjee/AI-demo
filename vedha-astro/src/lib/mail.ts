@@ -129,8 +129,11 @@ export function probeSmtpPort(timeoutMs = 4_000): Promise<{
 }
 
 export type MailPayload = {
+  /** Defaults to CONTACT_TO when omitted. */
+  to?: string;
   subject: string;
   text: string;
+  html?: string;
   replyTo?: string;
 };
 
@@ -165,9 +168,13 @@ function createTransport() {
   });
 }
 
+function fromAddress() {
+  return env("SMTP_FROM", env("SMTP_USER"));
+}
+
 async function sendViaSmtp(payload: MailPayload) {
-  const to = env("CONTACT_TO", "info@vedha.ae");
-  const from = env("SMTP_FROM", env("SMTP_USER"));
+  const to = payload.to || env("CONTACT_TO", "info@vedha.ae");
+  const from = fromAddress();
   if (!from) {
     throw new Error("SMTP_FROM (or SMTP_USER) is required as the From address.");
   }
@@ -180,6 +187,7 @@ async function sendViaSmtp(payload: MailPayload) {
       replyTo: payload.replyTo || undefined,
       subject: payload.subject,
       text: payload.text,
+      html: payload.html || undefined,
     });
   } finally {
     transport.close();
@@ -188,7 +196,7 @@ async function sendViaSmtp(payload: MailPayload) {
 
 async function sendViaResend(payload: MailPayload) {
   const apiKey = env("RESEND_API_KEY");
-  const to = env("CONTACT_TO", "info@vedha.ae");
+  const to = payload.to || env("CONTACT_TO", "info@vedha.ae");
   const from = env("SMTP_FROM", "Vedha Website <onboarding@resend.dev>");
 
   const res = await fetch("https://api.resend.com/emails", {
@@ -203,6 +211,7 @@ async function sendViaResend(payload: MailPayload) {
       reply_to: payload.replyTo || undefined,
       subject: payload.subject,
       text: payload.text,
+      html: payload.html || undefined,
     }),
     signal: AbortSignal.timeout(12_000),
   });
@@ -236,4 +245,51 @@ export async function sendContactMail(payload: MailPayload) {
     });
     throw error;
   }
+}
+
+export function buildUserConfirmation(opts: {
+  type: string;
+  name?: string;
+  email: string;
+}) {
+  const greeting = opts.name ? `Hi ${opts.name},` : "Hi,";
+  const isNewsletter = opts.type === "newsletter";
+
+  if (isNewsletter) {
+    const text = [
+      greeting,
+      "",
+      "Thank you for subscribing to Vedha updates.",
+      "We'll only send curated news — no noise.",
+      "",
+      "— Vedha Technologies",
+      "info@vedha.ae · Dubai, UAE",
+    ].join("\n");
+    return {
+      subject: "You're subscribed — Vedha",
+      text,
+      message:
+        "You're subscribed. We'll send curated updates to your inbox.",
+    };
+  }
+
+  const text = [
+    greeting,
+    "",
+    "Thank you for contacting Vedha Technologies.",
+    "",
+    "We have received your request and will contact you within 48 hours to discuss more about the solutions.",
+    "",
+    "If you need to add anything in the meantime, reply to this email or write to info@vedha.ae.",
+    "",
+    "— Vedha Technologies",
+    "info@vedha.ae · (+971) 50 658 3342 · Dubai, UAE",
+  ].join("\n");
+
+  return {
+    subject: "We received your request — Vedha",
+    text,
+    message:
+      "Thank you. We have received your request and will contact you within 48 hours to discuss solutions.",
+  };
 }

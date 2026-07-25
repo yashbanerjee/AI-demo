@@ -1419,6 +1419,39 @@
     return { btn, original };
   }
 
+  function ensureFormNote(form) {
+    let note = form.querySelector("[data-form-note]");
+    if (note) return note;
+    note = document.createElement("p");
+    note.className = "form-note";
+    note.setAttribute("data-form-note", "");
+    note.setAttribute("role", "status");
+    note.setAttribute("aria-live", "polite");
+    note.hidden = true;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn && submitBtn.parentElement) {
+      submitBtn.insertAdjacentElement("afterend", note);
+    } else {
+      form.appendChild(note);
+    }
+    return note;
+  }
+
+  function showFormNote(form, message, isError = false) {
+    const note = ensureFormNote(form);
+    note.textContent = message;
+    note.classList.toggle("is-error", Boolean(isError));
+    note.hidden = false;
+  }
+
+  function clearFormNote(form) {
+    const note = form.querySelector("[data-form-note]");
+    if (!note) return;
+    note.hidden = true;
+    note.textContent = "";
+    note.classList.remove("is-error");
+  }
+
   document.querySelectorAll("form").forEach((form) => {
     form.addEventListener("submit", async (e) => {
       const type = resolveMailType(form);
@@ -1428,6 +1461,7 @@
       if (form.dataset.submitting === "1") return;
       form.dataset.submitting = "1";
 
+      clearFormNote(form);
       const label = setSubmitLabel(form, "Sending…");
       const submitBtn = form.querySelector('button[type="submit"]');
       if (submitBtn) submitBtn.disabled = true;
@@ -1455,7 +1489,15 @@
           );
         }
 
-        if (label) label.btn.textContent = "Thank you!";
+        const successMessage =
+          body.message ||
+          (type === "newsletter"
+            ? "You're subscribed. We'll send curated updates to your inbox."
+            : "Thank you. We have received your request and will contact you within 48 hours to discuss solutions.");
+
+        if (label) label.btn.textContent = "Sent";
+        showFormNote(form, successMessage, false);
+
         if (form.id === "svcEnquiry") {
           const name = form.querySelector('[name="name"]');
           const email = form.querySelector('[name="email"]');
@@ -1466,13 +1508,17 @@
         } else {
           form.reset();
         }
+
         setTimeout(() => {
           if (label) label.btn.textContent = label.original;
-          if (form.id === "svcEnquiry") closeEnquiry();
+          if (form.id === "svcEnquiry") {
+            setTimeout(() => closeEnquiry(), 2200);
+          }
         }, 1200);
       } catch (err) {
         if (label) label.btn.textContent = label.original;
-        window.alert(err?.message || "Unable to send right now. Please try again.");
+        const message = err?.message || "Unable to send right now. Please try again.";
+        showFormNote(form, message, true);
       } finally {
         form.dataset.submitting = "0";
         if (submitBtn) submitBtn.disabled = false;

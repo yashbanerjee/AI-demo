@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import {
+  buildUserConfirmation,
   mailConfigured,
   mailDiagnostics,
   probeSmtpPort,
@@ -116,12 +117,28 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ error: "Unknown form type." }, 400);
     }
 
+    const confirmation = buildUserConfirmation({ type, name, email });
+
+    // Notify the team first — this is the critical delivery.
     await sendContactMail({
       subject: `[VEDHA] ${subject}`,
       text,
       replyTo: email,
     });
-    return json({ ok: true });
+
+    // Then confirm to the submitter (non-fatal if it fails after team mail succeeded).
+    try {
+      await sendContactMail({
+        to: email,
+        subject: confirmation.subject,
+        text: confirmation.text,
+        replyTo: "info@vedha.ae",
+      });
+    } catch (confirmError) {
+      console.error("Failed to send user confirmation email:", confirmError);
+    }
+
+    return json({ ok: true, message: confirmation.message });
   } catch (error) {
     console.error("Failed to send contact email:", error);
     const detail = error instanceof Error ? error.message : "Unknown mail error";

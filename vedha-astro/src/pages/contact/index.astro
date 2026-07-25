@@ -70,6 +70,7 @@ const schema = breadcrumbSchema([
             <textarea name="description" rows="5" placeholder="Tell us about your project" required></textarea>
           </label>
           <button class="btn btn--dark btn--wide" type="submit"><span>Send enquiry</span></button>
+          <p class="form-note" data-form-note hidden role="status" aria-live="polite"></p>
           <p class="contact__terms">
             By contacting us, you accept our Terms and Privacy Policy.
           </p>
@@ -84,6 +85,7 @@ const schema = breadcrumbSchema([
             <label class="visually-hidden" for="contactNlEmail">E-mail</label>
             <input id="contactNlEmail" type="email" name="email" placeholder="E-mail" required autocomplete="email" />
             <button class="btn btn--dark" type="submit"><span>Subscribe</span></button>
+            <p class="form-note" data-form-note hidden role="status" aria-live="polite"></p>
           </form>
           <p class="contact-page__fine">No noise. Just curated updates.</p>
         </section>
