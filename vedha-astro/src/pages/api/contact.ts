@@ -116,35 +116,30 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ error: "Unknown form type." }, 400);
     }
 
-    // Railway/Cloudflare edges often cut idle origin responses ~3–4s.
-    // Fail fast with JSON instead of letting the proxy emit a bare 502.
-    await Promise.race([
-      sendContactMail({
-        subject: `[VEDHA] ${subject}`,
-        text,
-        replyTo: email,
-      }),
-      new Promise<never>((_, reject) => {
-        setTimeout(() => {
-          reject(
-            new Error(
-              `SMTP did not finish within 2.5s (host=${process.env.SMTP_HOST}:${process.env.SMTP_PORT || "587"}). Connection works, but the mail handshake is too slow or stuck — check SMTP_USER/SMTP_PASS for mail@ybx.ae, or try SMTP_PORT=587 with SMTP_SECURE=false.`
-            )
-          );
-        }, 2500);
-      }),
-    ]);
+    const mailPayload = {
+      subject: `[VEDHA] ${subject}`,
+      text,
+      replyTo: email,
+    };
+
+    // Send after the HTTP response is on the wire. Awaiting SMTP here was
+    // getting cut by the Railway/Cloudflare edge (~4s) as a bare 502 even
+    // though TLS to Hostinger is reachable.
+    setImmediate(() => {
+      sendContactMail(mailPayload).catch((error) => {
+        console.error("Failed to send contact email:", error);
+      });
+    });
     return json({ ok: true });
   } catch (error) {
-    console.error("Failed to send contact email:", error);
-    const detail = error instanceof Error ? error.message : "Unknown mail error";
-    // Include detail so SMTP misconfig (auth, TLS, host) is visible while setting up.
+    console.error("Contact form error:", error);
+    const detail = error instanceof Error ? error.message : "Unknown error";
     return json(
       {
-        error: "Unable to send email right now. Please try again later.",
+        error: "Unable to accept enquiry right now. Please try again later.",
         detail: detail.slice(0, 400),
       },
-      502
+      500
     );
   }
 };
