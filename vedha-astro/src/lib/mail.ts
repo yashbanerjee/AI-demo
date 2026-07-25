@@ -2,12 +2,9 @@ import nodemailer from "nodemailer";
 
 const required = ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"] as const;
 
+/** Runtime env only — Vite inlines import.meta.env at build time and strips custom keys. */
 function env(key: string, fallback = ""): string {
-  return String(
-    process.env[key] ??
-      (import.meta.env as Record<string, string | undefined>)[key] ??
-      fallback
-  );
+  return String(process.env[key] ?? fallback).trim();
 }
 
 export function smtpConfigured(): boolean {
@@ -16,9 +13,9 @@ export function smtpConfigured(): boolean {
 
 function createTransport() {
   const host = env("SMTP_HOST");
-  const port = Number(env("SMTP_PORT", "587"));
+  const port = Number(env("SMTP_PORT", "587") || "587");
   const secure =
-    env("SMTP_SECURE", "false") === "true" || port === 465;
+    env("SMTP_SECURE", "false").toLowerCase() === "true" || port === 465;
   const user = env("SMTP_USER");
   const pass = env("SMTP_PASS");
 
@@ -31,6 +28,13 @@ function createTransport() {
     port,
     secure,
     auth: { user, pass },
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+    tls: {
+      // Many shared hosts use mismatched certs; allow override via env.
+      rejectUnauthorized: env("SMTP_TLS_REJECT_UNAUTHORIZED", "true").toLowerCase() !== "false",
+    },
   });
 }
 

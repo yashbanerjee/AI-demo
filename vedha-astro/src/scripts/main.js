@@ -1438,9 +1438,20 @@
           headers: { "Content-Type": "application/json", Accept: "application/json" },
           body: JSON.stringify(formPayload(form, type)),
         });
-        const body = await res.json().catch(() => ({}));
+        const raw = await res.text();
+        let body = {};
+        try {
+          body = raw ? JSON.parse(raw) : {};
+        } catch {
+          body = {};
+        }
         if (!res.ok) {
-          throw new Error(body.error || "Something went wrong. Please try again.");
+          throw new Error(
+            body.error ||
+              (res.status === 502 || res.status === 503
+                ? "Email service is unavailable. Check SMTP settings on the server, then try again."
+                : "Something went wrong. Please try again.")
+          );
         }
 
         if (label) label.btn.textContent = "Thank you!";

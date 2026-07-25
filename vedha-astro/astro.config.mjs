@@ -8,4 +8,11 @@ export default defineConfig({
   trailingSlash: 'always',
   output: 'server',
   adapter: node({ mode: 'standalone' }),
+  vite: {
+    ssr: {
+      // Bundle nodemailer into the server build so Railway/runtime
+      // does not depend on resolving it from node_modules at request time.
+      noExternal: ['nodemailer'],
+    },
+  },
 });
