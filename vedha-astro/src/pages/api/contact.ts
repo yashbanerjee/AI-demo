@@ -41,7 +41,7 @@ export const POST: APIRoute = async ({ request }) => {
       return json(
         {
           error:
-            "Email is not configured. On Railway Hobby, SMTP is blocked — set RESEND_API_KEY (recommended), or use SMTP_HOST/SMTP_USER/SMTP_PASS on Pro.",
+            "Email is not configured. Railway blocks outbound SMTP on Hobby — add RESEND_API_KEY in Railway variables (see .env.example). On Pro you can set ALLOW_SMTP=true with SMTP_* instead.",
         },
         503
       );

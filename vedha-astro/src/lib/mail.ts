@@ -7,6 +7,17 @@ function env(key: string, fallback = ""): string {
   return String(process.env[key] ?? fallback).trim();
 }
 
+function onRailway(): boolean {
+  return Boolean(process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID);
+}
+
+/** SMTP hangs on Railway Hobby (ports blocked). Opt in with ALLOW_SMTP=true on Pro. */
+function smtpAllowed(): boolean {
+  if (env("ALLOW_SMTP").toLowerCase() === "true") return true;
+  if (env("ALLOW_SMTP").toLowerCase() === "false") return false;
+  return !onRailway();
+}
+
 export function smtpConfigured(): boolean {
   return requiredSmtp.every((key) => Boolean(env(key)));
 }
@@ -16,7 +27,7 @@ export function resendConfigured(): boolean {
 }
 
 export function mailConfigured(): boolean {
-  return smtpConfigured() || resendConfigured();
+  return resendConfigured() || (smtpAllowed() && smtpConfigured());
 }
 
 function createTransport() {
@@ -36,7 +47,6 @@ function createTransport() {
     port,
     secure,
     auth: { user, pass },
-    // Keep well under Railway/Cloudflare edge timeouts so the API can return JSON.
     connectionTimeout: 4_000,
     greetingTimeout: 4_000,
     socketTimeout: 8_000,
@@ -95,14 +105,18 @@ async function sendViaSmtp(payload: MailPayload) {
 }
 
 export async function sendContactMail(payload: MailPayload) {
-  // Prefer Resend (HTTP) when available — outbound SMTP is often blocked on PaaS hosts.
   if (resendConfigured()) {
     await sendViaResend(payload);
     return;
   }
-  if (smtpConfigured()) {
+  if (smtpAllowed() && smtpConfigured()) {
     await sendViaSmtp(payload);
     return;
+  }
+  if (onRailway() && smtpConfigured() && !resendConfigured()) {
+    throw new Error(
+      "Railway blocks outbound SMTP on Hobby. Set RESEND_API_KEY, or set ALLOW_SMTP=true on a Pro plan."
+    );
   }
   throw new Error(
     "Email is not configured. Set RESEND_API_KEY or SMTP_HOST/SMTP_USER/SMTP_PASS."
