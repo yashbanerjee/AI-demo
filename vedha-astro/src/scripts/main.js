@@ -529,7 +529,7 @@
         );
         const link = document.createElement("a");
         link.className = "btn btn--dark";
-        link.href = "/#contact";
+        link.href = "/contact/";
         link.innerHTML = "<span>Ask us about it</span>";
         empty.append(p, link);
         svcResultsGroups.append(empty);
@@ -1381,28 +1381,89 @@
     }
   });
 
-  // === Forms (demo only — no backend) ===
+  // === Forms → POST /api/contact (email to info@vedha.ae via SMTP) ===
+  function resolveMailType(form) {
+    const explicit = form.getAttribute("data-mail-form");
+    if (explicit) return explicit;
+    if (form.id === "enquiry") return "enquiry";
+    if (form.id === "svcEnquiry") return "service-enquiry";
+    if (form.id === "contactNewsletter" || form.classList.contains("newsletter")) {
+      return "newsletter";
+    }
+    return null;
+  }
+
+  function formPayload(form, type) {
+    const data = new FormData(form);
+    const email =
+      String(data.get("email") || "").trim() ||
+      String(form.querySelector('input[type="email"]')?.value || "").trim();
+    const payload = { type, email };
+
+    if (type === "enquiry" || type === "service-enquiry") {
+      payload.name = String(data.get("name") || "").trim();
+      payload.service = String(data.get("service") || "").trim();
+      payload.category = String(data.get("category") || "").trim();
+      payload.description = String(data.get("description") || "").trim();
+    }
+    return payload;
+  }
+
+  function setSubmitLabel(form, label) {
+    const btn =
+      form.querySelector("button[type='submit'] span") ||
+      form.querySelector("button span");
+    if (!btn) return null;
+    const original = btn.textContent;
+    btn.textContent = label;
+    return { btn, original };
+  }
+
   document.querySelectorAll("form").forEach((form) => {
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
+      const type = resolveMailType(form);
+      if (!type) return;
+
       e.preventDefault();
-      const btn = form.querySelector("button[type='submit'] span") || form.querySelector("button span");
-      if (btn) {
-        const original = btn.textContent;
-        btn.textContent = "Thank you!";
+      if (form.dataset.submitting === "1") return;
+      form.dataset.submitting = "1";
+
+      const label = setSubmitLabel(form, "Sending…");
+      const submitBtn = form.querySelector('button[type="submit"]');
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const res = await fetch("/api/contact/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(formPayload(form, type)),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) {
+          throw new Error(body.error || "Something went wrong. Please try again.");
+        }
+
+        if (label) label.btn.textContent = "Thank you!";
+        if (form.id === "svcEnquiry") {
+          const name = form.querySelector('[name="name"]');
+          const email = form.querySelector('[name="email"]');
+          const desc = form.querySelector('[name="description"]');
+          if (name) name.value = "";
+          if (email) email.value = "";
+          if (desc) desc.value = "";
+        } else {
+          form.reset();
+        }
         setTimeout(() => {
-          btn.textContent = original;
+          if (label) label.btn.textContent = label.original;
           if (form.id === "svcEnquiry") closeEnquiry();
         }, 1200);
-      }
-      if (form.id === "svcEnquiry") {
-        const name = form.querySelector('[name="name"]');
-        const email = form.querySelector('[name="email"]');
-        const desc = form.querySelector('[name="description"]');
-        if (name) name.value = "";
-        if (email) email.value = "";
-        if (desc) desc.value = "";
-      } else {
-        form.reset();
+      } catch (err) {
+        if (label) label.btn.textContent = label.original;
+        window.alert(err?.message || "Unable to send right now. Please try again.");
+      } finally {
+        form.dataset.submitting = "0";
+        if (submitBtn) submitBtn.disabled = false;
       }
     });
   });

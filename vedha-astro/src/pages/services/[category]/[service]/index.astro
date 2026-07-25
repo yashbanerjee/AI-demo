@@ -147,10 +147,14 @@ const schema = [
         <p class="kicker">FAQ</p>
         <h2 id="faq-heading">Questions about {service.name}</h2>
       </header>
-      <div class="svc-leaf__faq">
-        {landing.faqs.map((faq) => (
+      <div class="faq__list">
+        {landing.faqs.map((faq, i) => (
           <details class="faq__item">
-            <summary>{faq.question}</summary>
+            <summary>
+              <span>{String(i + 1).padStart(2, "0")}</span>
+              {faq.question}
+              <i aria-hidden="true"></i>
+            </summary>
             <p>{faq.answer}</p>
           </details>
         ))}
@@ -393,28 +397,9 @@ const schema = [
     background: var(--ink);
   }
 
-  .svc-leaf__faq {
-    display: grid;
-    gap: 0.55rem;
-    max-width: 48rem;
-  }
-  .svc-leaf__faq .faq__item {
-    border: 1px solid rgba(17, 17, 17, 0.08);
-    border-radius: calc(var(--radius) * 0.65);
-    background: var(--card);
-    padding: 0.2rem 1.1rem;
-  }
-  .svc-leaf__faq .faq__item summary {
-    cursor: pointer;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    padding: 1rem 0;
-  }
-  .svc-leaf__faq .faq__item p {
-    margin: 0 0 1rem;
-    color: var(--ink-soft);
-    line-height: 1.55;
-    font-size: 0.95rem;
+  .svc-leaf__section .faq__list {
+    width: 100%;
+    max-width: none;
   }
 
   .svc-leaf__cta {

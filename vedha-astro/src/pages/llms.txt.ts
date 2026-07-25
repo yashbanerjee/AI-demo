@@ -15,7 +15,7 @@ Vedha Technologies helps organisations across the UAE clarify technology choices
 - [Services](${origin}/services/): Full service catalogue across ${pillars.length} pillars and ${services.length} named services
 - [Products](${origin}/products/): Product offerings
 - [Blog](${origin}/blog/): Insights on technology, product, and delivery
-- [Contact](${origin}/#contact): Book a consultation
+- [Contact](${origin}/contact/): Book a consultation
 
 ## Service pillars
 ${pillars
