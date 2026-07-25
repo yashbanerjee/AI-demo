@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import {
   mailConfigured,
   mailDiagnostics,
+  probeSmtpPort,
   sendContactMail,
 } from "../../lib/mail";
 
@@ -26,7 +27,13 @@ const json = (data: unknown, status = 200) =>
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
 /** Safe status + SMTP shape (no secrets) for debugging deploys. */
-export const GET: APIRoute = async () => json({ ok: true, ...mailDiagnostics() });
+export const GET: APIRoute = async () => {
+  const diagnostics = mailDiagnostics();
+  const probe = diagnostics.smtpConfigured
+    ? await probeSmtpPort(4_000)
+    : { reachable: false, error: "smtp not configured", ms: 0 };
+  return json({ ok: true, ...diagnostics, smtpProbe: probe });
+};
 
 export const POST: APIRoute = async ({ request }) => {
   try {

@@ -1,3 +1,5 @@
+import net from "node:net";
+import tls from "node:tls";
 import nodemailer from "nodemailer";
 
 const requiredSmtp = ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"] as const;
@@ -5,7 +7,6 @@ const requiredSmtp = ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"] as const;
 /** Runtime env only — Vite inlines import.meta.env at build time and strips custom keys. */
 function env(key: string, fallback = ""): string {
   let value = String(process.env[key] ?? fallback).trim();
-  // Railway/dotenv often stores values with wrapping quotes.
   if (
     (value.startsWith('"') && value.endsWith('"')) ||
     (value.startsWith("'") && value.endsWith("'"))
@@ -36,7 +37,8 @@ export function mailDiagnostics() {
     smtpHost: env("SMTP_HOST") || null,
     smtpPort: smtpConfigured() ? port : null,
     smtpSecure:
-      env("SMTP_SECURE", "false").toLowerCase() === "true" || port === 465,
+      env("SMTP_SECURE", port === 465 ? "true" : "false").toLowerCase() ===
+        "true" || port === 465,
     smtpUserSet: Boolean(env("SMTP_USER")),
     smtpPassSet: Boolean(env("SMTP_PASS")),
     smtpFrom: env("SMTP_FROM") || env("SMTP_USER") || null,
@@ -47,11 +49,64 @@ export function mailDiagnostics() {
   };
 }
 
+/** TCP/TLS reachability check — does not authenticate. */
+export function probeSmtpPort(timeoutMs = 4_000): Promise<{
+  reachable: boolean;
+  error?: string;
+  ms: number;
+}> {
+  const host = env("SMTP_HOST");
+  const port = Number(env("SMTP_PORT", "587") || "587");
+  const secure =
+    env("SMTP_SECURE", port === 465 ? "true" : "false").toLowerCase() ===
+      "true" || port === 465;
+
+  if (!host) {
+    return Promise.resolve({ reachable: false, error: "SMTP_HOST missing", ms: 0 });
+  }
+
+  const started = Date.now();
+
+  return new Promise((resolve) => {
+    const finish = (reachable: boolean, error?: string) => {
+      resolve({ reachable, error, ms: Date.now() - started });
+    };
+
+    const onConnect = (socket: { end: () => void; destroy: () => void }) => {
+      socket.end();
+      finish(true);
+    };
+
+    const onFail = (err: Error) => finish(false, err.message);
+
+    if (secure) {
+      const socket = tls.connect(
+        { host, port, servername: host, timeout: timeoutMs },
+        () => onConnect(socket)
+      );
+      socket.on("error", onFail);
+      socket.on("timeout", () => {
+        socket.destroy();
+        finish(false, "TLS connect timeout");
+      });
+    } else {
+      const socket = net.connect({ host, port }, () => onConnect(socket));
+      socket.setTimeout(timeoutMs);
+      socket.on("error", onFail);
+      socket.on("timeout", () => {
+        socket.destroy();
+        finish(false, "TCP connect timeout");
+      });
+    }
+  });
+}
+
 function createTransport() {
   const host = env("SMTP_HOST");
   const port = Number(env("SMTP_PORT", "587") || "587");
   const secure =
-    env("SMTP_SECURE", "false").toLowerCase() === "true" || port === 465;
+    env("SMTP_SECURE", port === 465 ? "true" : "false").toLowerCase() ===
+      "true" || port === 465;
   const user = env("SMTP_USER");
   const pass = env("SMTP_PASS");
 
@@ -64,11 +119,10 @@ function createTransport() {
     port,
     secure,
     auth: { user, pass },
-    // Port 587 expects STARTTLS; without this some hosts hang or reject.
-    requireTLS: !secure && port === 587,
-    connectionTimeout: 12_000,
-    greetingTimeout: 12_000,
-    socketTimeout: 20_000,
+    requireTLS: !secure && (port === 587 || port === 25),
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
     tls: {
       servername: host,
       rejectUnauthorized:
@@ -88,7 +142,7 @@ function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise
     const timer = setTimeout(() => {
       reject(
         new Error(
-          `${label} timed out after ${ms}ms. Check SMTP_HOST/SMTP_PORT reachability from Railway (Pro may need a redeploy after upgrade).`
+          `${label} timed out after ${ms}ms (host=${env("SMTP_HOST")}:${env("SMTP_PORT", "587")}). If this persists on Railway Pro, redeploy once, or try SMTP_PORT=587 with SMTP_SECURE=false.`
         )
       );
     }, ms);
@@ -149,7 +203,7 @@ async function sendViaSmtp(payload: MailPayload) {
         subject: payload.subject,
         text: payload.text,
       }),
-      25_000,
+      18_000,
       "SMTP send"
     );
   } finally {
@@ -158,7 +212,6 @@ async function sendViaSmtp(payload: MailPayload) {
 }
 
 export async function sendContactMail(payload: MailPayload) {
-  // Prefer Resend only when explicitly configured; otherwise use SMTP.
   if (resendConfigured()) {
     await sendViaResend(payload);
     return;
