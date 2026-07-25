@@ -130,7 +130,8 @@ export const POST: APIRoute = async ({ request }) => {
         error: "Unable to send email right now. Please try again later.",
         detail: detail.slice(0, 500),
       },
-      502
+      // Avoid HTTP 502 — Cloudflare replaces origin 502 bodies with a blank "error code: 502".
+      400
     );
   }
 };
