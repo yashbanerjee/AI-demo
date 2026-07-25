@@ -755,7 +755,7 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
 .work-card figure {
   overflow: hidden;
   border-radius: var(--radius);
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   width: 100%;
   margin: 0;
   background: var(--card);
