@@ -1,5 +1,10 @@
 import type { APIRoute } from "astro";
-import { sendContactMail, smtpConfigured } from "../../lib/mail";
+import {
+  mailConfigured,
+  resendConfigured,
+  sendContactMail,
+  smtpConfigured,
+} from "../../lib/mail";
 
 export const prerender = false;
 
@@ -25,16 +30,18 @@ const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 export const GET: APIRoute = async () =>
   json({
     ok: true,
+    mailConfigured: mailConfigured(),
     smtpConfigured: smtpConfigured(),
+    resendConfigured: resendConfigured(),
   });
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    if (!smtpConfigured()) {
+    if (!mailConfigured()) {
       return json(
         {
           error:
-            "Email is not configured yet. Set SMTP_HOST, SMTP_USER, and SMTP_PASS on the server.",
+            "Email is not configured. On Railway Hobby, SMTP is blocked — set RESEND_API_KEY (recommended), or use SMTP_HOST/SMTP_USER/SMTP_PASS on Pro.",
         },
         503
       );
@@ -117,12 +124,14 @@ export const POST: APIRoute = async ({ request }) => {
     return json({ ok: true });
   } catch (error) {
     console.error("Failed to send contact email:", error);
-    const detail =
-      error instanceof Error ? error.message : "Unknown mail error";
+    const detail = error instanceof Error ? error.message : "Unknown mail error";
+    const looksBlocked =
+      /timeout|ETIMEDOUT|ECONNREFUSED|ECONNRESET|ESOCKET|AbortError/i.test(detail);
     return json(
       {
-        error: "Unable to send email right now. Please try again later.",
-        detail: process.env.NODE_ENV === "production" ? undefined : detail,
+        error: looksBlocked
+          ? "Could not reach the mail server. Railway blocks outbound SMTP on Hobby — add RESEND_API_KEY, or upgrade to Pro for SMTP."
+          : "Unable to send email right now. Please try again later.",
       },
       502
     );
