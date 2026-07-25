@@ -8,10 +8,4 @@ export default defineConfig({
   trailingSlash: 'always',
   output: 'server',
   adapter: node({ mode: 'standalone' }),
-  vite: {
-    ssr: {
-      // Keep nodemailer external so Node uses the real package (TLS/sockets).
-      external: ['nodemailer'],
-    },
-  },
 });

@@ -1,6 +1,7 @@
 import net from "node:net";
 import tls from "node:tls";
-import nodemailer from "nodemailer";
+import type { Socket } from "node:net";
+import type { TLSSocket } from "node:tls";
 
 const requiredSmtp = ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"] as const;
 
@@ -30,15 +31,16 @@ export function mailConfigured(): boolean {
 
 export function mailDiagnostics() {
   const port = Number(env("SMTP_PORT", "587") || "587");
+  const secure =
+    env("SMTP_SECURE", port === 465 ? "true" : "false").toLowerCase() ===
+      "true" || port === 465;
   return {
     mailConfigured: mailConfigured(),
     smtpConfigured: smtpConfigured(),
     resendConfigured: resendConfigured(),
     smtpHost: env("SMTP_HOST") || null,
     smtpPort: smtpConfigured() ? port : null,
-    smtpSecure:
-      env("SMTP_SECURE", port === 465 ? "true" : "false").toLowerCase() ===
-        "true" || port === 465,
+    smtpSecure: secure,
     smtpUserSet: Boolean(env("SMTP_USER")),
     smtpPassSet: Boolean(env("SMTP_PASS")),
     smtpFrom: env("SMTP_FROM") || env("SMTP_USER") || null,
@@ -46,10 +48,10 @@ export function mailDiagnostics() {
     railway: Boolean(
       process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID
     ),
+    transport: resendConfigured() ? "resend" : smtpConfigured() ? "smtp-direct" : null,
   };
 }
 
-/** TCP/TLS reachability check — does not authenticate. */
 export function probeSmtpPort(timeoutMs = 4_000): Promise<{
   reachable: boolean;
   error?: string;
@@ -72,62 +74,32 @@ export function probeSmtpPort(timeoutMs = 4_000): Promise<{
       resolve({ reachable, error, ms: Date.now() - started });
     };
 
-    const onConnect = (socket: { end: () => void; destroy: () => void }) => {
-      socket.end();
-      finish(true);
-    };
-
-    const onFail = (err: Error) => finish(false, err.message);
-
     if (secure) {
       const socket = tls.connect(
         { host, port, servername: host, timeout: timeoutMs },
-        () => onConnect(socket)
+        () => {
+          socket.end();
+          finish(true);
+        }
       );
-      socket.on("error", onFail);
+      socket.on("error", (err) => finish(false, err.message));
       socket.on("timeout", () => {
         socket.destroy();
         finish(false, "TLS connect timeout");
       });
-    } else {
-      const socket = net.connect({ host, port }, () => onConnect(socket));
-      socket.setTimeout(timeoutMs);
-      socket.on("error", onFail);
-      socket.on("timeout", () => {
-        socket.destroy();
-        finish(false, "TCP connect timeout");
-      });
+      return;
     }
-  });
-}
 
-function createTransport() {
-  const host = env("SMTP_HOST");
-  const port = Number(env("SMTP_PORT", "587") || "587");
-  const secure =
-    env("SMTP_SECURE", port === 465 ? "true" : "false").toLowerCase() ===
-      "true" || port === 465;
-  const user = env("SMTP_USER");
-  const pass = env("SMTP_PASS");
-
-  if (!host || !user || !pass) {
-    throw new Error("SMTP is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS.");
-  }
-
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth: { user, pass },
-    requireTLS: !secure && (port === 587 || port === 25),
-    connectionTimeout: 10_000,
-    greetingTimeout: 10_000,
-    socketTimeout: 15_000,
-    tls: {
-      servername: host,
-      rejectUnauthorized:
-        env("SMTP_TLS_REJECT_UNAUTHORIZED", "true").toLowerCase() !== "false",
-    },
+    const socket = net.connect({ host, port }, () => {
+      socket.end();
+      finish(true);
+    });
+    socket.setTimeout(timeoutMs);
+    socket.on("error", (err) => finish(false, err.message));
+    socket.on("timeout", () => {
+      socket.destroy();
+      finish(false, "TCP connect timeout");
+    });
   });
 }
 
@@ -137,26 +109,207 @@ export type MailPayload = {
   replyTo?: string;
 };
 
-function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
-  return new Promise<T>((resolve, reject) => {
-    const timer = setTimeout(() => {
-      reject(
-        new Error(
-          `${label} timed out after ${ms}ms (host=${env("SMTP_HOST")}:${env("SMTP_PORT", "587")}). If this persists on Railway Pro, redeploy once, or try SMTP_PORT=587 with SMTP_SECURE=false.`
-        )
+function extractAddress(value: string): string {
+  const match = value.match(/<([^>]+)>/);
+  return (match ? match[1] : value).trim();
+}
+
+function encodeSubject(subject: string): string {
+  if (/^[\x20-\x7E]*$/.test(subject)) return subject;
+  return `=?UTF-8?B?${Buffer.from(subject, "utf8").toString("base64")}?=`;
+}
+
+type SmtpSocket = Socket | TLSSocket;
+
+class SmtpSession {
+  private buffer = "";
+  private closed = false;
+
+  constructor(readonly socket: SmtpSocket) {
+    this.socket.setEncoding("utf8");
+    this.socket.on("data", (chunk: string | Buffer) => {
+      this.buffer += String(chunk);
+    });
+    this.socket.on("close", () => {
+      this.closed = true;
+    });
+  }
+
+  private writeLine(line: string) {
+    if (this.closed) throw new Error("SMTP connection closed");
+    this.socket.write(`${line}\r\n`);
+  }
+
+  private readResponse(timeoutMs: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const started = Date.now();
+      const tick = () => {
+        const chunks: string[] = [];
+        let offset = 0;
+        while (true) {
+          const next = this.buffer.indexOf("\r\n", offset);
+          if (next === -1) break;
+          const line = this.buffer.slice(offset, next);
+          chunks.push(line);
+          offset = next + 2;
+          if (/^\d{3} /.test(line)) {
+            this.buffer = this.buffer.slice(offset);
+            resolve(chunks.join("\r\n"));
+            return;
+          }
+        }
+        if (this.closed) {
+          reject(new Error(`SMTP closed early. Buffer: ${this.buffer.slice(0, 200)}`));
+          return;
+        }
+        if (Date.now() - started > timeoutMs) {
+          reject(new Error(`SMTP response timeout. Buffer: ${this.buffer.slice(0, 200)}`));
+          return;
+        }
+        setTimeout(tick, 15);
+      };
+      tick();
+    });
+  }
+
+  async command(ok: string | string[], line?: string, timeoutMs = 12_000) {
+    if (line !== undefined) this.writeLine(line);
+    const response = await this.readResponse(timeoutMs);
+    const allowed = Array.isArray(ok) ? ok : [ok];
+    if (!allowed.some((code) => response.startsWith(code))) {
+      throw new Error(
+        `SMTP error${line ? ` for "${line.split(" ")[0]}"` : ""}: ${response}`
       );
-    }, ms);
-    promise.then(
-      (value) => {
-        clearTimeout(timer);
-        resolve(value);
-      },
-      (err) => {
-        clearTimeout(timer);
-        reject(err);
-      }
-    );
+    }
+    return response;
+  }
+
+  destroy() {
+    try {
+      this.socket.destroy();
+    } catch {
+      /* ignore */
+    }
+  }
+}
+
+function openSocket(): Promise<SmtpSession> {
+  const host = env("SMTP_HOST");
+  const port = Number(env("SMTP_PORT", "587") || "587");
+  const secure =
+    env("SMTP_SECURE", port === 465 ? "true" : "false").toLowerCase() ===
+      "true" || port === 465;
+  const rejectUnauthorized =
+    env("SMTP_TLS_REJECT_UNAUTHORIZED", "true").toLowerCase() !== "false";
+
+  return new Promise((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(new Error(`SMTP connect timeout to ${host}:${port}`));
+    }, 10_000);
+
+    const fail = (err: Error) => {
+      clearTimeout(timer);
+      reject(err);
+    };
+
+    if (secure) {
+      // Attach readers immediately so the 220 banner is never missed.
+      const socket = tls.connect({
+        host,
+        port,
+        servername: host,
+        rejectUnauthorized,
+      });
+      const session = new SmtpSession(socket);
+      socket.once("secureConnect", () => {
+        session
+          .command("220")
+          .then(() => {
+            clearTimeout(timer);
+            resolve(session);
+          })
+          .catch(fail);
+      });
+      socket.on("error", fail);
+      return;
+    }
+
+    // Plain connection + STARTTLS (port 587)
+    const socket = net.connect({ host, port });
+    const bootstrap = new SmtpSession(socket);
+    socket.once("connect", () => {
+      bootstrap
+        .command("220")
+        .then(() => bootstrap.command("250", `EHLO vedha.ae`))
+        .then(() => bootstrap.command("220", "STARTTLS"))
+        .then(
+          () =>
+            new Promise<SmtpSession>((res, rej) => {
+              const secureSocket = tls.connect({
+                socket,
+                servername: host,
+                rejectUnauthorized,
+              });
+              const session = new SmtpSession(secureSocket);
+              secureSocket.once("secureConnect", () => res(session));
+              secureSocket.on("error", rej);
+            })
+        )
+        .then((session) => {
+          clearTimeout(timer);
+          resolve(session);
+        })
+        .catch(fail);
+    });
+    socket.on("error", fail);
   });
+}
+
+async function sendViaSmtpDirect(payload: MailPayload) {
+  const user = env("SMTP_USER");
+  const pass = env("SMTP_PASS");
+  const to = env("CONTACT_TO", "info@vedha.ae");
+  const fromHeader = env("SMTP_FROM", user);
+  const fromAddr = extractAddress(fromHeader);
+
+  if (!user || !pass || !fromAddr) {
+    throw new Error("SMTP_USER, SMTP_PASS, and SMTP_FROM/SMTP_USER are required.");
+  }
+
+  const smtp = await openSocket();
+
+  try {
+    // Banner already consumed during connect for both 465 and STARTTLS.
+    await smtp.command("250", "EHLO vedha.ae");
+    await smtp.command("334", "AUTH LOGIN");
+    await smtp.command("334", Buffer.from(user, "utf8").toString("base64"));
+    await smtp.command("235", Buffer.from(pass, "utf8").toString("base64"));
+    await smtp.command("250", `MAIL FROM:<${fromAddr}>`);
+    await smtp.command("250", `RCPT TO:<${extractAddress(to)}>`);
+    await smtp.command("354", "DATA");
+
+    const body = payload.text.replace(/\r?\n/g, "\r\n").replace(/^\./gm, "..");
+    const headers = [
+      `From: ${fromHeader}`,
+      `To: ${to}`,
+      payload.replyTo ? `Reply-To: ${payload.replyTo}` : null,
+      `Subject: ${encodeSubject(payload.subject)}`,
+      "MIME-Version: 1.0",
+      "Content-Type: text/plain; charset=utf-8",
+      "Content-Transfer-Encoding: 8bit",
+      "",
+      body,
+      ".",
+    ]
+      .filter((line): line is string => line !== null)
+      .join("\r\n");
+
+    smtp.socket.write(`${headers}\r\n`);
+    await smtp.command("250");
+    await smtp.command("221", "QUIT").catch(() => undefined);
+  } finally {
+    smtp.destroy();
+  }
 }
 
 async function sendViaResend(payload: MailPayload) {
@@ -186,38 +339,13 @@ async function sendViaResend(payload: MailPayload) {
   }
 }
 
-async function sendViaSmtp(payload: MailPayload) {
-  const to = env("CONTACT_TO", "info@vedha.ae");
-  const from = env("SMTP_FROM", env("SMTP_USER"));
-  if (!from) {
-    throw new Error("SMTP_FROM (or SMTP_USER) is required as the From address.");
-  }
-
-  const transport = createTransport();
-  try {
-    await withTimeout(
-      transport.sendMail({
-        from,
-        to,
-        replyTo: payload.replyTo || undefined,
-        subject: payload.subject,
-        text: payload.text,
-      }),
-      18_000,
-      "SMTP send"
-    );
-  } finally {
-    transport.close();
-  }
-}
-
 export async function sendContactMail(payload: MailPayload) {
   if (resendConfigured()) {
     await sendViaResend(payload);
     return;
   }
   if (smtpConfigured()) {
-    await sendViaSmtp(payload);
+    await sendViaSmtpDirect(payload);
     return;
   }
   throw new Error(
