@@ -116,30 +116,21 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ error: "Unknown form type." }, 400);
     }
 
-    const mailPayload = {
+    await sendContactMail({
       subject: `[VEDHA] ${subject}`,
       text,
       replyTo: email,
-    };
-
-    // Send after the HTTP response is on the wire. Awaiting SMTP here was
-    // getting cut by the Railway/Cloudflare edge (~4s) as a bare 502 even
-    // though TLS to Hostinger is reachable.
-    setImmediate(() => {
-      sendContactMail(mailPayload).catch((error) => {
-        console.error("Failed to send contact email:", error);
-      });
     });
     return json({ ok: true });
   } catch (error) {
-    console.error("Contact form error:", error);
-    const detail = error instanceof Error ? error.message : "Unknown error";
+    console.error("Failed to send contact email:", error);
+    const detail = error instanceof Error ? error.message : "Unknown mail error";
     return json(
       {
-        error: "Unable to accept enquiry right now. Please try again later.",
-        detail: detail.slice(0, 400),
+        error: "Unable to send email right now. Please try again later.",
+        detail: detail.slice(0, 500),
       },
-      500
+      502
     );
   }
 };

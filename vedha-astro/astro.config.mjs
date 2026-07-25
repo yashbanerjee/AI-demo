@@ -8,4 +8,9 @@ export default defineConfig({
   trailingSlash: 'always',
   output: 'server',
   adapter: node({ mode: 'standalone' }),
+  vite: {
+    ssr: {
+      external: ['nodemailer'],
+    },
+  },
 });
