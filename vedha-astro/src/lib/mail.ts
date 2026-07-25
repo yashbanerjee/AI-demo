@@ -172,7 +172,7 @@ class SmtpSession {
     });
   }
 
-  async command(ok: string | string[], line?: string, timeoutMs = 12_000) {
+  async command(ok: string | string[], line?: string, timeoutMs = 2_000) {
     if (line !== undefined) this.writeLine(line);
     const response = await this.readResponse(timeoutMs);
     const allowed = Array.isArray(ok) ? ok : [ok];

@@ -116,11 +116,24 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ error: "Unknown form type." }, 400);
     }
 
-    await sendContactMail({
-      subject: `[VEDHA] ${subject}`,
-      text,
-      replyTo: email,
-    });
+    // Railway/Cloudflare edges often cut idle origin responses ~3–4s.
+    // Fail fast with JSON instead of letting the proxy emit a bare 502.
+    await Promise.race([
+      sendContactMail({
+        subject: `[VEDHA] ${subject}`,
+        text,
+        replyTo: email,
+      }),
+      new Promise<never>((_, reject) => {
+        setTimeout(() => {
+          reject(
+            new Error(
+              `SMTP did not finish within 2.5s (host=${process.env.SMTP_HOST}:${process.env.SMTP_PORT || "587"}). Connection works, but the mail handshake is too slow or stuck — check SMTP_USER/SMTP_PASS for mail@ybx.ae, or try SMTP_PORT=587 with SMTP_SECURE=false.`
+            )
+          );
+        }, 2500);
+      }),
+    ]);
     return json({ ok: true });
   } catch (error) {
     console.error("Failed to send contact email:", error);
