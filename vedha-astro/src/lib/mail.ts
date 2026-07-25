@@ -4,18 +4,15 @@ const requiredSmtp = ["SMTP_HOST", "SMTP_USER", "SMTP_PASS"] as const;
 
 /** Runtime env only — Vite inlines import.meta.env at build time and strips custom keys. */
 function env(key: string, fallback = ""): string {
-  return String(process.env[key] ?? fallback).trim();
-}
-
-function onRailway(): boolean {
-  return Boolean(process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID);
-}
-
-/** SMTP hangs on Railway Hobby (ports blocked). Opt in with ALLOW_SMTP=true on Pro. */
-function smtpAllowed(): boolean {
-  if (env("ALLOW_SMTP").toLowerCase() === "true") return true;
-  if (env("ALLOW_SMTP").toLowerCase() === "false") return false;
-  return !onRailway();
+  let value = String(process.env[key] ?? fallback).trim();
+  // Railway/dotenv often stores values with wrapping quotes.
+  if (
+    (value.startsWith('"') && value.endsWith('"')) ||
+    (value.startsWith("'") && value.endsWith("'"))
+  ) {
+    value = value.slice(1, -1).trim();
+  }
+  return value;
 }
 
 export function smtpConfigured(): boolean {
@@ -27,7 +24,27 @@ export function resendConfigured(): boolean {
 }
 
 export function mailConfigured(): boolean {
-  return resendConfigured() || (smtpAllowed() && smtpConfigured());
+  return resendConfigured() || smtpConfigured();
+}
+
+export function mailDiagnostics() {
+  const port = Number(env("SMTP_PORT", "587") || "587");
+  return {
+    mailConfigured: mailConfigured(),
+    smtpConfigured: smtpConfigured(),
+    resendConfigured: resendConfigured(),
+    smtpHost: env("SMTP_HOST") || null,
+    smtpPort: smtpConfigured() ? port : null,
+    smtpSecure:
+      env("SMTP_SECURE", "false").toLowerCase() === "true" || port === 465,
+    smtpUserSet: Boolean(env("SMTP_USER")),
+    smtpPassSet: Boolean(env("SMTP_PASS")),
+    smtpFrom: env("SMTP_FROM") || env("SMTP_USER") || null,
+    contactTo: env("CONTACT_TO", "info@vedha.ae"),
+    railway: Boolean(
+      process.env.RAILWAY_ENVIRONMENT || process.env.RAILWAY_PROJECT_ID
+    ),
+  };
 }
 
 function createTransport() {
@@ -47,10 +64,13 @@ function createTransport() {
     port,
     secure,
     auth: { user, pass },
-    connectionTimeout: 4_000,
-    greetingTimeout: 4_000,
-    socketTimeout: 8_000,
+    // Port 587 expects STARTTLS; without this some hosts hang or reject.
+    requireTLS: !secure && port === 587,
+    connectionTimeout: 12_000,
+    greetingTimeout: 12_000,
+    socketTimeout: 20_000,
     tls: {
+      servername: host,
       rejectUnauthorized:
         env("SMTP_TLS_REJECT_UNAUTHORIZED", "true").toLowerCase() !== "false",
     },
@@ -62,6 +82,28 @@ export type MailPayload = {
   text: string;
   replyTo?: string;
 };
+
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => {
+      reject(
+        new Error(
+          `${label} timed out after ${ms}ms. Check SMTP_HOST/SMTP_PORT reachability from Railway (Pro may need a redeploy after upgrade).`
+        )
+      );
+    }, ms);
+    promise.then(
+      (value) => {
+        clearTimeout(timer);
+        resolve(value);
+      },
+      (err) => {
+        clearTimeout(timer);
+        reject(err);
+      }
+    );
+  });
+}
 
 async function sendViaResend(payload: MailPayload) {
   const apiKey = env("RESEND_API_KEY");
@@ -81,7 +123,7 @@ async function sendViaResend(payload: MailPayload) {
       subject: payload.subject,
       text: payload.text,
     }),
-    signal: AbortSignal.timeout(8_000),
+    signal: AbortSignal.timeout(12_000),
   });
 
   if (!res.ok) {
@@ -93,32 +135,39 @@ async function sendViaResend(payload: MailPayload) {
 async function sendViaSmtp(payload: MailPayload) {
   const to = env("CONTACT_TO", "info@vedha.ae");
   const from = env("SMTP_FROM", env("SMTP_USER"));
-  const transport = createTransport();
+  if (!from) {
+    throw new Error("SMTP_FROM (or SMTP_USER) is required as the From address.");
+  }
 
-  await transport.sendMail({
-    from,
-    to,
-    replyTo: payload.replyTo || undefined,
-    subject: payload.subject,
-    text: payload.text,
-  });
+  const transport = createTransport();
+  try {
+    await withTimeout(
+      transport.sendMail({
+        from,
+        to,
+        replyTo: payload.replyTo || undefined,
+        subject: payload.subject,
+        text: payload.text,
+      }),
+      25_000,
+      "SMTP send"
+    );
+  } finally {
+    transport.close();
+  }
 }
 
 export async function sendContactMail(payload: MailPayload) {
+  // Prefer Resend only when explicitly configured; otherwise use SMTP.
   if (resendConfigured()) {
     await sendViaResend(payload);
     return;
   }
-  if (smtpAllowed() && smtpConfigured()) {
+  if (smtpConfigured()) {
     await sendViaSmtp(payload);
     return;
   }
-  if (onRailway() && smtpConfigured() && !resendConfigured()) {
-    throw new Error(
-      "Railway blocks outbound SMTP on Hobby. Set RESEND_API_KEY, or set ALLOW_SMTP=true on a Pro plan."
-    );
-  }
   throw new Error(
-    "Email is not configured. Set RESEND_API_KEY or SMTP_HOST/SMTP_USER/SMTP_PASS."
+    "Email is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS (and optionally SMTP_FROM, CONTACT_TO)."
   );
 }

@@ -1,9 +1,8 @@
 import type { APIRoute } from "astro";
 import {
   mailConfigured,
-  resendConfigured,
+  mailDiagnostics,
   sendContactMail,
-  smtpConfigured,
 } from "../../lib/mail";
 
 export const prerender = false;
@@ -26,14 +25,8 @@ const json = (data: unknown, status = 200) =>
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-/** Lightweight status check used when debugging deploys. */
-export const GET: APIRoute = async () =>
-  json({
-    ok: true,
-    mailConfigured: mailConfigured(),
-    smtpConfigured: smtpConfigured(),
-    resendConfigured: resendConfigured(),
-  });
+/** Safe status + SMTP shape (no secrets) for debugging deploys. */
+export const GET: APIRoute = async () => json({ ok: true, ...mailDiagnostics() });
 
 export const POST: APIRoute = async ({ request }) => {
   try {
@@ -41,7 +34,7 @@ export const POST: APIRoute = async ({ request }) => {
       return json(
         {
           error:
-            "Email is not configured. Railway blocks outbound SMTP on Hobby — add RESEND_API_KEY in Railway variables (see .env.example). On Pro you can set ALLOW_SMTP=true with SMTP_* instead.",
+            "Email is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS on the server.",
         },
         503
       );
@@ -125,13 +118,11 @@ export const POST: APIRoute = async ({ request }) => {
   } catch (error) {
     console.error("Failed to send contact email:", error);
     const detail = error instanceof Error ? error.message : "Unknown mail error";
-    const looksBlocked =
-      /timeout|ETIMEDOUT|ECONNREFUSED|ECONNRESET|ESOCKET|AbortError/i.test(detail);
+    // Include detail so SMTP misconfig (auth, TLS, host) is visible while setting up.
     return json(
       {
-        error: looksBlocked
-          ? "Could not reach the mail server. Railway blocks outbound SMTP on Hobby — add RESEND_API_KEY, or upgrade to Pro for SMTP."
-          : "Unable to send email right now. Please try again later.",
+        error: "Unable to send email right now. Please try again later.",
+        detail: detail.slice(0, 400),
       },
       502
     );

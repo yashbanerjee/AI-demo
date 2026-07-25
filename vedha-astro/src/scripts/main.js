@@ -1447,7 +1447,8 @@
         }
         if (!res.ok) {
           throw new Error(
-            body.error ||
+            body.detail ||
+              body.error ||
               (res.status === 502 || res.status === 503
                 ? "Email service is unavailable. Check SMTP settings on the server, then try again."
                 : "Something went wrong. Please try again.")
