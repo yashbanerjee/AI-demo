@@ -1,25 +1,21 @@
 ---
 const slides = [
   {
-    webp: "/images/hero-slide-city.webp",
     src: "/images/hero-slide-city.jpg",
     alt: "Dubai city skyline at night",
     title: "Digital infrastructure",
   },
   {
-    webp: "/images/hero-slide-mountains.webp",
     src: "/images/hero-slide-mountains.jpg",
     alt: "Mountain range above a cloud layer",
     title: "Cloud intelligence",
   },
   {
-    webp: "/images/hero-slide-interchange.webp",
     src: "/images/hero-slide-interchange.jpg",
     alt: "Aerial view of a city interchange at night",
     title: "Connected systems",
   },
   {
-    webp: "/images/hero-slide-fields.webp",
     src: "/images/hero-slide-fields.jpg",
     alt: "Green agricultural fields",
     title: "Growth by design",
@@ -33,20 +29,17 @@ const slides = [
       {slides.map((slide, index) => (
         <figure
           class="hero-slideshow__slide"
-          style={`--slide-index: ${index}; --slide-image: url("${slide.webp}")`}
+          style={`--slide-index: ${index}; --slide-image: url("${slide.src}")`}
         >
-          <picture>
-            <source srcset={slide.webp} type="image/webp" />
-            <img
-              src={slide.src}
-              alt=""
-              width="1920"
-              height="1080"
-              decoding={index === 0 ? "sync" : "async"}
-              loading={index === 0 ? "eager" : "lazy"}
-              fetchpriority={index === 0 ? "high" : "low"}
-            />
-          </picture>
+          <img
+            src={slide.src}
+            alt=""
+            width="2400"
+            height="1600"
+            decoding={index === 0 ? "sync" : "async"}
+            loading={index === 0 ? "eager" : "lazy"}
+            fetchpriority={index === 0 ? "high" : "low"}
+          />
           <span class="hero-slideshow__veil"></span>
           <span class="hero-slideshow__mark"></span>
           <span class="hero-slideshow__title">{slide.title}</span>

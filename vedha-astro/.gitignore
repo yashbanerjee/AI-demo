@@ -28,3 +28,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# Original image sources for re-optimization
+public/images/_source/
+public/videos/*.src.jpg

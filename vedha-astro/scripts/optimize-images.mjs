@@ -1,11 +1,14 @@
 /**
- * Compress and resize public images for page-speed.
- * Usage: node scripts/optimize-images.mjs
+ * Build delivery images from originals in public/images/_source/ (or IMAGE_SOURCE_DIR).
  *
- * - Hero slides → max 1920w WebP + JPEG (quality ~72)
- * - Work cards → max 900w WebP (+ JPEG fallback for .png sources)
- * - Section photos → max 1600w WebP + recompressed JPEG
- * - Card thumbs → max 720w WebP for service grids
+ * Rules for sharpness:
+ * - Section photo JPEGs are copied from the master (no second lossy pass).
+ * - WebP is generated at high quality from the master.
+ * - Only heroes / posters / work cards / card thumbs are resized.
+ *
+ * Usage:
+ *   IMAGE_SOURCE_DIR=/path node scripts/optimize-images.mjs
+ *   node scripts/optimize-images.mjs
  */
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -14,6 +17,10 @@ import sharp from "sharp";
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 const imagesDir = path.join(root, "public", "images");
+const localSourceDir = path.join(imagesDir, "_source");
+const envSourceRoot = process.env.IMAGE_SOURCE_DIR
+  ? path.resolve(process.env.IMAGE_SOURCE_DIR)
+  : null;
 
 const heroSlides = [
   "hero-slide-city.jpg",
@@ -33,94 +40,158 @@ async function exists(file) {
   }
 }
 
-async function writeVariant(inputPath, outputPath, { width, quality = 72, format = "webp" }) {
-  const pipeline = sharp(inputPath).rotate().resize({
+async function resolveSource(relFromPublic) {
+  const candidates = [];
+  if (envSourceRoot) candidates.push(path.join(envSourceRoot, relFromPublic));
+  if (relFromPublic.startsWith("images/")) {
+    const base = path.basename(relFromPublic);
+    candidates.push(path.join(localSourceDir, base));
+    if (/\.jpe?g$/i.test(base)) {
+      candidates.push(path.join(localSourceDir, base.replace(/\.jpe?g$/i, ".png")));
+    }
+  }
+  if (relFromPublic.endsWith("hero-3d-poster.jpg")) {
+    candidates.push(path.join(root, "public", "videos", "hero-3d-poster.src.jpg"));
+  }
+  candidates.push(path.join(root, "public", relFromPublic));
+  for (const candidate of candidates) {
+    if (await exists(candidate)) return candidate;
+  }
+  return null;
+}
+
+async function writeResized(inputPath, outputPath, { width, quality, format }) {
+  let pipeline = sharp(inputPath, { failOn: "none" }).rotate().resize({
     width,
     height: width,
     fit: "inside",
     withoutEnlargement: true,
+    kernel: sharp.kernel.lanczos3,
   });
 
   if (format === "webp") {
-    await pipeline.webp({ quality, effort: 5 }).toFile(outputPath);
+    pipeline = pipeline.webp({ quality, effort: 4, smartSubsample: true });
   } else if (format === "jpeg") {
-    await pipeline.jpeg({ quality, mozjpeg: true }).toFile(outputPath);
-  } else if (format === "png") {
-    await pipeline.png({ quality, compressionLevel: 9 }).toFile(outputPath);
+    pipeline = pipeline.jpeg({
+      quality,
+      mozjpeg: true,
+      chromaSubsampling: "4:4:4",
+      trellisQuantisation: true,
+      overshootDeringing: true,
+    });
   }
 
+  await pipeline.toFile(outputPath);
   const before = (await fs.stat(inputPath)).size;
   const after = (await fs.stat(outputPath)).size;
-  const rel = path.relative(root, outputPath);
   console.log(
-    `${rel}: ${(before / 1024).toFixed(0)}KB → ${(after / 1024).toFixed(0)}KB`
+    `${path.relative(root, outputPath)}: ${(before / 1024).toFixed(0)}KB → ${(after / 1024).toFixed(0)}KB`
   );
+}
+
+async function writeWebpSameSize(inputPath, outputPath, quality) {
+  await sharp(inputPath, { failOn: "none" })
+    .rotate()
+    .webp({ quality, effort: 4, smartSubsample: true })
+    .toFile(outputPath);
+  const before = (await fs.stat(inputPath)).size;
+  const after = (await fs.stat(outputPath)).size;
+  console.log(
+    `${path.relative(root, outputPath)}: ${(before / 1024).toFixed(0)}KB → ${(after / 1024).toFixed(0)}KB`
+  );
+}
+
+async function copyMaster(inputPath, outputPath) {
+  await fs.copyFile(inputPath, outputPath);
+  const size = (await fs.stat(outputPath)).size;
+  console.log(`${path.relative(root, outputPath)}: copied master ${(size / 1024).toFixed(0)}KB`);
 }
 
 async function optimizeHero() {
   for (const name of heroSlides) {
-    const input = path.join(imagesDir, name);
-    if (!(await exists(input))) continue;
+    const input = await resolveSource(`images/${name}`);
+    if (!input) continue;
     const base = name.replace(/\.(jpe?g|png)$/i, "");
     const webp = path.join(imagesDir, `${base}.webp`);
     const jpeg = path.join(imagesDir, `${base}.jpg`);
-    // Write to temp then replace jpeg so we don't read/write same file mid-stream
     const tmpJpeg = path.join(imagesDir, `${base}.opt.jpg`);
-    await writeVariant(input, webp, { width: 1920, quality: 70, format: "webp" });
-    await writeVariant(input, tmpJpeg, { width: 1920, quality: 72, format: "jpeg" });
+    // 2400 ≈ 1.25×–2× common desktop widths; quality high enough to avoid haze
+    await writeResized(input, webp, { width: 2400, quality: 92, format: "webp" });
+    await writeResized(input, tmpJpeg, { width: 2400, quality: 90, format: "jpeg" });
     await fs.rename(tmpJpeg, jpeg);
   }
 }
 
 async function optimizeWork() {
   for (const name of workCards) {
-    const input = path.join(imagesDir, name);
-    if (!(await exists(input))) continue;
+    let input = await resolveSource(`images/${name}`);
+    if (!input && /\.png$/i.test(name)) {
+      input = await resolveSource(`images/${name.replace(/\.png$/i, ".jpg")}`);
+    }
+    if (!input) continue;
     const base = name.replace(/\.(jpe?g|png)$/i, "");
-    await writeVariant(input, path.join(imagesDir, `${base}.webp`), {
-      width: 900,
-      quality: 72,
+    await writeResized(input, path.join(imagesDir, `${base}.webp`), {
+      width: 1600,
+      quality: 92,
       format: "webp",
     });
     const tmp = path.join(imagesDir, `${base}.opt.jpg`);
-    await writeVariant(input, tmp, { width: 900, quality: 75, format: "jpeg" });
+    await writeResized(input, tmp, { width: 1600, quality: 90, format: "jpeg" });
     await fs.rename(tmp, path.join(imagesDir, `${base}.jpg`));
   }
 }
 
 async function optimizePhotos() {
-  const files = await fs.readdir(imagesDir);
-  for (const name of files) {
-    if (!/^photo-.*\.jpe?g$/i.test(name)) continue;
-    const input = path.join(imagesDir, name);
+  const listingDir = (await exists(localSourceDir))
+    ? localSourceDir
+    : envSourceRoot
+      ? path.join(envSourceRoot, "images")
+      : imagesDir;
+  const files = await fs.readdir(listingDir);
+  const photoNames = [
+    ...files.filter((n) => /^photo-.*\.(jpe?g|png)$/i.test(n)),
+    ...(await fs.readdir(imagesDir)).filter((n) => /^photo-.*\.jpe?g$/i.test(n)),
+  ];
+
+  const seen = new Set();
+  for (const name of photoNames) {
     const base = name.replace(/\.(jpe?g|png)$/i, "");
-    await writeVariant(input, path.join(imagesDir, `${base}.webp`), {
-      width: 1600,
-      quality: 72,
+    if (seen.has(base) || base.endsWith("-card")) continue;
+    seen.add(base);
+
+    const input = await resolveSource(`images/${name}`);
+    if (!input) continue;
+
+    // Keep the master JPEG — re-encoding already-compressed photos causes haze
+    const jpegOut = path.join(imagesDir, `${base}.jpg`);
+    if (path.resolve(input) !== path.resolve(jpegOut)) {
+      await copyMaster(input, jpegOut);
+    } else {
+      console.log(`${path.relative(root, jpegOut)}: already master`);
+    }
+
+    await writeWebpSameSize(input, path.join(imagesDir, `${base}.webp`), 92);
+    await writeResized(input, path.join(imagesDir, `${base}-card.webp`), {
+      width: 1400,
+      quality: 90,
       format: "webp",
     });
-    await writeVariant(input, path.join(imagesDir, `${base}-card.webp`), {
-      width: 720,
-      quality: 70,
-      format: "webp",
-    });
-    const tmp = path.join(imagesDir, `${base}.opt.jpg`);
-    await writeVariant(input, tmp, { width: 1600, quality: 74, format: "jpeg" });
-    await fs.rename(tmp, path.join(imagesDir, `${base}.jpg`));
   }
 }
 
 async function optimizePoster() {
+  const input = await resolveSource("videos/hero-3d-poster.jpg");
+  if (!input) return;
   const poster = path.join(root, "public", "videos", "hero-3d-poster.jpg");
-  if (!(await exists(poster))) return;
   const webp = path.join(root, "public", "videos", "hero-3d-poster.webp");
-  const tmp = path.join(root, "public", "videos", "hero-3d-poster.opt.jpg");
-  await writeVariant(poster, webp, { width: 1600, quality: 70, format: "webp" });
-  await writeVariant(poster, tmp, { width: 1600, quality: 72, format: "jpeg" });
-  await fs.rename(tmp, poster);
+  if (path.resolve(input) !== path.resolve(poster)) {
+    await copyMaster(input, poster);
+  }
+  await writeWebpSameSize(input, webp, 92);
 }
 
-console.log("Optimizing images…");
+console.log("Optimizing images (preserve masters, high-quality WebP)…");
+if (envSourceRoot) console.log(`Source: ${envSourceRoot}`);
 await optimizeHero();
 await optimizeWork();
 await optimizePhotos();
