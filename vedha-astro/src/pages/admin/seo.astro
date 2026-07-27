@@ -7,7 +7,15 @@ const saved = Astro.url.searchParams.has("saved");
 const error = Astro.url.searchParams.get("error");
 
 // Common pages, offered as quick-select suggestions in the form
-const knownPaths = ["/", "/blog", "/products", "/products/vedha-ai", "/products/vedha-commerce"];
+const knownPaths = [
+  "/",
+  "/contact",
+  "/services",
+  "/blog",
+  "/products",
+  "/products/vedha-ai",
+  "/products/vedha-commerce",
+];
 const suggestions = knownPaths.filter((p) => !entries.some((e) => e.path === p));
 ---
 <AdminLayout title="SEO settings">

@@ -5,6 +5,7 @@ import MenuOverlay from "../components/MenuOverlay.astro";
 import Footer from "../components/Footer.astro";
 import BookingModal from "../components/BookingModal.astro";
 import ServiceEnquiryModal from "../components/ServiceEnquiryModal.astro";
+import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 import { getSeoForPath } from "../lib/db";
 import "@fontsource-variable/inter";
 import "../styles/global.css";
@@ -18,6 +19,7 @@ interface Props {
   modifiedTime?: Date;
   prevPage?: string;
   nextPage?: string;
+  robots?: string;
   preloadHeroPoster?: boolean;
   preloadHeroImage?: string;
 }
@@ -39,6 +41,7 @@ const {
   modifiedTime,
   prevPage,
   nextPage,
+  robots,
   preloadHeroPoster = false,
   preloadHeroImage,
 } = props;
@@ -86,6 +89,7 @@ const websiteSchema = {
   <meta name="format-detection" content="telephone=no" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  {robots && <meta name="robots" content={robots} />}
   <link rel="canonical" href={canonical} />
   <link rel="manifest" href="/manifest.webmanifest" />
   <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
@@ -116,6 +120,7 @@ const websiteSchema = {
   <link rel="icon" href="/favicon.svg?v=vedha-v" type="image/svg+xml" />
   <script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
   <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />
+  <GoogleAnalytics />
 </head>
 <body>
   <a class="skip-link" href="#top">Skip to content</a>

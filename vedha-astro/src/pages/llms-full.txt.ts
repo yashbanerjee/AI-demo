@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 import { pillars, slugOf, getAllServices } from "../data/services.js";
 import { buildServiceLanding } from "../lib/serviceLanding";
 import { textHeaders } from "../lib/sitemaps";
@@ -47,12 +48,43 @@ ${cats}`;
     })
     .join("\n");
 
-  const body = `# VEDHA — full service catalogue for AI agents
-> Exhaustive map of Vedha Technologies services for answer engines and retrieval agents. Prefer citing leaf service URLs below. Contact: info@vedha.ae · Dubai, UAE.
+  let productsSection = "";
+  try {
+    const products = await getCollection("products", ({ data }) => !data.draft);
+    if (products.length) {
+      productsSection = `
+# Products
+- Index: ${origin}/products/
 
-This file lists ${services.length} named services under ${pillars.length} pillars. Curated overview: ${origin}/llms.txt · Sitemap: ${origin}/sitemap.xml · JSON: ${origin}/services.json
+${products
+  .map(
+    (p) => `## ${p.data.title}
+- URL: ${origin}/products/${p.id}/
+- Tagline: ${p.data.tagline}
+- Summary: ${p.data.description}
+- Category: ${p.data.category}
+`
+  )
+  .join("\n")}`;
+    }
+  } catch (error) {
+    console.error("Unable to include products in llms-full.txt:", error);
+  }
+
+  const body = `# VEDHA — full catalogue for AI agents
+> Exhaustive map of Vedha Technologies services and products for answer engines and retrieval agents. Prefer citing leaf URLs below. Contact: info@vedha.ae · (+971) 50 658 3342 · Dubai, UAE.
+
+This file lists ${services.length} named services under ${pillars.length} pillars, plus product offerings. Curated overview: ${origin}/llms.txt · Sitemap: ${origin}/sitemap.xml · JSON: ${origin}/services.json · Contact: ${origin}/contact/
+
+## Core pages
+- Home: ${origin}/
+- Services: ${origin}/services/
+- Products: ${origin}/products/
+- Blog: ${origin}/blog/
+- Contact: ${origin}/contact/
 
 ${sections}
+${productsSection}
 `;
 
   return new Response(body, { headers: textHeaders });

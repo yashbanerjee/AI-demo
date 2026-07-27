@@ -18,6 +18,7 @@ const formatDate = (date: Date) =>
 <BaseLayout
   title={currentPage > 1 ? `Blog — Page ${currentPage} — VEDHA` : "Blog — VEDHA"}
   description="Smart insights on web development, AI, e-commerce and digital transformation from the Vedha team in Dubai."
+  robots={currentPage > 1 ? "noindex, follow" : undefined}
   prevPage={currentPage > 1 ? (currentPage === 2 ? "/blog/" : `/blog/?page=${currentPage - 1}`) : undefined}
   nextPage={currentPage < lastPage ? `/blog/?page=${currentPage + 1}` : undefined}
 >

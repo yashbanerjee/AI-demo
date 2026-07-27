@@ -1,55 +1,86 @@
-# Allow public pages for search and answer engines
+# Vedha Technologies — crawler policy
+# Public site content is available for search and answer engines.
+# Private surfaces (/admin, /api) must not be crawled.
+
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api
 
 # AI / answer-engine crawlers (AEO)
+# Repeat Disallow rules — matching user-agent groups do not inherit from *.
 User-agent: GPTBot
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: ChatGPT-User
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: Claude-User
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: GoogleOther
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: Bytespider
 Allow: /
+Disallow: /admin
+Disallow: /api
 
 User-agent: CCBot
 Allow: /
+Disallow: /admin
+Disallow: /api
 
-# XML sitemaps
+User-agent: meta-externalagent
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+# Prefer the sitemap index (children are listed inside it)
 Sitemap: https://vedha.ae/sitemap.xml
-Sitemap: https://vedha.ae/sitemap-pages.xml
-Sitemap: https://vedha.ae/sitemap-services.xml
-Sitemap: https://vedha.ae/sitemap-products.xml
-Sitemap: https://vedha.ae/sitemap-blog.xml
 
 # AI agent maps (llms.txt convention)
 # https://vedha.ae/llms.txt
