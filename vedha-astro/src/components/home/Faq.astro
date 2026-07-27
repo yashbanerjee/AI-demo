@@ -29,14 +29,18 @@ const schema = faqPageSchema(questions);
 <!-- ===== FAQ ===== -->
 <section class="faq" id="faq">
   <figure class="scene-banner" data-scene-banner>
-    <img
-      src="/images/photo-mountain-mist.jpg"
-      alt=""
-      width="1920"
-      height="1280"
-      loading="lazy"
-      aria-hidden="true"
-    />
+    <picture>
+      <source srcset="/images/photo-mountain-mist.webp" type="image/webp" />
+      <img
+        src="/images/photo-mountain-mist.jpg"
+        alt=""
+        width="1600"
+        height="1067"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+    </picture>
     <h2 class="scene-banner__title">FAQ</h2>
     <figcaption class="scene-banner__meta">
       <span>Answers</span>
@@ -63,7 +67,7 @@ const schema = faqPageSchema(questions);
   </div>
   <aside class="faq__more" data-reveal>
     <figure class="faq__more-media" aria-hidden="true">
-      <img src="/images/photo-waterfall.jpg" alt="" width="1920" height="1162" loading="lazy" />
+      <img src="/images/photo-waterfall-card.webp" alt="" width="720" height="436" loading="lazy" decoding="async" />
     </figure>
     <div class="faq__more-copy">
       <p class="kicker">(Looking for more?)</p>

@@ -12,7 +12,8 @@
     "astro": "astro",
     "db:start": "node db/start.mjs",
     "start": "node dist/server/entry.mjs",
-    "icons": "node scripts/generate-pwa-icons.mjs"
+    "icons": "node scripts/generate-pwa-icons.mjs",
+    "optimize:images": "node scripts/optimize-images.mjs"
   },
   "dependencies": {
     "@astrojs/node": "^11.0.2",

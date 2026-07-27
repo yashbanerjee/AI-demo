@@ -10,14 +10,18 @@ const formatDate = (date: Date) =>
 <!-- ===== Blog ===== -->
 <section class="blog" id="news">
   <figure class="scene-banner" data-scene-banner>
-    <img
-      src="/images/photo-blue-lake.jpg"
-      alt=""
-      width="1920"
-      height="1280"
-      loading="lazy"
-      aria-hidden="true"
-    />
+    <picture>
+      <source srcset="/images/photo-blue-lake.webp" type="image/webp" />
+      <img
+        src="/images/photo-blue-lake.jpg"
+        alt=""
+        width="1600"
+        height="1067"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+    </picture>
     <h2 class="scene-banner__title">Smart insights.</h2>
     <figcaption class="scene-banner__meta">
       <span>Blog</span>

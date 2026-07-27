@@ -5,16 +5,16 @@ const totalCategories = pillars.reduce((n, p) => n + p.categories.length, 0);
 
 /* HD natural-landscape photography for practice cards — cycled per category */
 const practicePhotos = [
-  "/images/photo-moraine-lake.jpg",
-  "/images/photo-mountain-mist.jpg",
-  "/images/photo-waterfall.jpg",
-  "/images/photo-forest-light.jpg",
-  "/images/photo-cliff-coast.jpg",
-  "/images/photo-lake-reflection.jpg",
-  "/images/photo-alpine-glow.jpg",
-  "/images/photo-misty-forest.jpg",
-  "/images/photo-lake-jetty.jpg",
-  "/images/photo-moon-peaks.jpg",
+  "/images/photo-moraine-lake-card.webp",
+  "/images/photo-mountain-mist-card.webp",
+  "/images/photo-waterfall-card.webp",
+  "/images/photo-forest-light-card.webp",
+  "/images/photo-cliff-coast-card.webp",
+  "/images/photo-lake-reflection-card.webp",
+  "/images/photo-alpine-glow-card.webp",
+  "/images/photo-misty-forest-card.webp",
+  "/images/photo-lake-jetty-card.webp",
+  "/images/photo-moon-peaks-card.webp",
 ];
 
 /* Text fill vs band wash — paired opposites (warm text / cool box, etc.) */
@@ -57,14 +57,18 @@ const blurbThemes = [
 <!-- ===== Services: pillar tabs + practice grid ===== -->
 <section class="services" id="services">
   <figure class="scene-banner" data-scene-banner>
-    <img
-      src="/images/photo-ridge-mist.jpg"
-      alt=""
-      width="1920"
-      height="1119"
-      loading="lazy"
-      aria-hidden="true"
-    />
+    <picture>
+      <source srcset="/images/photo-ridge-mist.webp" type="image/webp" />
+      <img
+        src="/images/photo-ridge-mist.jpg"
+        alt=""
+        width="1600"
+        height="933"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+    </picture>
     <h2 class="scene-banner__title">Services <sup>({totalCategories})</sup></h2>
     <figcaption class="scene-banner__meta">
       <span>{pillars.length} pillars</span>
@@ -137,9 +141,10 @@ const blurbThemes = [
                     <img
                       src={practicePhotos[ci % practicePhotos.length]}
                       alt=""
-                      width="1920"
-                      height="1280"
+                      width="720"
+                      height="480"
                       loading="lazy"
+                      decoding="async"
                       aria-hidden="true"
                     />
                     <span class="svc-card__count">({cat.services.length})</span>

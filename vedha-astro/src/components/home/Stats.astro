@@ -38,14 +38,18 @@ const cards = [
 <!-- ===== Stats ===== -->
 <section class="stats" id="stats">
   <figure class="scene-banner" data-scene-banner>
-    <img
-      src="/images/photo-alpine-glow.jpg"
-      alt=""
-      width="1920"
-      height="1282"
-      loading="lazy"
-      aria-hidden="true"
-    />
+    <picture>
+      <source srcset="/images/photo-alpine-glow.webp" type="image/webp" />
+      <img
+        src="/images/photo-alpine-glow.jpg"
+        alt=""
+        width="1600"
+        height="1068"
+        loading="lazy"
+        decoding="async"
+        aria-hidden="true"
+      />
+    </picture>
     <h2 class="scene-banner__title">Vedha stands behind the data.</h2>
     <figcaption class="scene-banner__meta">
       <span>Outcomes</span>

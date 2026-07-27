@@ -1,9 +1,29 @@
 ---
 const slides = [
-  { src: "/images/hero-slide-city.jpg", alt: "Dubai city skyline at night", title: "Digital infrastructure" },
-  { src: "/images/hero-slide-mountains.jpg", alt: "Mountain range above a cloud layer", title: "Cloud intelligence" },
-  { src: "/images/hero-slide-interchange.jpg", alt: "Aerial view of a city interchange at night", title: "Connected systems" },
-  { src: "/images/hero-slide-fields.jpg", alt: "Green agricultural fields", title: "Growth by design" },
+  {
+    webp: "/images/hero-slide-city.webp",
+    src: "/images/hero-slide-city.jpg",
+    alt: "Dubai city skyline at night",
+    title: "Digital infrastructure",
+  },
+  {
+    webp: "/images/hero-slide-mountains.webp",
+    src: "/images/hero-slide-mountains.jpg",
+    alt: "Mountain range above a cloud layer",
+    title: "Cloud intelligence",
+  },
+  {
+    webp: "/images/hero-slide-interchange.webp",
+    src: "/images/hero-slide-interchange.jpg",
+    alt: "Aerial view of a city interchange at night",
+    title: "Connected systems",
+  },
+  {
+    webp: "/images/hero-slide-fields.webp",
+    src: "/images/hero-slide-fields.jpg",
+    alt: "Green agricultural fields",
+    title: "Growth by design",
+  },
 ];
 ---
 
@@ -13,9 +33,20 @@ const slides = [
       {slides.map((slide, index) => (
         <figure
           class="hero-slideshow__slide"
-          style={`--slide-index: ${index}; --slide-image: url("${slide.src}")`}
+          style={`--slide-index: ${index}; --slide-image: url("${slide.webp}")`}
         >
-          <img src={slide.src} alt="" width="1024" height="683" fetchpriority={index === 0 ? "high" : undefined} />
+          <picture>
+            <source srcset={slide.webp} type="image/webp" />
+            <img
+              src={slide.src}
+              alt=""
+              width="1920"
+              height="1080"
+              decoding={index === 0 ? "sync" : "async"}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "low"}
+            />
+          </picture>
           <span class="hero-slideshow__veil"></span>
           <span class="hero-slideshow__mark"></span>
           <span class="hero-slideshow__title">{slide.title}</span>
@@ -27,7 +58,7 @@ const slides = [
 
     <div class="hero-slideshow__end" id="heroSlideshowEnd" aria-hidden="true">
       <div class="hero-slideshow__end-inner">
-        <img class="hero-slideshow__wordmark" src="/images/vedha-logo.png" alt="VEDHA" width="1483" height="158" />
+        <img class="hero-slideshow__wordmark" src="/images/vedha-logo.png" alt="VEDHA" width="740" height="79" decoding="async" />
         <div class="hero-slideshow__ctas">
           <a class="btn btn--dark" href="/#book" data-book-consultation><span>Book free consultation</span></a>
           <a class="btn btn--ghost" href="/#enquiry"><span>Send us an enquiry</span></a>

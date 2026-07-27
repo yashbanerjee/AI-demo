@@ -1355,18 +1355,22 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
 .svc-panel {
   grid-area: 1 / 1;
   visibility: hidden;
-  opacity: 0; transform: translateY(0.8rem);
+  opacity: 0;
+  transform: translateY(0.8rem);
   height: 0;
   overflow: hidden;
   pointer-events: none;
+  content-visibility: hidden;
   transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out), visibility 0s 0.45s;
 }
 .svc-panel.is-active {
   visibility: visible;
-  opacity: 1; transform: none;
+  opacity: 1;
+  transform: none;
   height: auto;
   overflow: visible;
   pointer-events: auto;
+  content-visibility: visible;
   transition: opacity 0.5s var(--ease-out) 0.08s, transform 0.5s var(--ease-out) 0.08s, visibility 0s;
 }
 /* Title band — contrasting wash + sparse dots, full width of main column */
