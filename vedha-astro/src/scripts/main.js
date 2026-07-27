@@ -11,6 +11,15 @@
   const hoverCapable = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   const clamp01 = (v) => Math.min(1, Math.max(0, v));
   const lerp = (a, b, t) => a + (b - a) * t;
+
+  /** Fire a GA4 event when gtag is available (no-op otherwise). */
+  const track = (eventName, params = {}) => {
+    try {
+      if (typeof window.gtag === "function") {
+        window.gtag("event", eventName, params);
+      }
+    } catch {}
+  };
   // How far a section has been scrolled through, 0 → 1
   const progressOf = (el) => {
     const rect = el.getBoundingClientRect();
@@ -1264,6 +1273,10 @@
     requestAnimationFrame(() => bookingModal.classList.add("is-open"));
     const closeBtn = bookingModal.querySelector("[data-booking-close].booking-modal__close");
     if (closeBtn) closeBtn.focus();
+    track("book_consultation_open", {
+      event_category: "engagement",
+      page_path: location.pathname,
+    });
   };
   const closeBooking = () => {
     if (!bookingModal || bookingModal.hidden) return;
@@ -1337,6 +1350,12 @@
     });
     const nameInput = enquiryForm.querySelector('[name="name"]');
     if (nameInput) nameInput.focus();
+    track("service_enquiry_open", {
+      event_category: "engagement",
+      service_category: category || "(none)",
+      service_name: service || "(none)",
+      page_path: location.pathname,
+    });
   };
   const closeEnquiry = () => {
     if (!enquiryModal || enquiryModal.hidden) return;
@@ -1467,10 +1486,11 @@
       if (submitBtn) submitBtn.disabled = true;
 
       try {
+        const payload = formPayload(form, type);
         const res = await fetch("/api/contact/", {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: JSON.stringify(formPayload(form, type)),
+          body: JSON.stringify(payload),
         });
         const raw = await res.text();
         let body = {};
@@ -1497,6 +1517,20 @@
 
         if (label) label.btn.textContent = "Sent";
         showFormNote(form, successMessage, false);
+
+        track("generate_lead", {
+          event_category: "conversion",
+          form_type: type,
+          service_name: payload.service || undefined,
+          service_category: payload.category || undefined,
+          page_path: location.pathname,
+        });
+        track("form_submit", {
+          event_category: "conversion",
+          form_type: type,
+          form_id: form.id || undefined,
+          page_path: location.pathname,
+        });
 
         if (form.id === "svcEnquiry") {
           const name = form.querySelector('[name="name"]');
