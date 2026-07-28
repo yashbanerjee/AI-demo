@@ -21,8 +21,7 @@ body:has(.lp) .site-header__nav {
 .lp .lp-build,
 .lp .lp-work,
 .lp .lp-faq,
-.lp .lp-cta,
-.lp .lp-others {
+.lp .lp-cta {
   max-width: calc(var(--lp-content-max) + 2 * var(--gutter));
   margin-inline: auto;
   width: 100%;
@@ -480,9 +479,13 @@ body:has(.lp) .site-header__nav {
 }
 
 /* —— Single testimonial —— */
-.lp-testimonial {
-  min-height: auto;
-  padding-block: clamp(4rem, 10vh, 7rem);
+.testimonials.lp-testimonial {
+  min-height: 0 !important;
+  height: auto !important;
+  justify-content: flex-start !important;
+  gap: clamp(1.1rem, 2.5vh, 1.6rem) !important;
+  padding-block: clamp(2.75rem, 7vh, 4.5rem);
+  contain-intrinsic-size: auto 280px;
 }
 
 .lp-testimonial__quote {
@@ -490,6 +493,11 @@ body:has(.lp) .site-header__nav {
   transform: none;
   pointer-events: auto;
   position: relative;
+  margin-top: 0;
+}
+
+.lp-testimonial .t-slide footer {
+  margin-top: 1.35rem;
 }
 
 /* —— Compact process (no scroll scrub) —— */
@@ -656,7 +664,6 @@ body:has(.lp) .site-header__nav {
   .lp .lp-work,
   .lp .lp-faq,
   .lp .lp-cta,
-  .lp .lp-others,
   .lp .lp-logos {
     padding-block: clamp(2.6rem, 7vh, 3.75rem);
   }
@@ -739,15 +746,13 @@ body:has(.lp) .site-header__nav {
     font-size: 1.25rem !important;
   }
 
-  /* Build / others cards */
-  .lp-build__card,
-  .lp-others__card {
+  /* Build cards */
+  .lp-build__card {
     min-height: 0;
     padding: 1.15rem 1.2rem;
   }
 
-  .lp-build__card p,
-  .lp-others__card p {
+  .lp-build__card p {
     max-width: none;
   }
 
@@ -859,7 +864,6 @@ body:has(.lp) .site-header__nav {
 
   /* Reduce paint cost */
   .lp .lp-build,
-  .lp .lp-others,
   .lp .lp-process,
   .lp .lp-work,
   .lp .lp-why {
@@ -869,7 +873,6 @@ body:has(.lp) .site-header__nav {
 
   /* Softer hover transforms on touch */
   .lp-build__card.is-visible:hover,
-  .lp-others__card.is-visible:hover,
   .lp-process__step:hover {
     transform: none;
     box-shadow: none;

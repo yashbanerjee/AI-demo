@@ -65,7 +65,7 @@ const proof = ["120+ projects delivered"];
         </span>
       </a>
       <a
-        class="btn btn--ghost btn--ghost-on-dark lp-btn-wa"
+        class="btn lp-btn-wa"
         href={whatsappHref}
         target="_blank"
         rel="noopener noreferrer"
@@ -186,25 +186,40 @@ const proof = ["120+ projects delivered"];
   }
 
   .lp-hero__ctas {
-    align-items: stretch !important;
+    align-items: center !important;
   }
 
-  .lp-hero__ctas .btn {
-    min-height: 3rem !important;
-    height: 3rem;
-    padding: 0 1.5em !important;
-    box-sizing: border-box;
+  .lp-hero__ctas .btn.lp-btn-book,
+  .lp-hero__ctas .btn.lp-btn-wa {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    height: 48px !important;
+    min-height: 48px !important;
+    max-height: 48px !important;
+    padding: 0 1.45rem !important;
     font-size: 0.9rem !important;
     line-height: 1 !important;
+    border-width: 1px !important;
+    border-style: solid !important;
   }
 
   .lp-hero__ctas .lp-btn-inner {
-    line-height: 1;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    line-height: 1 !important;
+    transform: none !important;
   }
 
   .lp-hero__ctas .lp-btn-icon {
-    width: 1rem;
-    height: 1rem;
+    width: 16px !important;
+    height: 16px !important;
+  }
+
+  .lp-hero__ctas .btn > span {
+    transform: none !important;
   }
 
   .lp-hero__media img {
@@ -268,8 +283,8 @@ const proof = ["120+ projects delivered"];
   }
 
   .lp-btn-wa {
-    background: rgba(255, 255, 255, 0.96) !important;
-    border: 1px solid transparent !important;
+    background: #fff !important;
+    border-color: rgba(255, 255, 255, 0.9) !important;
     color: #111 !important;
     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
     backdrop-filter: none;
@@ -278,7 +293,7 @@ const proof = ["120+ projects delivered"];
   .lp-btn-wa:hover {
     background: #fff !important;
     color: #111 !important;
-    border-color: transparent !important;
+    border-color: #fff !important;
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34);
   }
 
@@ -441,11 +456,18 @@ const proof = ["120+ projects delivered"];
       margin-bottom: 1rem !important;
     }
 
-    .lp-hero__ctas .btn {
+    .lp-hero__ctas .btn.lp-btn-book,
+    .lp-hero__ctas .btn.lp-btn-wa {
       width: 100%;
-      min-height: 3rem !important;
-      height: 3rem;
+      height: 48px !important;
+      min-height: 48px !important;
+      max-height: 48px !important;
       justify-content: center;
+    }
+
+    .lp-btn-wa {
+      background: #fff !important;
+      color: #111 !important;
     }
 
     .lp-hero__trust {
@@ -479,16 +501,6 @@ const proof = ["120+ projects delivered"];
 
     .lp-hero__media img {
       transform: scale(1.04) !important;
-    }
-
-    .btn--ghost-on-dark {
-      backdrop-filter: none;
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .lp-btn-wa {
-      background: #fff !important;
-      color: #111 !important;
     }
   }
 </style>

@@ -17,7 +17,29 @@
 </section>
 
 <style is:global>
+  .testimonials.lp-testimonial {
+    min-height: 0 !important;
+    height: auto !important;
+    justify-content: flex-start !important;
+    gap: clamp(1.1rem, 2.5vh, 1.6rem) !important;
+    padding-block: clamp(2.75rem, 7vh, 4.5rem) !important;
+    contain-intrinsic-size: auto 280px !important;
+  }
+
   .lp-testimonial__quote {
     grid-template-columns: 1fr !important;
+    margin-top: 0 !important;
+  }
+
+  .lp-testimonial .lp-section-head {
+    margin-bottom: 0.35rem !important;
+  }
+
+  .lp-testimonial .t-slide footer {
+    margin-top: 1.35rem !important;
+  }
+
+  .lp-testimonial .t-slide p {
+    font-size: clamp(1.2rem, 4.6vw, 2rem) !important;
   }
 </style>

@@ -9,7 +9,6 @@ import Testimonial from "../../components/lp/Testimonial.astro";
 import HowItWorks from "../../components/lp/HowItWorks.astro";
 import Faq from "../../components/lp/Faq.astro";
 import FinalCta from "../../components/lp/FinalCta.astro";
-import OtherServices from "../../components/lp/OtherServices.astro";
 import { breadcrumbSchema, serviceSchema } from "../../lib/schema";
 
 const pagePath = "/web-development-dubai/";
@@ -56,7 +55,6 @@ const schemas = [
     <HowItWorks />
     <Faq />
     <FinalCta />
-    <OtherServices />
   </div>
   {schemas.map((schema) => (
     <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
