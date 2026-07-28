@@ -18,8 +18,25 @@
       if (typeof window.gtag === "function") {
         window.gtag("event", eventName, params);
       }
-    } catch {}
+    } catch (_) {
+      /* ignore analytics failures */
+    }
   };
+
+  const isWebDevLp = () =>
+    location.pathname.includes("/web-development-dubai");
+
+  const trackLpCta = (ctaType, locationLabel) => {
+    if (!isWebDevLp()) return;
+    track("lp_cta_click", {
+      event_category: "conversion",
+      cta_type: ctaType,
+      location: locationLabel || undefined,
+      page_path: location.pathname,
+      campaign: "web-development-dubai",
+    });
+  };
+
   // How far a section has been scrolled through, 0 → 1
   const progressOf = (el) => {
     const rect = el.getBoundingClientRect();
@@ -1260,7 +1277,7 @@
   const bookingModal = document.getElementById("bookingModal");
   const bookingFrame = document.getElementById("bookingCalendar");
   let bookingLastFocus = null;
-  const openBooking = () => {
+  const openBooking = (sourceEl) => {
     if (!bookingModal) return;
     bookingLastFocus = document.activeElement;
     // Lazy-load the calendar iframe the first time the modal opens
@@ -1273,10 +1290,15 @@
     requestAnimationFrame(() => bookingModal.classList.add("is-open"));
     const closeBtn = bookingModal.querySelector("[data-booking-close].booking-modal__close");
     if (closeBtn) closeBtn.focus();
+    const locationLabel =
+      (sourceEl && sourceEl.getAttribute && sourceEl.getAttribute("data-track-location")) ||
+      undefined;
     track("book_consultation_open", {
-      event_category: "engagement",
+      event_category: "conversion",
+      location: locationLabel,
       page_path: location.pathname,
     });
+    trackLpCta("book_consultation", locationLabel);
   };
   const closeBooking = () => {
     if (!bookingModal || bookingModal.hidden) return;
@@ -1293,7 +1315,7 @@
   document.querySelectorAll("[data-book-consultation], a[href$='#book']").forEach((el) => {
     el.addEventListener("click", (e) => {
       e.preventDefault();
-      openBooking();
+      openBooking(el);
       if (location.hash !== "#book") {
         history.pushState(null, "", "#book");
       }
@@ -1557,6 +1579,17 @@
           form_id: form.id || undefined,
           page_path: location.pathname,
         });
+        if (type === "lp-enquiry") {
+          track("lp_lead", {
+            event_category: "conversion",
+            form_type: type,
+            page_path: location.pathname,
+            campaign: "web-development-dubai",
+            has_email: Boolean(payload.email),
+            has_phone: Boolean(payload.phone),
+          });
+          trackLpCta("form_submit", "enquiry_form");
+        }
 
         if (form.id === "svcEnquiry") {
           const name = form.querySelector('[name="name"]');
@@ -1589,11 +1622,13 @@
   // === Landing-page WhatsApp CTA tracking ===
   document.querySelectorAll("[data-track='whatsapp_click']").forEach((el) => {
     el.addEventListener("click", () => {
+      const locationLabel = el.getAttribute("data-track-location") || undefined;
       track("whatsapp_click", {
         event_category: "conversion",
-        location: el.getAttribute("data-track-location") || undefined,
+        location: locationLabel,
         page_path: location.pathname,
       });
+      trackLpCta("whatsapp", locationLabel);
     });
   });
 })();

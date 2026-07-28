@@ -14,7 +14,14 @@ const whatsappHref =
       </p>
     </header>
     <div class="lp-cta__actions" data-reveal>
-      <button type="button" class="btn btn--dark" data-book-consultation id="book">
+      <button
+        type="button"
+        class="btn btn--dark"
+        data-book-consultation
+        data-track="book_consultation"
+        data-track-location="final_cta"
+        id="book"
+      >
         <span class="lp-btn-inner">
           <svg class="lp-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.75" />
@@ -110,7 +117,13 @@ const whatsappHref =
 </section>
 
 <aside class="lp-sticky" id="lpSticky" aria-label="Quick contact">
-  <a class="btn btn--dark" href="#book" data-book-consultation>
+  <a
+    class="btn btn--dark"
+    href="#book"
+    data-book-consultation
+    data-track="book_consultation"
+    data-track-location="sticky"
+  >
     <span class="lp-btn-inner">
       <svg class="lp-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.75" />
