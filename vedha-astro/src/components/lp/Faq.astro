@@ -1,0 +1,48 @@
+---
+import { faqPageSchema } from "../../lib/schema";
+
+const questions = [
+  {
+    question: "How much does it cost?",
+    answer:
+      "Scoped to your needs, with transparent pricing. We quote based on business goals and technical requirements — you pay for what your business actually needs.",
+  },
+  {
+    question: "How long does it take?",
+    answer:
+      "Most corporate websites launch in weeks, not months. Complex platforms take longer — we share a clear timeline after discovery, and our process typically cuts two weeks of handoff delay.",
+  },
+  {
+    question: "Do you work with businesses outside Dubai?",
+    answer:
+      "Yes. While based in Dubai, we work with businesses across the UAE and internationally, with processes designed for smooth remote collaboration.",
+  },
+  {
+    question: "Who actually builds it?",
+    answer:
+      "Senior engineers, start to finish. No junior handoffs and no outsourcing — the team you meet is the team that ships.",
+  },
+];
+const schema = faqPageSchema(questions);
+---
+
+<section class="faq lp-faq" id="faq">
+  <header class="lp-section-head" data-reveal>
+    <p class="kicker">(FAQ)</p>
+    <h2 class="lp-section-head__title">Straight answers.</h2>
+    <p class="lp-section-head__sub lp-section-head__sub--wide">The doubts that usually sit between you and the button.</p>
+  </header>
+  <div class="faq__list">
+    {questions.map((q, i) => (
+      <details class="faq__item" data-reveal>
+        <summary>
+          <span>{String(i + 1).padStart(2, "0")}</span>
+          {q.question}
+          <i aria-hidden="true"></i>
+        </summary>
+        <p>{q.answer}</p>
+      </details>
+    ))}
+  </div>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+</section>

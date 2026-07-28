@@ -1,0 +1,65 @@
+---
+const projects = [
+  {
+    title: "COP 28 UAE",
+    meta: "(App · Platform)",
+    desc: "A unified app and platform for the global climate summit.",
+    img: "/images/work-cop28.jpg",
+    alt: "COP 28 UAE unified app and platform case study",
+    w: 900,
+    h: 900,
+  },
+  {
+    title: "DET",
+    meta: "(AI · Events)",
+    desc: "An AI-assisted digital ecosystem for Dubai’s economy and tourism events.",
+    img: "/images/work-det.jpg",
+    alt: "Dubai Economy & Tourism digital ecosystem case study",
+    w: 900,
+    h: 900,
+  },
+  {
+    title: "DUNKIN’",
+    meta: "(Mobile · Web)",
+    desc: "Mobile ordering and web journeys built for speed and everyday loyalty.",
+    img: "/images/work-dunkin.jpg",
+    alt: "Dunkin' mobile and web platform case study",
+    w: 900,
+    h: 900,
+  },
+];
+---
+
+<section class="work lp-work" id="work">
+  <header class="lp-section-head" data-reveal>
+    <p class="kicker">(Selected work)</p>
+    <h2 class="lp-section-head__title">Selected work.</h2>
+    <p class="lp-section-head__sub lp-section-head__sub--wide">Web platforms for brands that expect more — Dubai and beyond.</p>
+  </header>
+  <div class="work__grid lp-work__grid">
+    {projects.map((project) => (
+      <article class="work-card" data-reveal>
+        <figure>
+          <picture>
+            <img
+              src={project.img}
+              alt={project.alt}
+              width={project.w}
+              height={project.h}
+              loading="lazy"
+              decoding="async"
+              sizes="(max-width: 48rem) 100vw, 33vw"
+            />
+          </picture>
+        </figure>
+        <div class="work-card__meta">
+          <p class="work-card__title">
+            <strong>{project.title}</strong>
+            <span>{project.meta}</span>
+          </p>
+          <p class="work-card__desc">{project.desc}</p>
+        </div>
+      </article>
+    ))}
+  </div>
+</section>

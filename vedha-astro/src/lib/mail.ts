@@ -278,7 +278,9 @@ export function buildUserConfirmation(opts: {
     "",
     "Thank you for contacting Vedha Technologies.",
     "",
-    "We have received your request and will contact you within 48 hours to discuss more about the solutions.",
+    opts.type === "lp-enquiry"
+      ? "We have received your request and will reply within one business day."
+      : "We have received your request and will contact you within 48 hours to discuss more about the solutions.",
     "",
     "If you need to add anything in the meantime, reply to this email or write to info@vedha.ae.",
     "",
@@ -290,6 +292,8 @@ export function buildUserConfirmation(opts: {
     subject: "We received your request — Vedha",
     text,
     message:
-      "Thank you. We have received your request and will contact you within 48 hours to discuss solutions.",
+      opts.type === "lp-enquiry"
+        ? "Thank you. We have received your request and will reply within one business day."
+        : "Thank you. We have received your request and will contact you within 48 hours to discuss solutions.",
   };
 }

@@ -13,10 +13,13 @@ type Body = {
   type?: string;
   name?: string;
   email?: string;
+  contact?: string;
+  phone?: string;
   service?: string;
   category?: string;
   description?: string;
   message?: string;
+  budget?: string;
 };
 
 const json = (data: unknown, status = 200) =>
@@ -56,13 +59,40 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const type = String(body.type || "").trim();
-    const email = String(body.email || "").trim();
     const name = String(body.name || "").trim();
     const service = String(body.service || "").trim();
     const category = String(body.category || "").trim();
     const description = String(body.description || body.message || "").trim();
+    const budget = String(body.budget || "").trim();
+    const contactRaw = String(body.contact || "").trim();
+    const phoneRaw = String(body.phone || "").trim();
 
-    if (!email || !isEmail(email)) {
+    let email = String(body.email || "").trim();
+    let phone = phoneRaw;
+
+    if (contactRaw) {
+      if (isEmail(contactRaw)) {
+        email = contactRaw;
+      } else {
+        phone = contactRaw;
+      }
+    }
+
+    const hasEmail = Boolean(email && isEmail(email));
+    const hasPhone = Boolean(phone);
+
+    if (type === "newsletter") {
+      if (!hasEmail) {
+        return json({ error: "A valid email is required." }, 400);
+      }
+    } else if (type === "lp-enquiry") {
+      if (!hasEmail && !hasPhone) {
+        return json({ error: "Email or WhatsApp number is required." }, 400);
+      }
+      if (email && !hasEmail) {
+        return json({ error: "Please enter a valid email address." }, 400);
+      }
+    } else if (!hasEmail) {
       return json({ error: "A valid email is required." }, 400);
     }
 
@@ -96,6 +126,25 @@ export const POST: APIRoute = async ({ request }) => {
         "",
         `Time: ${new Date().toISOString()}`,
       ].join("\n");
+    } else if (type === "lp-enquiry") {
+      if (!name || !description) {
+        return json({ error: "Name and what you need are required." }, 400);
+      }
+      subject = `LP enquiry — Web Development Dubai`;
+      text = [
+        "New landing-page enquiry (Web Development Dubai).",
+        "",
+        `Name: ${name}`,
+        `Email: ${hasEmail ? email : "—"}`,
+        `WhatsApp / phone: ${hasPhone ? phone : "—"}`,
+        `Service: ${service || "web-development"}`,
+        `Budget: ${budget || "—"}`,
+        "",
+        "What they need:",
+        description,
+        "",
+        `Time: ${new Date().toISOString()}`,
+      ].join("\n");
     } else if (type === "enquiry") {
       if (!name || !description) {
         return json({ error: "Name and description are required." }, 400);
@@ -117,25 +166,35 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ error: "Unknown form type." }, 400);
     }
 
-    const confirmation = buildUserConfirmation({ type, name, email });
+    const confirmationEmail = hasEmail ? email : "";
+    const confirmation = confirmationEmail
+      ? buildUserConfirmation({ type, name, email: confirmationEmail })
+      : {
+          subject: "",
+          text: "",
+          message:
+            "Thank you. We have received your request and will contact you on WhatsApp within one business day.",
+        };
 
     // Notify the team first — this is the critical delivery.
     await sendContactMail({
       subject: `[VEDHA] ${subject}`,
       text,
-      replyTo: email,
+      replyTo: hasEmail ? email : undefined,
     });
 
-    // Then confirm to the submitter (non-fatal if it fails after team mail succeeded).
-    try {
-      await sendContactMail({
-        to: email,
-        subject: confirmation.subject,
-        text: confirmation.text,
-        replyTo: "info@vedha.ae",
-      });
-    } catch (confirmError) {
-      console.error("Failed to send user confirmation email:", confirmError);
+    // Then confirm to the submitter when we have an email (non-fatal).
+    if (confirmationEmail) {
+      try {
+        await sendContactMail({
+          to: confirmationEmail,
+          subject: confirmation.subject,
+          text: confirmation.text,
+          replyTo: "info@vedha.ae",
+        });
+      } catch (confirmError) {
+        console.error("Failed to send user confirmation email:", confirmError);
+      }
     }
 
     return json({ ok: true, message: confirmation.message });

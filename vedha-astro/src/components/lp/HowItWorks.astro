@@ -1,0 +1,27 @@
+---
+const steps = [
+  { num: "01", title: "Discover", line: "Goals, users, and constraints — before a single line of code." },
+  { num: "02", title: "Chart", line: "A clear roadmap with milestones, scope, and priorities." },
+  { num: "03", title: "Validate", line: "Prototypes and reviews so decisions land early." },
+  { num: "04", title: "Engineer", line: "Senior-led build with clean architecture and polish." },
+  { num: "05", title: "Scale", line: "Launch, measure, and iterate as you grow." },
+];
+---
+
+<section class="lp-process" id="process" data-header-dark>
+  <div class="lp-process__inner">
+    <header class="lp-section-head lp-section-head--light" data-reveal>
+      <p class="kicker kicker--light">(How it works)</p>
+      <h2 class="lp-section-head__title lp-section-head__title--wide">A clear process — not a black box.</h2>
+    </header>
+    <ol class="lp-process__steps">
+      {steps.map((step) => (
+        <li class="lp-process__step" data-reveal>
+          <span class="lp-process__num">{step.num}</span>
+          <h3>{step.title}</h3>
+          <p>{step.line}</p>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>

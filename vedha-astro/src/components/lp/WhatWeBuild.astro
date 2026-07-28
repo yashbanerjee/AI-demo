@@ -1,0 +1,113 @@
+---
+const items = [
+  {
+    title: "Corporate & business websites",
+    desc: "Fast, polished sites that present your brand clearly and convert visitors into conversations.",
+  },
+  {
+    title: "E-commerce stores",
+    desc: "Stores built for speed, checkout clarity, and everyday loyalty — not just a catalogue.",
+  },
+  {
+    title: "Web applications & portals",
+    desc: "Customer portals and internal tools with clean architecture your teams can grow on.",
+  },
+  {
+    title: "CMS builds",
+    desc: "Editable platforms your team can update without tickets — structured for real content workflows.",
+  },
+  {
+    title: "Redesigns & migrations",
+    desc: "Modern rebuilds that keep SEO equity, improve UX, and cut the technical debt holding you back.",
+  },
+  {
+    title: "Performance & technical SEO",
+    desc: "Load-time, Core Web Vitals, and crawl health — the foundation that makes campaigns work harder.",
+  },
+];
+---
+
+<section class="lp-build" id="build">
+  <header class="lp-section-head" data-reveal>
+    <p class="kicker">(What we build)</p>
+    <h2 class="lp-section-head__title lp-section-head__title--wide">Web development, kept tight.</h2>
+  </header>
+  <div class="lp-build__grid">
+    {items.map((item, i) => (
+      <article class="lp-build__card" data-reveal style={`--stagger: ${i * 60}ms`}>
+        <span class="lp-build__num">{String(i + 1).padStart(2, "0")}</span>
+        <h3>{item.title}</h3>
+        <p>{item.desc}</p>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style is:global>
+  .lp-build__grid {
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .lp-build__card {
+    background: var(--card) !important;
+    border: 1px solid rgba(17, 17, 17, 0.08) !important;
+    border-radius: var(--radius) !important;
+    padding: clamp(1.25rem, 2.2vw, 1.7rem) !important;
+    display: grid !important;
+    gap: 0.55rem;
+    align-content: start;
+    min-height: 9.5rem;
+    transition:
+      opacity 0.9s var(--ease-out),
+      transform 0.9s var(--ease-out),
+      border-color 0.35s,
+      box-shadow 0.4s var(--ease-out);
+    transition-delay: var(--stagger, 0ms), var(--stagger, 0ms), 0ms, 0ms;
+  }
+
+  .lp-build__card.is-visible:hover {
+    transform: translateY(-0.2rem);
+    border-color: rgba(17, 17, 17, 0.14);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.06);
+    transition-delay: 0ms;
+  }
+
+  .lp-build__num {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+
+  .lp-build__card h3 {
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+    margin: 0;
+  }
+
+  .lp-build__card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 34ch;
+    margin: 0;
+  }
+
+  @media (min-width: 40rem) {
+    .lp-build__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 1rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .lp-build__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+      gap: 1.15rem;
+    }
+  }
+</style>

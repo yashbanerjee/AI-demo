@@ -64,6 +64,11 @@ export function buildPagesSitemap(site: URL) {
     { loc: abs(site, "/products/"), changefreq: "weekly", priority: "0.7" },
     { loc: abs(site, "/blog/"), changefreq: "daily", priority: "0.8" },
     { loc: abs(site, "/contact/"), changefreq: "monthly", priority: "0.8" },
+    {
+      loc: abs(site, "/web-development-dubai/"),
+      changefreq: "weekly",
+      priority: "0.9",
+    },
   ]);
 }
 

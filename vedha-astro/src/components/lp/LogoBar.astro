@@ -1,0 +1,34 @@
+---
+const brands = [
+  { name: "COP28 UAE", src: "/images/logos/cop28.png", w: 360, h: 160 },
+  { name: "Dubai Economy and Tourism", src: "/images/logos/det.png", w: 360, h: 160 },
+  { name: "Dunkin’", src: "/images/logos/dunkin.png", w: 360, h: 160 },
+  { name: "Baskin Robbins", src: "/images/logos/baskin-robbins.png", w: 360, h: 160 },
+  { name: "Buttrd", src: "/images/logos/buttrd.png", w: 360, h: 160 },
+  { name: "BIK Institute for Innovation", src: "/images/logos/bik.png", w: 360, h: 160 },
+  { name: "RAYCOM", src: "/images/logos/raycom.png", w: 360, h: 160 },
+  { name: "Abdul Aziz Al Majid", src: "/images/logos/abdul-aziz-al-majid.png", w: 360, h: 160 },
+  { name: "Watch Valley Dubai", src: "/images/logos/watch-valley.png", w: 360, h: 160 },
+  { name: "Buffalo Wild Wings", src: "/images/logos/buffalo-wild-wings.png", w: 360, h: 160 },
+];
+---
+
+<section class="lp-logos" aria-label="Trusted clients">
+  <p class="kicker" data-reveal>Trusted by teams that don’t compromise</p>
+  <ul class="lp-logos__row" data-reveal>
+    {brands.map((brand) => (
+      <li class="lp-logos__item">
+        <img
+          class="lp-logos__logo"
+          src={brand.src}
+          alt={brand.name}
+          width={brand.w}
+          height={brand.h}
+          loading="lazy"
+          decoding="async"
+          sizes="120px"
+        />
+      </li>
+    ))}
+  </ul>
+</section>

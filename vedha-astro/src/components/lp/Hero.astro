@@ -1,0 +1,494 @@
+---
+import "../../styles/lp.css";
+
+const whatsappHref =
+  "https://wa.me/971506583342?text=" +
+  encodeURIComponent("Hi Vedha — I'm interested in web development in Dubai.");
+
+const proof = ["120+ projects delivered"];
+---
+
+<section class="lp-hero" id="hero" data-header-dark>
+  <div class="lp-hero__media" aria-hidden="true">
+    <picture>
+      <source
+        media="(max-width: 40rem)"
+        srcset="/images/photo-dubai-marina-960.jpg"
+        width="960"
+        height="640"
+      />
+      <source
+        media="(max-width: 64rem)"
+        srcset="/images/photo-dubai-marina-1280.jpg"
+        width="1280"
+        height="854"
+      />
+      <img
+        src="/images/photo-dubai-marina.jpg"
+        alt=""
+        width="1600"
+        height="1067"
+        decoding="async"
+        fetchpriority="high"
+        sizes="100vw"
+      />
+    </picture>
+    <span class="lp-hero__veil"></span>
+  </div>
+
+  <div class="lp-hero__frame">
+    <p class="lp-hero__kicker">Vedha · Dubai</p>
+
+    <h1 class="lp-hero__title">
+      <span class="lp-hero__title-line">
+        <span class="lp-hero__grad">Web Development</span> in Dubai,
+      </span>
+      <span class="lp-hero__title-line">
+        Engineered by <span class="lp-hero__grad lp-hero__grad--alt">Senior Developers</span>
+      </span>
+    </h1>
+
+    <p class="lp-hero__sub">
+      From corporate sites to complex web platforms — we design and build fast, scalable websites for ambitious UAE businesses.
+    </p>
+
+    <div class="lp-hero__ctas">
+      <a class="btn lp-btn-book" href="#book" data-book-consultation>
+        <span class="lp-btn-inner">
+          <svg class="lp-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.75" />
+            <path d="M3 10h18" stroke="currentColor" stroke-width="1.75" />
+            <path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+            <path d="M8 14h3M13 14h3M8 17h3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+          </svg>
+          <span class="lp-btn-book__text">Book a Free Consultation</span>
+        </span>
+      </a>
+      <a
+        class="btn btn--ghost btn--ghost-on-dark lp-btn-wa"
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track="whatsapp_click"
+        data-track-location="hero"
+      >
+        <span class="lp-btn-inner">
+          <svg class="lp-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.01Zm-7.01 15.24h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.84-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74 1.76.76 2.24.83 3.04.7.49-.08 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.17-.48-.29Z" />
+          </svg>
+          <span>Chat on WhatsApp</span>
+        </span>
+      </a>
+    </div>
+
+    <p class="lp-hero__trust">
+      <span>Senior engineers only</span>
+      <span aria-hidden="true">·</span>
+      <span>Transparent pricing</span>
+      <span aria-hidden="true">·</span>
+      <span>Based in Dubai</span>
+    </p>
+
+    <ul class="lp-hero__proof" aria-label="Trusted by">
+      {proof.map((item) => (
+        <li>{item}</li>
+      ))}
+    </ul>
+  </div>
+
+  <a class="lp-hero__scroll" href="#why" aria-label="Scroll to next section">
+    <span class="lp-hero__scroll-line" aria-hidden="true"></span>
+  </a>
+</section>
+
+<style is:global>
+  /* Force true center — headline must not overflow the centered frame */
+  .lp-hero {
+    place-items: center !important;
+    text-align: center !important;
+  }
+  .lp-hero__frame {
+    width: min(54rem, 100%) !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    justify-self: center !important;
+    justify-items: center !important;
+  }
+  .lp-hero__title {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-inline: auto !important;
+    font-size: clamp(2.1rem, 4.2vw, 3.45rem) !important;
+    text-align: center !important;
+  }
+  .lp-hero__title-line {
+    white-space: normal !important;
+    max-width: 100% !important;
+  }
+
+  /* Marina skyline gradient on key phrases */
+  .lp-hero__grad {
+    display: inline;
+    background-image: linear-gradient(
+      105deg,
+      #7eb6ff 0%,
+      #a78bfa 22%,
+      #f0abfc 42%,
+      #fb923c 62%,
+      #fbbf24 78%,
+      #7dd3fc 100%
+    );
+    background-size: 280% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .lp-hero__grad--alt {
+    background-image: linear-gradient(
+      115deg,
+      #fbbf24 0%,
+      #fb923c 18%,
+      #f0abfc 38%,
+      #a78bfa 58%,
+      #60a5fa 78%,
+      #fde68a 100%
+    );
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lp-hero__grad {
+      animation: lp-hero-grad 7s ease-in-out infinite alternate;
+    }
+    .lp-hero__grad--alt {
+      animation: lp-hero-grad 8.5s ease-in-out infinite alternate-reverse;
+    }
+  }
+
+  @keyframes lp-hero-grad {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 100% 50%;
+    }
+  }
+
+  .lp-hero__sub {
+    margin-inline: auto !important;
+    text-align: center !important;
+  }
+  .lp-hero__ctas,
+  .lp-hero__trust,
+  .lp-hero__proof {
+    justify-content: center !important;
+  }
+
+  .lp-hero__ctas {
+    align-items: stretch !important;
+  }
+
+  .lp-hero__ctas .btn {
+    min-height: 3rem !important;
+    height: 3rem;
+    padding: 0 1.5em !important;
+    box-sizing: border-box;
+    font-size: 0.9rem !important;
+    line-height: 1 !important;
+  }
+
+  .lp-hero__ctas .lp-btn-inner {
+    line-height: 1;
+  }
+
+  .lp-hero__ctas .lp-btn-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .lp-hero__media img {
+    object-position: center 38% !important;
+  }
+
+  /* Black CTA with light gradient text */
+  .lp-btn-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .lp-btn-icon {
+    flex: none;
+    width: 1em;
+    height: 1em;
+  }
+
+  .lp-btn-book {
+    background: #0a0a0a !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    color: #f0ebe3 !important;
+  }
+
+  .lp-btn-book::before {
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%
+    ) !important;
+  }
+
+  .lp-btn-book .lp-btn-book__text {
+    background: linear-gradient(
+      105deg,
+      #ffffff 0%,
+      #e8e4dc 35%,
+      #cfc8bc 55%,
+      #f5f2ec 100%
+    );
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .lp-btn-book .lp-btn-icon {
+    color: #f0ebe3;
+  }
+
+  .lp-btn-book:hover {
+    background: #141414 !important;
+    border-color: rgba(255, 255, 255, 0.28) !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+  }
+
+  .lp-btn-wa {
+    background: rgba(255, 255, 255, 0.96) !important;
+    border: 1px solid transparent !important;
+    color: #111 !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+    backdrop-filter: none;
+  }
+
+  .lp-btn-wa:hover {
+    background: #fff !important;
+    color: #111 !important;
+    border-color: transparent !important;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.34);
+  }
+
+  .lp-btn-wa .lp-btn-icon {
+    color: #111;
+  }
+
+  .lp-btn-wa::before {
+    background: linear-gradient(
+      105deg,
+      transparent 30%,
+      rgba(17, 17, 17, 0.06) 50%,
+      transparent 70%
+    ) !important;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lp-btn-book .lp-btn-book__text {
+      animation: lp-btn-book-text 4.5s ease-in-out infinite alternate;
+    }
+  }
+
+  @keyframes lp-btn-book-text {
+    from {
+      background-position: 0% 50%;
+    }
+    to {
+      background-position: 100% 50%;
+    }
+  }
+
+  .lp-hero__scroll {
+    position: absolute;
+    z-index: 2;
+    left: 0;
+    right: 0;
+    bottom: clamp(1.2rem, 3vh, 2rem);
+    margin-inline: auto;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 2.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    opacity: 0.72;
+    transition: opacity 0.3s;
+  }
+
+  .lp-hero__scroll:hover {
+    opacity: 1;
+  }
+
+  .lp-hero__scroll-line {
+    width: 1px;
+    height: 0.55rem;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 1px;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .lp-hero__kicker {
+      animation: lp-hero-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .lp-hero__title-line:nth-child(1) {
+      animation: lp-hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
+    }
+    .lp-hero__title-line:nth-child(2) {
+      animation: lp-hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.18s both;
+    }
+    .lp-hero__sub {
+      animation: lp-hero-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.28s both;
+    }
+    .lp-hero__ctas {
+      animation: lp-hero-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.38s both;
+    }
+    .lp-hero__trust {
+      animation: lp-hero-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.48s both;
+    }
+    .lp-hero__proof {
+      animation: lp-hero-in 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.58s both;
+    }
+    .lp-hero__media img {
+      animation: lp-hero-ken 22s ease-in-out infinite alternate !important;
+      will-change: transform;
+    }
+    .lp-hero__veil {
+      animation: lp-hero-veil 10s ease-in-out infinite alternate;
+    }
+    .lp-hero__scroll {
+      animation: lp-hero-in 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.8s both;
+    }
+    .lp-hero__scroll-line {
+      animation: lp-hero-scroll 1.6s ease-in-out infinite;
+    }
+  }
+
+  @keyframes lp-hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(1.15rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes lp-hero-ken {
+    from {
+      transform: scale(1.08) translate3d(0, 0, 0);
+    }
+    to {
+      transform: scale(1.16) translate3d(-1.2%, -0.8%, 0);
+    }
+  }
+
+  @keyframes lp-hero-veil {
+    from { opacity: 0.92; }
+    to { opacity: 1; }
+  }
+
+  @keyframes lp-hero-scroll {
+    0%, 100% { transform: translateY(0); opacity: 0.35; }
+    50% { transform: translateY(0.45rem); opacity: 1; }
+  }
+
+  @media (max-width: 39.99rem) {
+    .lp-hero__scroll {
+      display: none;
+    }
+
+    .lp-hero {
+      min-height: 100svh;
+      min-height: 100dvh;
+      padding:
+        calc(4.75rem + env(safe-area-inset-top, 0px))
+        max(1rem, env(safe-area-inset-left, 0px), var(--gutter))
+        calc(5.75rem + env(safe-area-inset-bottom, 0px))
+        max(1rem, env(safe-area-inset-right, 0px), var(--gutter)) !important;
+      align-content: center;
+    }
+
+    .lp-hero__title {
+      font-size: clamp(1.85rem, 8.2vw, 2.35rem) !important;
+      letter-spacing: -0.04em !important;
+      margin-bottom: 0.85rem !important;
+    }
+
+    .lp-hero__sub {
+      font-size: 0.98rem !important;
+      line-height: 1.5 !important;
+      margin-bottom: 1.15rem !important;
+      max-width: 34ch !important;
+    }
+
+    .lp-hero__ctas {
+      width: 100%;
+      flex-direction: column;
+      gap: 0.55rem !important;
+      margin-bottom: 1rem !important;
+    }
+
+    .lp-hero__ctas .btn {
+      width: 100%;
+      min-height: 3rem !important;
+      height: 3rem;
+      justify-content: center;
+    }
+
+    .lp-hero__trust {
+      font-size: 0.75rem;
+      gap: 0.3rem 0.45rem;
+      margin-bottom: 1.1rem !important;
+      max-width: 22rem;
+    }
+
+    .lp-hero__proof {
+      padding-top: 0.9rem;
+    }
+
+    .lp-hero__proof li {
+      font-size: 0.68rem;
+      padding: 0.45em 0.75em;
+    }
+
+    /* Kill heavy GPU animations on phones — keep light text gradient */
+    .lp-hero__media img,
+    .lp-hero__veil,
+    .lp-btn-book .lp-btn-book__text {
+      animation: none !important;
+      will-change: auto !important;
+    }
+
+    .lp-hero__grad,
+    .lp-hero__grad--alt {
+      animation-duration: 10s !important;
+    }
+
+    .lp-hero__media img {
+      transform: scale(1.04) !important;
+    }
+
+    .btn--ghost-on-dark {
+      backdrop-filter: none;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .lp-btn-wa {
+      background: #fff !important;
+      color: #111 !important;
+    }
+  }
+</style>

@@ -64,7 +64,7 @@
     document.getElementById("showreel"),
     document.getElementById("vision"),
     document.querySelector(".site-footer"),
-    ...document.querySelectorAll("[data-scene-banner]"),
+    ...document.querySelectorAll("[data-scene-banner], [data-header-dark]"),
   ].filter(Boolean);
   let lastY = window.scrollY;
   const syncHeaderTheme = () => {
@@ -1414,18 +1414,32 @@
 
   function formPayload(form, type) {
     const data = new FormData(form);
-    const email =
+    const contact = String(data.get("contact") || "").trim();
+    const emailFromField =
       String(data.get("email") || "").trim() ||
       String(form.querySelector('input[type="email"]')?.value || "").trim();
+    const email =
+      emailFromField ||
+      (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) ? contact : "");
     const payload = { type, email };
 
-    if (type === "enquiry" || type === "service-enquiry") {
+    if (type === "enquiry" || type === "service-enquiry" || type === "lp-enquiry") {
       payload.name = String(data.get("name") || "").trim();
       payload.service = String(data.get("service") || "").trim();
       payload.category = String(data.get("category") || "").trim();
       payload.description = String(data.get("description") || "").trim();
+      payload.budget = String(data.get("budget") || "").trim();
+      payload.contact = contact;
+      payload.phone = String(data.get("phone") || "").trim();
+      if (!payload.phone && contact && !email) {
+        payload.phone = contact;
+      }
     }
     return payload;
+  }
+
+  function isValidEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || "").trim());
   }
 
   function setSubmitLabel(form, label) {
@@ -1487,6 +1501,18 @@
 
       try {
         const payload = formPayload(form, type);
+
+        if (type === "lp-enquiry") {
+          const hasEmail = Boolean(payload.email && isValidEmail(payload.email));
+          const hasPhone = Boolean(String(payload.phone || "").trim());
+          if (payload.email && !hasEmail) {
+            throw new Error("Please enter a valid email address.");
+          }
+          if (!hasEmail && !hasPhone) {
+            throw new Error("Please enter an email or WhatsApp number.");
+          }
+        }
+
         const res = await fetch("/api/contact/", {
           method: "POST",
           headers: { "Content-Type": "application/json", Accept: "application/json" },
@@ -1557,6 +1583,17 @@
         form.dataset.submitting = "0";
         if (submitBtn) submitBtn.disabled = false;
       }
+    });
+  });
+
+  // === Landing-page WhatsApp CTA tracking ===
+  document.querySelectorAll("[data-track='whatsapp_click']").forEach((el) => {
+    el.addEventListener("click", () => {
+      track("whatsapp_click", {
+        event_category: "conversion",
+        location: el.getAttribute("data-track-location") || undefined,
+        page_path: location.pathname,
+      });
     });
   });
 })();

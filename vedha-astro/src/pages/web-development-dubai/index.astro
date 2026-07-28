@@ -1,0 +1,64 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/lp/Hero.astro";
+import LogoBar from "../../components/lp/LogoBar.astro";
+import WhyVedha from "../../components/lp/WhyVedha.astro";
+import WhatWeBuild from "../../components/lp/WhatWeBuild.astro";
+import SelectedWork from "../../components/lp/SelectedWork.astro";
+import Testimonial from "../../components/lp/Testimonial.astro";
+import HowItWorks from "../../components/lp/HowItWorks.astro";
+import Faq from "../../components/lp/Faq.astro";
+import FinalCta from "../../components/lp/FinalCta.astro";
+import OtherServices from "../../components/lp/OtherServices.astro";
+import { breadcrumbSchema, serviceSchema } from "../../lib/schema";
+
+const pagePath = "/web-development-dubai/";
+const title = "Web Development in Dubai — Senior Engineers | VEDHA";
+const description =
+  "Custom websites and web platforms built in Dubai by senior engineers. 120+ projects delivered. Trusted by COP28, DET, Dunkin’, and Baskin Robbins. Book a free consultation.";
+
+const schemas = [
+  breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Web Development Dubai", path: pagePath },
+  ]),
+  serviceSchema({
+    name: "Web Development in Dubai",
+    description,
+    path: pagePath,
+    services: [
+      { name: "Corporate & business websites", description: "High-performance sites for ambitious UAE brands." },
+      { name: "E-commerce stores", description: "Stores built for speed, conversion, and loyalty." },
+      { name: "Web applications & customer portals", description: "Scalable platforms tailored to your workflows." },
+      { name: "CMS builds", description: "Editable sites your team can grow without friction." },
+      { name: "Redesigns & migrations", description: "Modern rebuilds without losing SEO equity." },
+      { name: "Performance & technical SEO", description: "Faster loads and cleaner technical foundations." },
+    ],
+  }),
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage="/images/photo-dubai-marina.jpg"
+  preloadHeroImage="/images/photo-dubai-marina.jpg"
+  preloadHeroImageSrcSet="/images/photo-dubai-marina-960.jpg 960w, /images/photo-dubai-marina-1280.jpg 1280w, /images/photo-dubai-marina.jpg 1920w"
+  preloadHeroImageSizes="100vw"
+>
+  <div class="lp">
+    <Hero />
+    <LogoBar />
+    <WhyVedha />
+    <WhatWeBuild />
+    <SelectedWork />
+    <Testimonial />
+    <HowItWorks />
+    <Faq />
+    <FinalCta />
+    <OtherServices />
+  </div>
+  {schemas.map((schema) => (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+  ))}
+</BaseLayout>

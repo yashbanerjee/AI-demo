@@ -1,0 +1,159 @@
+---
+import { slugOf } from "../../data/services.js";
+
+const services = [
+  {
+    name: "Mobile Application Development",
+    desc: "Native and cross-platform apps built for performance, clarity, and everyday use.",
+  },
+  {
+    name: "UX/UI & Product Design",
+    desc: "Research-led interfaces that turn complex flows into experiences people finish.",
+  },
+  {
+    name: "Brand Identity",
+    desc: "Identity systems that carry your brand across product, web, and campaign surfaces.",
+  },
+  {
+    name: "AI Solutions",
+    desc: "Practical AI products and copilots grounded in your data, workflows, and goals.",
+  },
+  {
+    name: "Business Automation",
+    desc: "Workflows, ops tools, and integrations that cut manual work without chaos.",
+  },
+  {
+    name: "E-commerce Solutions",
+    desc: "Stores engineered for speed, checkout clarity, and repeat purchase behaviour.",
+  },
+  {
+    name: "Cloud, DevOps & Infrastructure",
+    desc: "Reliable hosting, CI/CD, and infrastructure so launches stay fast and stable.",
+  },
+  {
+    name: "Search & AI Visibility",
+    desc: "Technical SEO and AI-search readiness that helps the right audiences find you.",
+  },
+].map((s) => ({ ...s, href: `/services/${slugOf(s.name)}/` }));
+---
+
+<section class="lp-others" id="other-services">
+  <header class="lp-section-head" data-reveal>
+    <p class="kicker">(Other services)</p>
+    <h2 class="lp-section-head__title lp-section-head__title--wide">More ways we can help.</h2>
+    <p class="lp-section-head__sub">
+      Web is one practice — Vedha also designs, builds, and scales the systems around it.
+    </p>
+  </header>
+
+  <div class="lp-others__grid">
+    {services.map((service, i) => (
+      <a
+        class="lp-others__card"
+        href={service.href}
+        data-reveal
+        style={`--stagger: ${i * 50}ms`}
+      >
+        <span class="lp-others__num">{String(i + 1).padStart(2, "0")}</span>
+        <h3>{service.name}</h3>
+        <p>{service.desc}</p>
+        <span class="lp-others__link">Explore <span aria-hidden="true">→</span></span>
+      </a>
+    ))}
+  </div>
+
+  <div class="lp-others__footer" data-reveal>
+    <a class="btn btn--ghost" href="/services/">
+      <span>View all services</span>
+    </a>
+  </div>
+</section>
+
+<style is:global>
+  .lp-others {
+    display: grid;
+    gap: 0;
+  }
+
+  .lp-others__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .lp-others__card {
+    background: var(--card);
+    border: 1px solid rgba(17, 17, 17, 0.08);
+    border-radius: var(--radius);
+    padding: clamp(1.25rem, 2.2vw, 1.7rem);
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+    min-height: 9.5rem;
+    color: inherit;
+    text-decoration: none;
+    transition:
+      opacity 0.9s var(--ease-out),
+      transform 0.9s var(--ease-out),
+      border-color 0.35s,
+      box-shadow 0.4s var(--ease-out);
+    transition-delay: var(--stagger, 0ms), var(--stagger, 0ms), 0ms, 0ms;
+  }
+
+  .lp-others__card.is-visible:hover {
+    transform: translateY(-0.2rem);
+    border-color: rgba(17, 17, 17, 0.14);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.06);
+    transition-delay: 0ms;
+  }
+
+  .lp-others__num {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+
+  .lp-others__card h3 {
+    margin: 0;
+    font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .lp-others__card p {
+    margin: 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    max-width: 34ch;
+  }
+
+  .lp-others__link {
+    margin-top: auto;
+    padding-top: 0.35rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: var(--ink);
+  }
+
+  .lp-others__footer {
+    margin-top: clamp(1.5rem, 3vh, 2.2rem);
+  }
+
+  @media (min-width: 40rem) {
+    .lp-others__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem;
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .lp-others__grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1.15rem;
+    }
+  }
+</style>

@@ -1,0 +1,190 @@
+---
+const whatsappHref =
+  "https://wa.me/971506583342?text=" +
+  encodeURIComponent("Hi Vedha — I'd like to talk about a website project.");
+---
+
+<section class="contact lp-cta" id="contact">
+  <div class="contact__intro">
+    <header class="lp-section-head lp-cta__head" data-reveal>
+      <p class="kicker">(Let’s talk)</p>
+      <h2 class="lp-section-head__title">Let’s talk about your website.</h2>
+      <p class="lp-section-head__sub">
+        Book a free consultation or message us on WhatsApp — we’ll reply within one business day.
+      </p>
+    </header>
+    <div class="lp-cta__actions" data-reveal>
+      <button type="button" class="btn btn--dark" data-book-consultation id="book">
+        <span class="lp-btn-inner">
+          <svg class="lp-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.75" />
+            <path d="M3 10h18" stroke="currentColor" stroke-width="1.75" />
+            <path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+            <path d="M8 14h3M13 14h3M8 17h3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+          </svg>
+          <span>Book Free Consultation</span>
+        </span>
+      </button>
+      <a
+        class="btn btn--ghost lp-cta__whatsapp"
+        href={whatsappHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        data-track="whatsapp_click"
+        data-track-location="final_cta"
+      >
+        <span class="lp-btn-inner">
+          <svg class="lp-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.01Zm-7.01 15.24h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.84-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74 1.76.76 2.24.83 3.04.7.49-.08 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.17-.48-.29Z" />
+          </svg>
+          <span>WhatsApp Us</span>
+        </span>
+      </a>
+    </div>
+    <figure class="contact__visual" data-reveal>
+      <picture>
+        <img
+          src="/images/photo-lake-jetty.jpg"
+          alt="Vedha studio workspace"
+          width="1600"
+          height="1066"
+          loading="lazy"
+          decoding="async"
+        />
+      </picture>
+    </figure>
+  </div>
+
+  <form class="contact__form" id="lpEnquiry" data-mail-form="lp-enquiry" data-reveal>
+    <p class="kicker">(Or send a quick note)</p>
+    <label>Name
+      <input type="text" name="name" placeholder="Your name" required autocomplete="name" />
+    </label>
+    <label>Email <span class="lp-cta__optional">(optional if WhatsApp is given)</span>
+      <input
+        type="email"
+        name="email"
+        placeholder="you@company.com"
+        autocomplete="email"
+        inputmode="email"
+      />
+    </label>
+    <label>WhatsApp / phone <span class="lp-cta__optional">(optional if email is given)</span>
+      <input
+        type="tel"
+        name="phone"
+        placeholder="+971…"
+        autocomplete="tel"
+        inputmode="tel"
+      />
+    </label>
+    <p class="lp-cta__contact-hint">Provide at least one: email or WhatsApp number.</p>
+    <label>What you need
+      <input
+        type="text"
+        name="description"
+        placeholder="e.g. Corporate site redesign"
+        required
+        maxlength="200"
+      />
+    </label>
+    <label>Budget range <span class="lp-cta__optional">(optional)</span>
+      <select name="budget">
+        <option value="" selected>Select a range</option>
+        <option value="under-25k">Under AED 25,000</option>
+        <option value="25k-50k">AED 25,000 – 50,000</option>
+        <option value="50k-100k">AED 50,000 – 100,000</option>
+        <option value="100k-plus">AED 100,000+</option>
+        <option value="not-sure">Not sure yet</option>
+      </select>
+    </label>
+    <input type="hidden" name="service" value="web-development" />
+    <button class="btn btn--dark btn--wide" type="submit">
+      <span>Send message</span>
+    </button>
+    <p class="form-note" data-form-note hidden role="status" aria-live="polite"></p>
+    <p class="contact__terms">
+      By contacting us, you accept our <a href="/contact/">Terms</a> and <a href="/contact/">Privacy Policy</a>.
+    </p>
+  </form>
+</section>
+
+<aside class="lp-sticky" id="lpSticky" aria-label="Quick contact">
+  <a class="btn btn--dark" href="#book" data-book-consultation>
+    <span class="lp-btn-inner">
+      <svg class="lp-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <rect x="3" y="5" width="18" height="16" rx="2.5" stroke="currentColor" stroke-width="1.75" />
+        <path d="M3 10h18" stroke="currentColor" stroke-width="1.75" />
+        <path d="M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" />
+      </svg>
+      <span>Book a call</span>
+    </span>
+  </a>
+  <a
+    class="btn btn--ghost"
+    href={whatsappHref}
+    target="_blank"
+    rel="noopener noreferrer"
+    data-track="whatsapp_click"
+    data-track-location="sticky"
+  >
+    <span class="lp-btn-inner">
+      <svg class="lp-btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M19.05 4.91A9.82 9.82 0 0 0 12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38c1.45.79 3.08 1.21 4.79 1.21h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.91-7.01Zm-7.01 15.24h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.2 8.2 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.82 2.42a8.18 8.18 0 0 1 2.41 5.83c0 4.55-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.7-.81-.23-.08-.39-.12-.56.12-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.12-1.05-.39-2-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.12-.14.17-.25.25-.41.08-.17.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.84-.2-.49-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07s.89 2.4 1.01 2.56c.12.17 1.75 2.67 4.23 3.74 1.76.76 2.24.83 3.04.7.49-.08 1.47-.6 1.68-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.17-.48-.29Z" />
+      </svg>
+      <span>WhatsApp</span>
+    </span>
+  </a>
+</aside>
+
+<style is:global>
+  .lp-btn-inner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .lp-btn-icon {
+    flex: none;
+    width: 1em;
+    height: 1em;
+  }
+
+  .lp-cta__whatsapp .lp-btn-icon {
+    color: #25d366;
+  }
+
+  .lp-cta__contact-hint {
+    margin: -0.35rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.4;
+    color: var(--ink-soft);
+  }
+
+  .lp-cta__head {
+    width: 100%;
+  }
+
+  .lp-cta__head .lp-section-head__title,
+  .lp-cta__head .lp-section-head__sub {
+    max-width: none !important;
+    white-space: normal !important;
+  }
+</style>
+
+<script>
+  const sticky = document.getElementById("lpSticky");
+  const contact = document.getElementById("contact");
+  if (sticky && contact && "IntersectionObserver" in window) {
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        sticky.classList.toggle("is-hidden", entry.isIntersecting);
+      },
+      { threshold: 0.15 }
+    );
+    io.observe(contact);
+  }
+</script>

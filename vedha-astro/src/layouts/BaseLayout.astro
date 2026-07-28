@@ -22,6 +22,8 @@ interface Props {
   robots?: string;
   preloadHeroPoster?: boolean;
   preloadHeroImage?: string;
+  preloadHeroImageSrcSet?: string;
+  preloadHeroImageSizes?: string;
 }
 
 const props = Astro.props;
@@ -44,6 +46,8 @@ const {
   robots,
   preloadHeroPoster = false,
   preloadHeroImage,
+  preloadHeroImageSrcSet,
+  preloadHeroImageSizes = "100vw",
 } = props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -101,7 +105,17 @@ const websiteSchema = {
   {prevPage && <link rel="prev" href={new URL(prevPage, Astro.site)} />}
   {nextPage && <link rel="next" href={new URL(nextPage, Astro.site)} />}
   {preloadHeroPoster && <link rel="preload" as="image" href="/videos/hero-3d-poster.jpg" fetchpriority="high" />}
-  {preloadHeroImage && <link rel="preload" as="image" href={preloadHeroImage} fetchpriority="high" />}
+  {preloadHeroImage && (
+    <link
+      rel="preload"
+      as="image"
+      href={preloadHeroImage}
+      fetchpriority="high"
+      {...(preloadHeroImageSrcSet
+        ? { imagesrcset: preloadHeroImageSrcSet, imagesizes: preloadHeroImageSizes }
+        : {})}
+    />
+  )}
   <meta property="og:site_name" content="VEDHA" />
   <meta property="og:locale" content="en_AE" />
   <meta property="og:type" content={ogType} />
