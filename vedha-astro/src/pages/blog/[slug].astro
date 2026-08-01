@@ -3,6 +3,27 @@ import { marked } from "marked";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPostBySlug, listPosts } from "../../lib/db";
 import { coverFor } from "../../lib/covers";
+import { breadcrumbSchema, faqPageSchema } from "../../lib/schema";
+
+/** Pull FAQ Q&As from a trailing ## FAQ section of markdown (### question + paragraphs). */
+function extractFaqs(markdown: string): Array<{ question: string; answer: string }> {
+  const faqMatch = markdown.match(/^##\s+FAQ[^\n]*\n([\s\S]*)$/im);
+  if (!faqMatch) return [];
+  const body = faqMatch[1];
+  const blocks = body.split(/^###\s+/m).slice(1);
+  return blocks
+    .map((block) => {
+      const nl = block.indexOf("\n");
+      const question = (nl === -1 ? block : block.slice(0, nl)).trim();
+      const answer = (nl === -1 ? "" : block.slice(nl + 1))
+        .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
+        .replace(/[*_`]/g, "")
+        .replace(/\n+/g, " ")
+        .trim();
+      return { question, answer };
+    })
+    .filter((f) => f.question && f.answer);
+}
 
 const post = await getPostBySlug(Astro.params.slug!);
 if (!post || post.draft) {
@@ -12,11 +33,20 @@ if (!post || post.draft) {
 const { title, description, content, author, tags, cover_image, pub_date, updated_date, slug } = post;
 const html = marked.parse(content);
 const wordCount = content.replace(/[#*_`>\[\]()]/g, " ").trim().split(/\s+/).filter(Boolean).length;
+const faqs = extractFaqs(content);
+const coverAlts: Record<string, string> = {
+  "website-redesign-vs-rebuild-dubai":
+    "Team reviewing a website redesign plan at Vedha Technologies in Dubai.",
+  "web-mobile-app-maintenance-dubai":
+    "Vedha engineer maintaining a website and mobile app dashboard in Dubai.",
+};
+const coverAlt = coverAlts[slug] ?? `${title} article cover`;
 
 const allPosts = await listPosts();
 const otherPosts = allPosts.filter((p) => p.slug !== slug);
 
 const cover = coverFor(slug, cover_image);
+const coverAbsolute = new URL(cover, Astro.site).toString();
 
 const thumbOf = (s: string, img: string | null) => coverFor(s, img);
 
@@ -25,6 +55,8 @@ const formatDate = (date: Date) =>
 
 const formatShort = (date: Date) =>
   date.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
+
+const pageUrl = new URL(Astro.url.pathname, Astro.site).toString();
 
 const postSchema = {
   "@context": "https://schema.org",
@@ -35,24 +67,43 @@ const postSchema = {
   articleSection: tags[0] ?? "Insights",
   wordCount,
   datePublished: pub_date.toISOString(),
-  ...(updated_date && { dateModified: updated_date.toISOString() }),
-  image: new URL("/og-image.png", Astro.site).toString(),
+  dateModified: (updated_date ?? pub_date).toISOString(),
+  image: coverAbsolute,
   author: { "@type": "Organization", name: author, url: Astro.site?.toString() },
   publisher: {
     "@type": "Organization",
     name: "Vedha Technologies",
+    url: Astro.site?.toString(),
     logo: { "@type": "ImageObject", url: new URL("/images/vedha-logo.png", Astro.site).toString() },
   },
-  mainEntityOfPage: new URL(Astro.url.pathname, Astro.site).toString(),
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": pageUrl,
+  },
+  inLanguage: "en-AE",
 };
+
+const crumbs = breadcrumbSchema([
+  { name: "Home", path: "/" },
+  { name: "Blog", path: "/blog/" },
+  { name: title, path: `/blog/${slug}/` },
+]);
+
+const faqSchema = faqs.length > 0 ? faqPageSchema(faqs) : null;
+
+// Prefer a clean SEO title; append brand only when the post title is short/generic.
+const documentTitle =
+  /vedha|uae guide|\bdubai\b/i.test(title) || title.length >= 55
+    ? title
+    : `${title} — VEDHA Blog`;
 ---
 <BaseLayout
-  title={`${title} — VEDHA Blog`}
+  title={documentTitle}
   description={description}
   ogType="article"
   publishedTime={pub_date}
-  modifiedTime={updated_date ?? undefined}
-  ogImage="/og-image.png"
+  modifiedTime={updated_date ?? pub_date}
+  ogImage={cover}
 >
   <div class="post-layout">
     <aside class="post-aside" data-reveal>
@@ -96,7 +147,7 @@ const postSchema = {
       </header>
 
       <figure class="post__cover">
-        <img src={cover} alt={`${title} article cover`} width="1600" height="900" loading="eager" />
+        <img src={cover} alt={coverAlt} width="1600" height="900" loading="eager" />
       </figure>
 
       <div class="post__prose" set:html={html} />
@@ -108,6 +159,10 @@ const postSchema = {
     </article>
   </div>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(postSchema)} />
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(crumbs)} />
+  {faqSchema && (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+  )}
 </BaseLayout>
 
 <style>
@@ -266,6 +321,42 @@ const postSchema = {
     padding-left: 1.2rem;
     display: grid;
     gap: 0.4rem;
+  }
+  .post__prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+    line-height: 1.45;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .post__prose :global(thead),
+  .post__prose :global(tbody),
+  .post__prose :global(tr) {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+  .post__prose :global(th),
+  .post__prose :global(td) {
+    border: 1px solid var(--line);
+    padding: 0.7rem 0.75rem;
+    text-align: left;
+    vertical-align: top;
+  }
+  .post__prose :global(th) {
+    background: rgba(17, 17, 17, 0.04);
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .post__prose :global(h3) {
+    margin-top: 0.65rem;
+    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.35;
+    color: var(--ink);
   }
   .post__footer {
     margin-top: 0.5rem;

@@ -57,11 +57,12 @@ async function init() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `);
-  const { rows } = await pool.query("SELECT count(*)::int AS n FROM posts");
-  if (rows[0].n === 0) await seedFromMarkdown();
+  // Insert any markdown posts that are not yet in the DB (never overwrites
+  // posts already edited in admin). Lets new files ship via deploy.
+  await seedFromMarkdown();
 }
 
-/** One-time import of the original markdown posts into the database. */
+/** Import missing markdown posts into the database (skip existing slugs). */
 async function seedFromMarkdown() {
   const dir = path.join(process.cwd(), "src", "content", "blog");
   if (!fs.existsSync(dir)) return;
