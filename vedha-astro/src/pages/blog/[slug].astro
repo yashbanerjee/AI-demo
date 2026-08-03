@@ -320,9 +320,18 @@ const documentTitle =
   }
   .post__prose :global(ul),
   .post__prose :global(ol) {
-    padding-left: 1.2rem;
+    padding-left: 1.35rem;
     display: grid;
     gap: 0.4rem;
+  }
+  .post__prose :global(ul) {
+    list-style: disc;
+  }
+  .post__prose :global(ol) {
+    list-style: decimal;
+  }
+  .post__prose :global(li)::marker {
+    color: rgba(17, 17, 17, 0.55);
   }
   .post__prose :global(table) {
     width: 100%;
