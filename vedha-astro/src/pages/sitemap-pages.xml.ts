@@ -5,5 +5,5 @@ export const GET: APIRoute = async ({ site }) => {
   if (!site) {
     return new Response("Site URL is not configured.", { status: 500 });
   }
-  return new Response(buildPagesSitemap(site), { headers: xmlHeaders });
+  return new Response(await buildPagesSitemap(site), { headers: xmlHeaders });
 };

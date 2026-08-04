@@ -57,12 +57,22 @@ async function safePosts(): Promise<Post[]> {
   }
 }
 
-export function buildPagesSitemap(site: URL) {
+export async function buildPagesSitemap(site: URL) {
+  const posts = await safePosts();
+  const latestBlog = posts[0]
+    ? (posts[0].updated_date ?? posts[0].pub_date).toISOString()
+    : undefined;
+
   return urlset([
     { loc: abs(site, "/"), changefreq: "weekly", priority: "1.0" },
     { loc: abs(site, "/services/"), changefreq: "weekly", priority: "0.9" },
     { loc: abs(site, "/products/"), changefreq: "weekly", priority: "0.7" },
-    { loc: abs(site, "/blog/"), changefreq: "daily", priority: "0.8" },
+    {
+      loc: abs(site, "/blog/"),
+      lastmod: latestBlog,
+      changefreq: "daily",
+      priority: "0.8",
+    },
     { loc: abs(site, "/contact/"), changefreq: "monthly", priority: "0.8" },
     {
       loc: abs(site, "/web-development-dubai/"),
@@ -103,11 +113,12 @@ export async function buildProductsSitemap(site: URL) {
 export async function buildBlogSitemap(site: URL) {
   const posts = await safePosts();
   return urlset(
-    posts.map((p) => ({
+    posts.map((p, index) => ({
       loc: abs(site, `/blog/${p.slug}/`),
       lastmod: (p.updated_date ?? p.pub_date).toISOString(),
       changefreq: "monthly",
-      priority: "0.6",
+      // Prefer newer posts slightly for crawl priority
+      priority: index < 4 ? "0.7" : "0.6",
     }))
   );
 }
