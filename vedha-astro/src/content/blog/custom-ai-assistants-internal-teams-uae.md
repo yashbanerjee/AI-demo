@@ -1,12 +1,13 @@
 ---
-title: "Custom AI Assistants for Internal Teams in the UAE | Vedha"
+title: "Designing Custom AI Assistants for Internal Teams: Use Cases for Operations, Finance and Sales in the UAE"
 description: "Designing custom AI assistants for operations, finance and sales in the UAE. See real use cases, design principles, and how to build assistants that teams actually use."
 pubDate: 2026-08-06
 author: "Vedha Team"
-tags: ["AI", "AI Assistants", "Operations", "Finance", "Sales", "UAE"]
+tags: ["AI","AI Assistants","Operations","Finance","Sales","UAE"]
 image: "/images/blog/custom-ai-assistants-internal-teams-uae.jpg"
 draft: false
 ---
+
 
 Plenty of UAE companies are experimenting with AI, yet most internal tools quietly go unused. The reason is rarely the model. It is that the tool was never designed around how the team actually works.
 

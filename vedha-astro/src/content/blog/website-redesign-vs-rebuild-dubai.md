@@ -3,10 +3,11 @@ title: "Website Redesign vs Rebuild in Dubai: How to Decide (UAE Guide)"
 description: "Website redesign vs rebuild? A clear, SEO-safe decision guide for Dubai and UAE organisations, covering the signs, costs, migration and AI search readiness."
 pubDate: 2026-08-01
 author: "Vedha Team"
-tags: ["Website Redesign", "Web Development", "Strategy", "Dubai"]
+tags: ["Website Redesign","Web Development","Strategy","Dubai"]
 image: "/images/blog/website-redesign-vs-rebuild-dubai.jpg"
 draft: false
 ---
+
 
 Your website looks dated, loads slowly, or your team waits on a developer to change one line of text. You ask around and get two answers nowhere near each other: one says redesign, another says rebuild.
 

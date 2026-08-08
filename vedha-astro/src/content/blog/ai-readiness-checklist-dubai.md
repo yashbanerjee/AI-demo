@@ -1,12 +1,13 @@
 ---
-title: "AI-Readiness Checklist for Dubai Organisations | Vedha"
+title: "AI-Readiness Checklist for Dubai Organisations: 12 Questions to Answer Before You Invest in AI Solutions"
 description: "12 questions Dubai leaders should answer before investing in AI. Check data, governance, readiness, and implementation risks before you buy."
 pubDate: 2026-08-04
 author: "Vedha Team"
-tags: ["AI", "AI Readiness", "Strategy", "Dubai", "Governance"]
+tags: ["AI","AI Readiness","Strategy","Dubai","Governance"]
 image: "/images/blog/ai-readiness-checklist-dubai.jpg"
 draft: false
 ---
+
 
 It is rarely the technology that sinks an AI project. Far more often, the organisation bought a tool before it was ready to use one, and the value never arrives. This AI readiness checklist for Dubai organisations is designed to catch that early, so you can decide with confidence whether to proceed, run a small pilot, or hold off and prepare first.
 

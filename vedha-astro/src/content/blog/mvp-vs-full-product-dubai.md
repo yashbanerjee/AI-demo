@@ -1,12 +1,13 @@
 ---
-title: "MVP vs Full Product: What Dubai Startups Should Build First | Vedha"
+title: "MVP vs Full Product: How Dubai Startups Should Decide What to Build First"
 description: "MVP vs full product: a practical guide for Dubai startups. Compare costs, timelines, and risks, and learn when to launch lean or build full from day one."
 pubDate: 2026-08-06
 author: "Vedha Team"
-tags: ["MVP", "Startups", "Product Strategy", "Dubai", "Web Development"]
+tags: ["MVP","Startups","Product Strategy","Dubai","Web Development"]
 image: "/images/blog/mvp-vs-full-product-dubai.jpg"
 draft: false
 ---
+
 
 Plenty of startups burn their first budget on the wrong starting point. Some build far too much before anyone has paid for anything; others ship something so thin that serious buyers walk away. The MVP vs full product decision is where that mistake is usually made or avoided.
 

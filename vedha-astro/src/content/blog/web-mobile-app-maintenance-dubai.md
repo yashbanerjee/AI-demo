@@ -3,10 +3,11 @@ title: "Web and Mobile App Maintenance in Dubai - How to Keep Your Platforms Hea
 description: "A practical guide for Dubai organisations on web and mobile app maintenance. See when to invest, what packages should include, what it costs, and how Vedha keeps sites and apps fast, secure and stable across the UAE."
 pubDate: 2026-08-01
 author: "Vedha Team"
-tags: ["Website Maintenance", "Mobile Apps", "Dubai", "Strategy"]
+tags: ["Website Maintenance","Mobile Apps","Dubai","Strategy"]
 image: "/images/blog/web-mobile-app-maintenance-dubai.png"
 draft: false
 ---
+
 
 Launching a website or app is the easy part. Keeping it fast, secure and working six months later, after an OS update, a new browser version and a hundred content changes, is where most platforms quietly fall apart.
 
