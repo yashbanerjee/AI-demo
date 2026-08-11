@@ -8,6 +8,13 @@ image: "/images/blog/ai-readiness-checklist-dubai.jpg"
 draft: false
 ---
 
+- [Why AI Readiness Matters](#why-ai-readiness-matters-before-you-buy)
+- [AI Readiness Checklist for Dubai Companies](#the-12-question-ai-readiness-checklist)
+- [How to Score Your Company for AI Readiness](#how-to-score-your-organisation)
+- [Common Red Flags](#common-red-flags)
+- [What to Do if Your Company Isn't Ready](#what-to-do-if-you-are-not-ready)
+- [How Vedha Helps](#how-vedha-can-help)
+- [FAQs](#faqs-about-ai-readiness-in-dubai)
 
 It is rarely the technology that sinks an AI project. Far more often, the organisation bought a tool before it was ready to use one, and the value never arrives. This AI readiness checklist for Dubai organisations is designed to catch that early, so you can decide with confidence whether to proceed, run a small pilot, or hold off and prepare first.
 

@@ -8,6 +8,15 @@ image: "/images/blog/web-apps-vs-native-apps-dubai.png"
 draft: false
 ---
 
+- [What is a web app?](#what-is-a-web-app)
+- [What is a native app?](#what-is-a-native-app)
+- [Web app vs native app comparison](#web-app-vs-native-app-the-real-comparison)
+- [Where PWAs fit](#where-progressive-web-apps-pwas-fit)
+- [How to choose](#how-to-choose-a-decision-framework-for-your-business)
+- [Recommendations by business type](#recommendations-by-business-type)
+- [Costs in Dubai](#how-much-do-web-apps-and-native-apps-cost-in-dubai)
+- [How Vedha helps](#how-vedha-helps-you-choose-and-build-the-right-path)
+- [FAQs](#faqs-about-web-apps-and-native-apps-in-dubai)
 
 Choosing between a web app and a native app is one of the first big decisions a business makes, and it shapes cost, launch speed, adoption and maintenance for years. Web apps vs native apps in Dubai is rarely about which technology is best in the abstract. It is about which model fits your users, your budget and how fast you need to prove value.
 

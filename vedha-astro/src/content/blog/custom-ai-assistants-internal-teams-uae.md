@@ -8,6 +8,16 @@ image: "/images/blog/custom-ai-assistants-internal-teams-uae.jpg"
 draft: false
 ---
 
+- [What we mean by custom AI assistants](#what-we-mean-by-custom-ai-assistants-for-internal-teams)
+- [Why UAE teams need custom assistants](#why-uae-teams-need-custom-assistants-not-just-generic-ai)
+- [Design principles](#design-principles-for-internal-ai-assistants)
+- [Operations use cases](#ai-assistants-for-operations)
+- [Finance use cases](#ai-assistants-for-finance)
+- [Sales use cases](#ai-assistants-for-sales)
+- [Governance and security](#governance-and-security-for-internal-ai-assistants)
+- [Measuring success](#measuring-success-kpis-for-internal-ai-assistants)
+- [How Vedha delivers](#how-vedha-designs-and-delivers-custom-ai-assistants)
+- [FAQs](#faqs-about-custom-ai-assistants-for-internal-teams)
 
 Plenty of UAE companies are experimenting with AI, yet most internal tools quietly go unused. The reason is rarely the model. It is that the tool was never designed around how the team actually works.
 

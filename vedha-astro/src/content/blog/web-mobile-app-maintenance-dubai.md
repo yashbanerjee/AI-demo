@@ -8,6 +8,14 @@ image: "/images/blog/web-mobile-app-maintenance-dubai.png"
 draft: false
 ---
 
+- [Why maintenance matters](#why-do-mobile-app-and-website-maintenance-matter-in-dubai-and-the-wider-uae)
+- [What maintenance includes](#what-does-web-and-mobile-app-maintenance-in-dubai-include)
+- [When to invest](#when-dubai-organisations-should-invest-in-maintenance)
+- [Best practices](#best-practices-for-web-and-mobile-app-maintenance-in-the-uae)
+- [Common mistakes](#common-mistakes-dubai-organisations-make)
+- [How Vedha runs maintenance](#how-vedha-runs-web-and-mobile-app-maintenance-in-dubai)
+- [FAQs](#faq-web-and-mobile-app-maintenance-in-dubai)
+- [Keep platforms healthy](#keep-your-platforms-healthy)
 
 Launching a website or app is the easy part. Keeping it fast, secure and working six months later, after an OS update, a new browser version and a hundred content changes, is where most platforms quietly fall apart.
 

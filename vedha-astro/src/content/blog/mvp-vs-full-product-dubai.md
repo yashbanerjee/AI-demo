@@ -8,6 +8,16 @@ image: "/images/blog/mvp-vs-full-product-dubai.jpg"
 draft: false
 ---
 
+- [What does MVP and Full Product Mean?](#what-founders-mean-by-mvp-vs-full-product)
+- [When to Choose MVP](#when-an-mvp-is-the-right-choice)
+- [When to Choose Full Product](#when-a-full-product-is-the-right-choice)
+- [Key Differences](#mvp-vs-full-product-the-key-differences)
+- [What Dubai Startups Should Keep in Mind](#dubai-specific-decision-factors)
+- [Decision Framework](#a-simple-decision-framework-for-founders)
+- [Common Mistakes](#common-mistakes-when-choosing-mvp-or-full-product)
+- [How to Upgrade from MVP to Full Product](#how-to-plan-the-upgrade-path-from-mvp-to-full-product)
+- [How Vedha Helps](#how-vedha-helps-startups-choose-and-build)
+- [FAQs](#faqs-about-mvp-vs-full-product-in-dubai)
 
 Plenty of startups burn their first budget on the wrong starting point. Some build far too much before anyone has paid for anything; others ship something so thin that serious buyers walk away. The MVP vs full product decision is where that mistake is usually made or avoided.
 

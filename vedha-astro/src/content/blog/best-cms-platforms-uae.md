@@ -8,6 +8,19 @@ image: "/images/blog/best-cms-platforms-uae.jpg"
 draft: false
 ---
 
+- [What is a CMS?](#what-is-a-cms)
+- [Headless or traditional?](#headless-or-traditional-cms-which-do-you-need)
+- [Platform comparison](#how-do-the-cms-platforms-compare)
+- [WordPress vs Webflow](#wordpress-vs-webflow-which-is-right-for-a-dubai-business)
+- [WordPress vs Shopify](#wordpress-vs-shopify-content-site-or-online-store)
+- [Best CMS for SEO](#which-cms-is-best-for-seo)
+- [Best for multilingual UAE sites](#which-cms-is-best-for-multilingual-websites-in-the-uae)
+- [Best by business type](#which-cms-is-best-for-your-business-type)
+- [How to choose in the UAE](#how-do-you-choose-the-right-cms-platform-in-the-uae)
+- [What implementation includes](#what-should-cms-implementation-include)
+- [Common mistakes](#what-are-the-most-common-cms-implementation-mistakes)
+- [How Vedha helps](#how-vedha-helps-with-cms-selection-and-implementation)
+- [FAQs](#faqs-about-cms-platforms-in-the-uae)
 
 Choosing a CMS in Dubai and the wider UAE means picking from a crowded field. WordPress, Webflow, Shopify, Drupal, HubSpot CMS and headless setups all promise to be the answer, but the best CMS platforms in the UAE are simply the ones that fit your business model, your team and what the website actually needs to do, whether that is selling products, generating leads, publishing content or running a more complex digital experience.
 

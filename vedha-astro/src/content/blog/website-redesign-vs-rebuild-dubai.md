@@ -8,6 +8,13 @@ image: "/images/blog/website-redesign-vs-rebuild-dubai.jpg"
 draft: false
 ---
 
+- [Redesign vs rebuild](#what-is-the-difference-between-a-website-redesign-and-a-rebuild)
+- [Signs you need each](#signs-you-need-a-website-redesign-vs-a-rebuild)
+- [Decision framework](#a-practical-framework-for-dubai-and-uae-organisations)
+- [SEO-safe migration](#how-do-you-run-an-seo-safe-website-redesign-and-migration)
+- [AI search readiness](#how-do-you-make-a-redesigned-site-ready-for-ai-search)
+- [How Vedha runs a redesign](#how-vedha-runs-a-website-redesign-in-dubai)
+- [FAQs](#faqs-about-website-redesign-vs-rebuild)
 
 Your website looks dated, loads slowly, or your team waits on a developer to change one line of text. You ask around and get two answers nowhere near each other: one says redesign, another says rebuild.
 

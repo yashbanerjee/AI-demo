@@ -4,6 +4,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getPostBySlug, listPosts } from "../../lib/db";
 import { coverFor } from "../../lib/covers";
 import { breadcrumbSchema, faqPageSchema } from "../../lib/schema";
+import {
+  extractJumpLinks,
+  withHeadingAnchors,
+  wrapTables,
+  stripLeadingJumpNavHtml,
+} from "../../lib/blog-toc";
 
 /** Pull FAQ Q&As from a trailing ## FAQ section of markdown (### question + paragraphs). */
 function extractFaqs(markdown: string): Array<{ question: string; answer: string }> {
@@ -25,59 +31,18 @@ function extractFaqs(markdown: string): Array<{ question: string; answer: string
     .filter((f) => f.question && f.answer);
 }
 
-function slugifyHeading(text: string, used: Map<string, number>): string {
-  const base =
-    text
-      .toLowerCase()
-      .normalize("NFKD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .slice(0, 80) || "section";
-  const count = (used.get(base) ?? 0) + 1;
-  used.set(base, count);
-  return count === 1 ? base : `${base}-${count}`;
-}
-
-/** Add anchor IDs to h2 headings and build a table of contents. */
-function withHeadingAnchors(html: string): {
-  html: string;
-  toc: Array<{ id: string; text: string }>;
-} {
-  const toc: Array<{ id: string; text: string }> = [];
-  const used = new Map<string, number>();
-  const next = html.replace(/<h2(\s[^>]*)?>([\s\S]*?)<\/h2>/gi, (_m, attrs = "", inner) => {
-    const plain = String(inner)
-      .replace(/<[^>]+>/g, "")
-      .replace(/&amp;/g, "&")
-      .replace(/&lt;/g, "<")
-      .replace(/&gt;/g, ">")
-      .replace(/&quot;/g, '"')
-      .replace(/&#39;/g, "'")
-      .trim();
-    if (!plain) return `<h2${attrs || ""}>${inner}</h2>`;
-    const id = slugifyHeading(plain, used);
-    toc.push({ id, text: plain });
-    const cleanAttrs = String(attrs || "").replace(/\s*id=(["']).*?\1/i, "");
-    return `<h2${cleanAttrs} id="${id}">${inner}</h2>`;
-  });
-  return { html: next, toc };
-}
-
-/** Wrap tables so wide comparisons can scroll on mobile without squashing cells. */
-function wrapTables(html: string): string {
-  return html.replace(/<table[\s\S]*?<\/table>/gi, (table) =>
-    `<div class="post__table-wrap" role="region" aria-label="Scrollable comparison table" tabindex="0">${table}</div>`
-  );
-}
-
 const post = await getPostBySlug(Astro.params.slug!);
 if (!post || post.draft) {
   return new Response("Not found", { status: 404 });
 }
 
-const { title, description, content, author, tags, cover_image, pub_date, updated_date, slug } = post;
-const { html: anchoredHtml, toc } = withHeadingAnchors(marked.parse(content) as string);
+const { title, description, content: rawContent, author, tags, cover_image, pub_date, updated_date, slug } = post;
+
+// Prefer author jump-link labels over raw H2 copy in the "In this article" nav.
+// Always strip that list from the body so it is not shown again under the auto-nav.
+const { content, links: jumpLinks } = extractJumpLinks(rawContent);
+const parsedHtml = stripLeadingJumpNavHtml(marked.parse(content) as string);
+const { html: anchoredHtml, toc } = withHeadingAnchors(parsedHtml, jumpLinks);
 const html = wrapTables(anchoredHtml);
 const wordCount = content.replace(/[#*_`>\[\]()]/g, " ").trim().split(/\s+/).filter(Boolean).length;
 const faqs = extractFaqs(content);

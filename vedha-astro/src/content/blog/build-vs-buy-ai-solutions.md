@@ -3,10 +3,19 @@ title: "Build vs Buy for AI Solutions: When to Choose Custom Development, Platfo
 description: "Should you build or buy an AI solution? Compare custom development, platform integration and hybrid approaches across cost, governance, data, scalability and UAE requirements."
 pubDate: 2026-08-08
 author: "Vedha Team"
-tags: ["AI", "Build vs Buy", "Strategy", "Governance", "UAE"]
+tags: ["AI","Build vs Buy","Strategy","Governance","UAE"]
 image: "/images/blog/build-vs-buy-ai-solutions.jpg"
 draft: false
 ---
+
+- [What "build vs buy" means for AI](#what-build-vs-buy-means-for-ai)
+- [The four options](#the-four-options-and-when-each-fits)
+- [When hybrid is best](#when-a-hybrid-ai-approach-is-best)
+- [UAE-specific factors](#uae-specific-factors-to-evaluate)
+- [Total cost of ownership](#compare-total-cost-of-ownership)
+- [Build-vs-buy scorecard](#a-practical-build-vs-buy-scorecard)
+- [How Vedha helps](#how-vedha-helps-organisations-make-the-decision)
+- [FAQs](#faqs-about-build-vs-buy-ai)
 
 Every organisation is keen to adopt AI, and the wrong investment gets expensive fast: high costs, weak adoption, vendor lock-in, or a tool that demos well and never reaches production. Build vs buy AI is where that decision is made well or badly, and it is no longer a two-way choice.
 
