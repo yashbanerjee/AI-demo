@@ -19,7 +19,7 @@ draft: false
 - [How Vedha structures pricing](#how-vedha-structures-corporate-website-pricing)
 - [FAQs](#faqs-about-corporate-website-cost-in-dubai)
 
-"How much does a corporate website cost in Dubai?" is one of the most common questions from founders, CTOs and marketing leaders in the UAE. Prices range from low five figures to well over AED 200,000, depending on scope, complexity and who builds it.
+"How much does a corporate website cost in Dubai?" is one of the most common questions from founders, CTOs and marketing leaders in the UAE. Prices range from low four figures to well over AED 30,000, depending on scope, complexity and who builds it.
 
 This guide breaks down realistic corporate website cost bands in Dubai for 2026, what drives your quote, typical timelines, and the hidden fees most quotes leave out. It also explains how Vedha keeps pricing transparent so there are no surprises later.
 
