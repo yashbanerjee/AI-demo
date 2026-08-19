@@ -14,7 +14,7 @@ const servicePillars = [
           {
             name: "Digital transformation strategy",
             description:
-              "A board-ready plan that sequences technology change against commercial priorities and operating constraints.",
+              "A clear digital strategy, focused priorities, and expert guidance from planning through to implementation.",
           },
           {
             name: "Technology audits",

@@ -99,23 +99,46 @@ const schema = [
     <section class="svc-leaf__section" aria-labelledby="why-heading">
       <header class="svc-leaf__section-head">
         <p class="kicker">Why it matters</p>
-        <h2 id="why-heading">Why {service.name} is important</h2>
+        <h2 id="why-heading">{landing.whyHeading ?? `Why ${service.name} is important`}</h2>
       </header>
       <div class="svc-leaf__prose">
         {landing.whyImportant.map((p) => <p>{p}</p>)}
       </div>
-      <ul class="svc-leaf__benefits">
-        {landing.benefits.map((b) => (
-          <li>{b}</li>
-        ))}
-      </ul>
+      {landing.benefits.length > 0 && (
+        <ul class="svc-leaf__benefits">
+          {landing.benefits.map((b) => (
+            <li>{b}</li>
+          ))}
+        </ul>
+      )}
     </section>
+
+    {landing.howHelps && landing.howHelps.length > 0 && (
+      <section class="svc-leaf__section" aria-labelledby="help-heading">
+        <header class="svc-leaf__section-head">
+          <p class="kicker">How we help</p>
+          <h2 id="help-heading">How Vedha helps businesses transform</h2>
+          {landing.howHelpsIntro && <p>{landing.howHelpsIntro}</p>}
+        </header>
+        <ol class="svc-leaf__process">
+          {landing.howHelps.map((item, i) => (
+            <li>
+              <span class="svc-leaf__step-num">{String(i + 1).padStart(2, "0")}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
 
     <section class="svc-leaf__section" aria-labelledby="process-heading">
       <header class="svc-leaf__section-head">
         <p class="kicker">How we deliver</p>
-        <h2 id="process-heading">Our {service.name} process</h2>
-        <p>A clear sequence from discovery to outcomes — tailored for {service.categoryName}.</p>
+        <h2 id="process-heading">{landing.processHeading ?? `Our ${service.name} process`}</h2>
+        <p>{landing.processIntro ?? `A clear sequence from discovery to outcomes — tailored for ${service.categoryName}.`}</p>
       </header>
       <ol class="svc-leaf__process">
         {landing.process.map((step, i) => (
@@ -133,7 +156,8 @@ const schema = [
     <section class="svc-leaf__section" aria-labelledby="outcomes-heading">
       <header class="svc-leaf__section-head">
         <p class="kicker">What you get</p>
-        <h2 id="outcomes-heading">Outcomes from {service.name}</h2>
+        <h2 id="outcomes-heading">{landing.outcomesHeading ?? `Outcomes from ${service.name}`}</h2>
+        {landing.outcomesIntro && <p>{landing.outcomesIntro}</p>}
       </header>
       <ul class="svc-leaf__outcomes">
         {landing.outcomes.map((o) => (
@@ -142,10 +166,22 @@ const schema = [
       </ul>
     </section>
 
+    {landing.whyUs && landing.whyUs.length > 0 && (
+      <section class="svc-leaf__section" aria-labelledby="why-us-heading">
+        <header class="svc-leaf__section-head">
+          <p class="kicker">Why Vedha</p>
+          <h2 id="why-us-heading">{landing.whyUsHeading ?? "Why Vedha?"}</h2>
+        </header>
+        <div class="svc-leaf__prose">
+          {landing.whyUs.map((p) => <p>{p}</p>)}
+        </div>
+      </section>
+    )}
+
     <section class="svc-leaf__section" aria-labelledby="faq-heading">
       <header class="svc-leaf__section-head">
         <p class="kicker">FAQ</p>
-        <h2 id="faq-heading">Questions about {service.name}</h2>
+        <h2 id="faq-heading">{landing.faqHeading ?? `Questions about ${service.name}`}</h2>
       </header>
       <div class="faq__list">
         {landing.faqs.map((faq, i) => (
@@ -164,21 +200,27 @@ const schema = [
     <section class="svc-leaf__cta" aria-label="Enquire">
       <div>
         <p class="kicker">Next step</p>
-        <h2>Ready to discuss {service.name}?</h2>
-        <p>Tell us about your context — we will respond with a clear scope and next step.</p>
+        <h2>{landing.ctaTitle ?? `Ready to discuss ${service.name}?`}</h2>
+        <p>{landing.ctaBody ?? "Tell us about your context — we will respond with a clear scope and next step."}</p>
       </div>
       <div class="svc-leaf__intro-actions">
-        <button
-          type="button"
-          class="btn btn--dark"
-          data-svc-enquire
-          data-category={service.categoryName}
-          data-service={service.name}
-        >
-          <span>Enquire about {service.name}</span>
-        </button>
-        <a class="btn btn--ghost" href={categoryPath}>
-          <span>All {service.categoryName}</span>
+        {landing.ctaPrimaryHref ? (
+          <a class="btn btn--dark" href={landing.ctaPrimaryHref} data-book-consultation={landing.ctaPrimaryHref.includes("#book") ? true : undefined}>
+            <span>{landing.ctaPrimaryLabel ?? `Enquire about ${service.name}`}</span>
+          </a>
+        ) : (
+          <button
+            type="button"
+            class="btn btn--dark"
+            data-svc-enquire
+            data-category={service.categoryName}
+            data-service={service.name}
+          >
+            <span>{landing.ctaPrimaryLabel ?? `Enquire about ${service.name}`}</span>
+          </button>
+        )}
+        <a class="btn btn--ghost" href={landing.ctaSecondaryHref ?? categoryPath}>
+          <span>{landing.ctaSecondaryLabel ?? `All ${service.categoryName}`}</span>
         </a>
       </div>
     </section>

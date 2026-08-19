@@ -74,7 +74,7 @@ ${pillars
 ## Example service pages
 - [ERP consulting](${origin}/services/erp-solutions/erp-consulting/): Advisory on ERP scope and platform fit
 - [Construction ERP](${origin}/services/erp-solutions/construction-erp/): ERP for project costing and site operations
-- [Digital transformation strategy](${origin}/services/technology-consulting-strategy/digital-transformation-strategy/): Board-ready technology change plans
+- [Digital transformation strategy](${origin}/services/technology-consulting-strategy/digital-transformation-strategy/): Consulting and roadmaps from planning through implementation
 
 ## Recent blog posts
 ${

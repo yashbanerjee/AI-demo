@@ -24,12 +24,28 @@ export type ServiceLandingContent = {
   h1: string;
   lede: string;
   whyImportant: string[];
+  whyHeading?: string;
   benefits: string[];
+  howHelpsIntro?: string;
+  howHelps?: ProcessStep[];
   process: ProcessStep[];
+  processHeading?: string;
+  processIntro?: string;
   outcomes: string[];
+  outcomesHeading?: string;
+  outcomesIntro?: string;
+  whyUsHeading?: string;
+  whyUs?: string[];
   faqs: FaqItem[];
+  faqHeading?: string;
   keywords: string[];
   cover: string;
+  ctaTitle?: string;
+  ctaBody?: string;
+  ctaPrimaryLabel?: string;
+  ctaPrimaryHref?: string;
+  ctaSecondaryLabel?: string;
+  ctaSecondaryHref?: string;
 };
 
 const covers = [
@@ -601,7 +617,7 @@ export function buildServiceLanding(
     158
   );
 
-  return {
+  const generated: ServiceLandingContent = {
     seoTitle: `${name} in Dubai | ${service.categoryName} — VEDHA`,
     seoDescription,
     h1: name,
@@ -614,4 +630,139 @@ export function buildServiceLanding(
     keywords,
     cover: coverFor(service.path),
   };
+
+  const custom = customLandings[service.slug];
+  return custom ? { ...generated, ...custom } : generated;
 }
+
+const customLandings: Record<string, Partial<ServiceLandingContent>> = {
+  "digital-transformation-strategy": {
+    seoTitle: "Digital Transformation Consulting and Strategy in Dubai, UAE | Vedha",
+    seoDescription:
+      "Digital transformation consulting in Dubai and the UAE. Assess systems and processes, prioritise initiatives, and get a practical roadmap from strategy to implementation.",
+    h1: "Digital Transformation Consulting and Strategy in Dubai, UAE",
+    lede: "Digital transformation consulting helps businesses in Dubai and the UAE make smarter technology decisions, improve how they operate, and build a practical roadmap for sustainable growth.",
+    whyHeading: "What is digital transformation consulting?",
+    whyImportant: [
+      "Digital transformation consulting helps an organisation improve performance, customer experience, and long-term growth through better use of technology. It involves reviewing current processes, systems, data, and capabilities, then setting priorities for improvement.",
+      "The goal is to create a practical path forward. This may include modernising legacy applications, automating manual workflows, improving data visibility, integrating business systems, adopting AI, or improving digital customer journeys.",
+      "Vedha provides digital transformation consulting in Dubai and across the UAE for organisations that need to connect technology decisions with commercial objectives, operational needs, and the resources available to deliver change.",
+    ],
+    benefits: [],
+    howHelpsIntro:
+      "Every organisation has a different starting point. You may be managing disconnected systems, repetitive manual work, limited reporting, ageing technology, or digital experiences that no longer meet customer expectations. Vedha begins with the business problem. We work with leadership, operational, and technology teams to understand what needs to improve and what a successful outcome looks like. Our approach supports both immediate priorities and long-term change.",
+    howHelps: [
+      {
+        title: "Modernise systems and operations",
+        body: "We identify where outdated applications, manual work, and disconnected tools are slowing teams down, then recommend improvements, integrations, modernisation, or phased replacement.",
+      },
+      {
+        title: "Identify practical AI and automation opportunities",
+        body: "We assess use cases, data readiness, feasibility, governance, and expected value to identify AI and automation initiatives that solve real business problems.",
+      },
+      {
+        title: "Improve digital experiences",
+        body: "We identify opportunities to improve customer, employee, supplier, and partner journeys across websites, eCommerce platforms, customer portals, mobile applications, and internal tools.",
+      },
+      {
+        title: "Support implementation",
+        body: "We define requirements, delivery phases, and success measures, then support delivery through custom software, web development, AI, automation, and integration services.",
+      },
+    ],
+    processHeading: "What our digital transformation consulting includes",
+    processIntro:
+      "Vedha works with you to assess your current position, identify the most valuable opportunities, and create a practical plan for change. Our approach is tailored to your business goals, existing technology, internal capabilities, and delivery constraints.",
+    process: [
+      {
+        title: "Understand your priorities",
+        body: "We begin with your business model, growth plans, customer needs, operational challenges, and leadership goals.",
+      },
+      {
+        title: "Assess your current environment",
+        body: "We review key processes, systems, data, digital touchpoints, internal capabilities, and risks to establish a clear baseline.",
+      },
+      {
+        title: "Identify improvement opportunities",
+        body: "We look for opportunities to modernise systems, automate workflows, improve data visibility, integrate platforms, adopt AI, or strengthen digital customer experiences.",
+      },
+      {
+        title: "Prioritise the right initiatives",
+        body: "We assess opportunities against business value, urgency, feasibility, effort, cost, and dependencies, so investment focuses on what matters most.",
+      },
+      {
+        title: "Create your digital transformation roadmap",
+        body: "We develop a phased plan covering recommended initiatives, ownership, milestones, risks, success measures, and the steps required to begin delivery.",
+      },
+    ],
+    outcomesHeading: "Digital transformation strategy deliverables",
+    outcomesIntro:
+      "Depending on the scope, your digital transformation consulting engagement may include the items below. These deliverables give leadership, operations, and technology teams a shared basis for making investment and delivery decisions.",
+    outcomes: [
+      "Digital maturity assessment and current-state summary",
+      "Business process and technology gap analysis",
+      "Stakeholder requirements and findings",
+      "Prioritised transformation opportunity register",
+      "AI and automation use-case recommendations",
+      "Technology, data, and integration recommendations",
+      "Target-state technology direction",
+      "Phased digital transformation roadmap",
+      "Risks, dependencies, ownership, and governance considerations",
+      "KPIs and success measures",
+      "Implementation briefs or vendor evaluation criteria",
+    ],
+    whyUsHeading: "Why Vedha?",
+    whyUs: [
+      "Vedha combines digital transformation consulting with hands-on delivery across AI, automation, custom software, web platforms, and system integration. We help UAE organisations turn business priorities into a practical roadmap, then provide the technical support needed to deliver it.",
+      "Our approach brings strategy and execution together, helping teams make informed technology decisions and move forward with a clear plan. For organisations planning business transformation in Dubai, this creates a more direct route from strategy to implementation.",
+    ],
+    faqHeading: "Frequently asked questions",
+    faqs: [
+      {
+        question: "What is the difference between digital transformation strategy and consulting?",
+        answer:
+          "Digital transformation consulting is the advisory work used to assess your current position, opportunities, technology options, and priorities. A digital transformation strategy is the resulting plan, including target outcomes, recommended initiatives, sequencing, and measures of success.",
+      },
+      {
+        question: "How long does digital transformation consulting take?",
+        answer:
+          "A focused assessment and roadmap can take several weeks. Larger engagements may take longer where they involve several departments, complex legacy systems, extensive stakeholder input, or detailed business cases.",
+      },
+      {
+        question: "Who needs digital transformation consulting?",
+        answer:
+          "It can help startups, SMEs, and enterprise organisations that need to improve inefficient processes, modernise outdated systems, connect disconnected platforms, adopt AI, or improve digital customer experiences.",
+      },
+      {
+        question: "Can Vedha implement the roadmap?",
+        answer:
+          "Yes. Vedha can support roadmap implementation through custom software development, web development, AI solutions, automation, system integration, customer portals, and digital platforms.",
+      },
+      {
+        question: "Can legacy systems be improved without replacing everything?",
+        answer:
+          "Often, yes. A phased approach may include system integration, workflow automation, user experience improvements, data consolidation, selected cloud migration, or replacement of the highest-risk components first.",
+      },
+      {
+        question: "How much does digital transformation consulting cost in Dubai?",
+        answer:
+          "Cost depends on the scope, systems involved, stakeholder requirements, research needed, and depth of the final roadmap. Vedha will define the engagement scope and provide a clear proposal before work begins.",
+      },
+    ],
+    ctaTitle: "Ready to discuss your digital transformation strategy?",
+    ctaBody:
+      "Tell us about your business goals, current systems, and transformation priorities. Our Dubai-based consultants will help you define a clear scope and identify the right next step for your organisation.",
+    ctaPrimaryLabel: "Discuss your transformation strategy",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Explore technology consulting and strategy",
+    ctaSecondaryHref: "/services/technology-consulting-strategy/",
+    keywords: [
+      "digital transformation consulting UAE",
+      "digital transformation consulting Dubai",
+      "digital transformation strategy UAE",
+      "digital transformation Dubai",
+      "business transformation Dubai",
+      "Technology Consulting & Strategy",
+      "Vedha",
+    ],
+  },
+};
