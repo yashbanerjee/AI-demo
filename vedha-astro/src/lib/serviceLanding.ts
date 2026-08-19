@@ -27,6 +27,7 @@ export type ServiceLandingContent = {
   whyHeading?: string;
   benefits: string[];
   howHelpsIntro?: string;
+  howHelpsHeading?: string;
   howHelps?: ProcessStep[];
   process: ProcessStep[];
   processHeading?: string;
@@ -651,6 +652,7 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
     benefits: [],
     howHelpsIntro:
       "Every organisation has a different starting point. You may be managing disconnected systems, repetitive manual work, limited reporting, ageing technology, or digital experiences that no longer meet customer expectations. Vedha begins with the business problem. We work with leadership, operational, and technology teams to understand what needs to improve and what a successful outcome looks like. Our approach supports both immediate priorities and long-term change.",
+    howHelpsHeading: "How Vedha helps businesses transform",
     howHelps: [
       {
         title: "Modernise systems and operations",
@@ -762,6 +764,140 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "digital transformation Dubai",
       "business transformation Dubai",
       "Technology Consulting & Strategy",
+      "Vedha",
+    ],
+  },
+  "inventory-management-systems": {
+    seoTitle: "Inventory Management Software in Dubai, UAE | Vedha",
+    seoDescription:
+      "Custom inventory management software in Dubai and the UAE. Track stock across warehouses, stores and branches with stronger controls, replenishment and system integrations.",
+    h1: "Inventory Management Software in Dubai, UAE",
+    lede: "Vedha designs and develops inventory management systems that give businesses clearer stock visibility, stronger controls, and a more reliable way to manage inventory across warehouses, stores, and branches.",
+    whyHeading: "What is inventory management software?",
+    whyImportant: [
+      "Inventory management software in the UAE helps businesses track, control, and optimise stock throughout its lifecycle. It brings product records, stock movements, purchase orders, sales activity, warehouse transfers, adjustments, and replenishment information into one central system.",
+      "For businesses using spreadsheets, paper-based counts, or disconnected software, it can be difficult to know what is available, where stock is located, what has moved, and when items need to be reordered. An inventory management system gives teams a more accurate, real-time view of stock across their operations.",
+      "Vedha provides inventory management software in Dubai and the UAE for organisations that need a solution aligned with their workflows, locations, users, and existing business systems. We also support businesses looking for inventory management software in Sharjah and other UAE locations.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Vedha helps manage inventory",
+    howHelpsIntro:
+      "Vedha works with retailers, distributors, and manufacturers to improve stock visibility, control, and decision-making across branches, warehouses, and sales channels.",
+    howHelps: [
+      {
+        title: "Track stock across locations",
+        body: "Give authorised teams a central view of inventory by warehouse, store, or storage location with our multi-branch inventory software in the UAE.",
+      },
+      {
+        title: "Control stock movements",
+        body: "Record receipts, issues, transfers, returns, adjustments, and stock counts with clear movement history and accountability.",
+      },
+      {
+        title: "Improve replenishment decisions",
+        body: "Set reorder levels and identify slow-moving, overstocked, or low-stock items before they affect sales, fulfilment, or production.",
+      },
+      {
+        title: "Connect inventory to the wider business",
+        body: "Link inventory data with ERP, accounting, POS, eCommerce, CRM, procurement, logistics, and barcode-scanning tools.",
+      },
+    ],
+    processHeading: "What our inventory management services include",
+    processIntro:
+      "Vedha provides inventory management services in Dubai for organisations that need a new platform, a tailored enterprise module, or an improvement plan for an existing inventory process.",
+    process: [
+      {
+        title: "Discovery and requirements",
+        body: "We map your inventory workflows, product types, locations, stock ownership, approval needs, reporting requirements, and operational challenges.",
+      },
+      {
+        title: "System and data assessment",
+        body: "We review the systems and data that affect stock control, including ERP, accounting, purchasing, sales, POS, eCommerce, logistics, and warehouse tools.",
+      },
+      {
+        title: "Solution design",
+        body: "We define the appropriate inventory features, user roles, controls, workflows, interfaces, and integrations for your organisation.",
+      },
+      {
+        title: "Development and integration",
+        body: "We build or configure the inventory solution, connect relevant business systems, and prepare product, supplier, customer, warehouse, and stock data for migration.",
+      },
+      {
+        title: "Testing, training, and launch",
+        body: "We test critical workflows, support user acceptance testing, train relevant teams, and manage a controlled go-live.",
+      },
+      {
+        title: "Post-launch support",
+        body: "We provide ongoing support, performance monitoring, enhancements, and further integration work as your operations evolve.",
+      },
+    ],
+    outcomesHeading: "Inventory management system deliverables",
+    outcomesIntro:
+      "Your project scope will depend on the number of locations, stock complexity, required integrations, and business priorities. A typical engagement for an inventory management system in Dubai may include:",
+    outcomes: [
+      "Inventory process and requirements assessment",
+      "Product, warehouse, branch, and user-role data model",
+      "Inventory system architecture and integration plan",
+      "Defined workflows for stock receipt, issue, transfer, return, and adjustment",
+      "Wireframes or interface designs for key user journeys",
+      "Custom inventory management software or tailored enterprise module",
+      "ERP, accounting, POS, eCommerce, or logistics integrations",
+      "Data migration and validation plan",
+      "Test scenarios and launch criteria",
+      "User training and operational handover materials",
+      "Post-launch support and improvement plan",
+    ],
+    whyUsHeading: "Why Vedha?",
+    whyUs: [
+      "Vedha combines enterprise software expertise with practical product delivery. We design inventory management software around how your business operates rather than forcing your teams to work around a rigid, one-size-fits-all platform.",
+      "For organisations managing inventory across Dubai, Sharjah, or multiple UAE locations, we can support the full journey from requirements and system design through to development, integration, launch, and ongoing improvement.",
+    ],
+    faqHeading: "Frequently asked questions",
+    faqs: [
+      {
+        question: "What is multi branch inventory software?",
+        answer:
+          "Multi branch inventory software gives businesses a central view of stock across multiple branches, stores, warehouses, or other locations. It allows authorised users to monitor quantities by location, transfer stock between sites, and review movement history from one system.",
+      },
+      {
+        question: "Can you integrate inventory management software with our existing systems?",
+        answer:
+          "Yes. Vedha can integrate inventory software with relevant ERP, accounting, POS, eCommerce, CRM, procurement, logistics, or reporting systems. The integration scope depends on your current platforms, data structure, and the workflows that need to be connected.",
+      },
+      {
+        question: "Can the system support barcode, batch, serial, and expiry tracking?",
+        answer:
+          "Yes. These features can be included where they are relevant to your stock controls and operational processes. During discovery, we define the identifiers, scanning requirements, stock locations, and reporting needed for your business.",
+      },
+      {
+        question: "Is inventory management software suitable for businesses with several UAE locations?",
+        answer:
+          "Yes. A multi-location inventory system can help organisations manage stock across branches, warehouses, stores, and distribution points from one central platform. It is particularly useful where teams need clear visibility, controlled transfers, and consistent reporting across locations.",
+      },
+      {
+        question: "How long does it take to build an inventory management system?",
+        answer:
+          "Timelines depend on the required features, number of locations, existing systems, integration needs, data quality, and rollout approach. A focused solution can be delivered in phases, while a larger enterprise inventory platform may require a longer programme of discovery, development, testing, migration, training, and deployment.",
+      },
+      {
+        question: "Can Vedha support the system after launch?",
+        answer:
+          "Yes. We can provide post-launch support, user training, enhancements, performance monitoring, and further integration work as your inventory requirements develop.",
+      },
+    ],
+    ctaTitle: "Ready to improve inventory control across your business?",
+    ctaBody:
+      "Tell us about your branches, warehouses, existing systems, and inventory challenges. Our team will help you define the right scope for inventory management software in Dubai, Sharjah, or across the UAE.",
+    ctaPrimaryLabel: "Discuss your inventory management needs",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Explore enterprise software solutions",
+    ctaSecondaryHref: "/services/enterprise-software/",
+    keywords: [
+      "inventory management software Dubai",
+      "inventory management software UAE",
+      "multi branch inventory software UAE",
+      "inventory management system Dubai",
+      "inventory management software Sharjah",
+      "Enterprise Software",
       "Vedha",
     ],
   },

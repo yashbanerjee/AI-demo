@@ -317,7 +317,7 @@ const servicePillars = [
           {
             name: "Inventory-management systems",
             description:
-              "Stock visibility, movements, and replenishment controls across warehouses and sites.",
+              "Custom inventory software for accurate stock control, smarter replenishment, and connected operations.",
           },
           {
             name: "Maintenance-management systems",
