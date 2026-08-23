@@ -901,4 +901,135 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha",
     ],
   },
+  "erp-consulting": {
+    seoTitle: "ERP Consulting in Dubai, UAE | Vedha",
+    seoDescription:
+      "ERP consulting in Dubai and the UAE. Assess ERP strategy, system selection, implementation planning, integrations, and optimisation with practical guidance from Vedha.",
+    h1: "ERP Consulting in Dubai, UAE",
+    lede: "Vedha provides ERP consulting in Dubai and the UAE to help organisations make confident decisions about ERP strategy, system selection, implementation, and optimisation.",
+    whyHeading: "What is ERP consulting?",
+    whyImportant: [
+      "ERP consulting helps businesses assess, select, plan, implement, and improve enterprise resource planning systems. It connects operational requirements with the right technology approach, so finance, procurement, inventory, sales, projects, HR, and reporting can work from more reliable and connected information.",
+      "An ERP consultant reviews your current processes, systems, data, reporting needs, and business objectives. The outcome is a practical plan for improving the way teams manage core operations, rather than adopting software without a clear fit.",
+      "Vedha provides ERP consultation in Dubai for organisations replacing fragmented tools, modernising legacy systems, improving visibility across departments, or preparing for growth. Our ERP consulting services in Dubai are designed around your business model, industry requirements, current technology, and delivery priorities.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Vedha helps businesses get more from ERP",
+    howHelpsIntro:
+      "Vedha helps businesses use ERP to create a more connected, visible, and manageable operation. We work with leadership, finance, operations, and technology teams to ensure the ERP programme supports real business priorities, not just a software rollout.",
+    howHelps: [
+      {
+        title: "Improve visibility and control",
+        body: "Connect finance, sales, procurement, inventory, and operational data to support clearer reporting and faster decisions.",
+      },
+      {
+        title: "Reduce manual work",
+        body: "Replace spreadsheets, duplicated data entry, and fragmented handovers with consistent workflows and shared information.",
+      },
+      {
+        title: "Connect essential systems",
+        body: "Integrate ERP with CRM, POS, eCommerce, payroll, logistics, inventory, and custom applications.",
+      },
+      {
+        title: "Support growth",
+        body: "Build an ERP foundation for new users, locations, product lines, sales channels, and reporting needs. As an ERP consultant for retail in Dubai, Vedha can also help connect store operations, purchasing, inventory, POS, eCommerce, finance, and supplier management.",
+      },
+    ],
+    processHeading: "What our ERP consulting includes",
+    processIntro:
+      "Vedha provides ERP consulting in the UAE for businesses that need independent advice before selecting a platform, a clearer plan for an ERP programme, or expert support during an existing implementation.",
+    process: [
+      {
+        title: "Discovery and requirements",
+        body: "We work with leadership, finance, operations, IT, and end users to understand workflows, pain points, reporting gaps, compliance needs, approval structures, and priorities.",
+      },
+      {
+        title: "Process and system assessment",
+        body: "We review how information moves across finance, procurement, sales, inventory, projects, and customer management to identify inefficiencies, manual work, duplicated data, and disconnected systems.",
+      },
+      {
+        title: "ERP selection and solution design",
+        body: "We define the right ERP requirements, including modules, user roles, workflows, integrations, data, reporting, implementation approach, and evaluation criteria.",
+      },
+      {
+        title: "Integration and data planning",
+        body: "We identify the systems that need to connect with the ERP and plan data cleansing, migration, validation, and ownership.",
+      },
+      {
+        title: "Delivery governance and change readiness",
+        body: "We establish responsibilities, decision-making, training, testing, risk management, and post-launch support requirements.",
+      },
+    ],
+    outcomesHeading: "ERP consulting deliverables",
+    outcomesIntro:
+      "Your ERP consulting engagement will be tailored to the scale of your organisation, existing systems, industry needs, and programme objectives. Typical deliverables may include:",
+    outcomes: [
+      "ERP readiness assessment and current-state findings",
+      "Business process and system gap analysis",
+      "Stakeholder requirements and functional needs",
+      "ERP strategy and programme roadmap",
+      "Platform evaluation criteria and vendor-selection support",
+      "Recommended modules, workflows, user roles, and approval controls",
+      "Integration architecture and data-migration plan",
+      "Implementation scope, milestones, governance, and risk register",
+      "Reporting, dashboard, and KPI requirements",
+      "Training, testing, cutover, and post-go-live support plan",
+      "Implementation briefs or vendor evaluation materials",
+    ],
+    whyUsHeading: "Why Vedha?",
+    whyUs: [
+      "Vedha combines ERP consulting with hands-on technical delivery across custom software, integrations, web platforms, AI, automation, and enterprise systems. We help businesses turn their ERP requirements into a practical programme, then provide the technical support needed to deliver connected workflows and reliable data across the organisation.",
+      "For companies looking for ERP consulting services in the UAE, our approach brings strategy and execution together. We focus on practical outcomes, clear ownership, and a delivery plan that works for your teams. We can also support your organisation with ERP implementation, helping turn the agreed strategy and requirements into a successful rollout.",
+    ],
+    faqHeading: "Frequently asked questions",
+    faqs: [
+      {
+        question: "What is the difference between ERP consulting and ERP implementation?",
+        answer:
+          "ERP consulting helps define requirements, assess options, and plan the programme. ERP implementation covers configuring, integrating, testing, training, and launching the selected system.",
+      },
+      {
+        question: "How long does ERP consulting take?",
+        answer:
+          "A focused ERP consultation in Dubai can take several weeks, depending on the number of stakeholders, business functions, systems, and decisions involved. Broader programmes that include detailed process mapping, vendor selection, data assessment, and implementation planning may take longer.",
+      },
+      {
+        question: "Can Vedha help us choose an ERP platform?",
+        answer:
+          "Yes. We help organisations define evaluation criteria, compare platform options, review functional and technical fit, assess integration needs, and select a delivery approach that supports their budget, operations, and long-term goals.",
+      },
+      {
+        question: "Can ERP integrate with our existing systems?",
+        answer:
+          "Yes. ERP systems can be integrated with CRM, accounting, POS, inventory, eCommerce, payroll, procurement, logistics, data platforms, and custom applications. The appropriate integration approach depends on the systems involved, the data required, and the workflows that need to be connected.",
+      },
+      {
+        question: "Is ERP consulting suitable for retail businesses?",
+        answer:
+          "Yes. ERP consulting is particularly useful for retailers that need better visibility across stores, inventory, suppliers, sales channels, finance, procurement, and reporting. Vedha can assess retail requirements and define a practical ERP roadmap for multi-location and omnichannel operations.",
+      },
+      {
+        question: "Can Vedha support our ERP after launch?",
+        answer:
+          "Yes. We can support ERP optimisation after go-live through workflow improvements, reporting enhancements, integration support, user training, performance monitoring, and further development as your business requirements change.",
+      },
+    ],
+    ctaTitle: "Ready to discuss your ERP requirements?",
+    ctaBody:
+      "Tell us about your current systems, operating challenges, and ERP goals. Our Dubai-based team will help you define a clear scope and identify the right next step for your ERP programme.",
+    ctaPrimaryLabel: "Discuss your ERP strategy",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Explore ERP solutions",
+    ctaSecondaryHref: "/services/erp-solutions/",
+    keywords: [
+      "ERP consulting Dubai",
+      "ERP consulting UAE",
+      "ERP consultant Dubai",
+      "ERP consultation Dubai",
+      "ERP consulting services UAE",
+      "ERP consultant retail Dubai",
+      "ERP Solutions",
+      "Vedha",
+    ],
+  },
 };

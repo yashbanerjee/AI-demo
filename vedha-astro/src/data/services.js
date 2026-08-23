@@ -364,7 +364,7 @@ const servicePillars = [
           {
             name: "ERP consulting",
             description:
-              "Advisory on ERP scope, platform fit, and programme approach before major spend.",
+              "Clear ERP priorities, practical recommendations, and expert guidance from assessment through to implementation.",
           },
           {
             name: "ERP-readiness assessments",
