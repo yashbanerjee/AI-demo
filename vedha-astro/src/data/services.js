@@ -307,7 +307,7 @@ const servicePillars = [
           {
             name: "Procurement systems",
             description:
-              "Software that manages requisitions, approvals, purchase orders, and supplier workflows.",
+              "Procurement management software in UAE for centralised purchasing, approvals, and supplier oversight across teams and locations.",
           },
           {
             name: "Asset-management systems",
@@ -332,7 +332,7 @@ const servicePillars = [
           {
             name: "Document-management systems",
             description:
-              "Controlled storage, versioning, and retrieval of business documents and records.",
+              "Structured document management in UAE with centralised control, faster retrieval, and stronger compliance for records and approvals across teams and locations.",
           },
           {
             name: "Approval-management systems",
@@ -374,7 +374,7 @@ const servicePillars = [
           {
             name: "ERP implementation",
             description:
-              "Full implementation delivery covering configuration, data, training, and go-live.",
+              "Structured ERP implementation in UAE covering configuration, data migration, integrations, training, and stabilised go-live for finance, operations, and HR.",
           },
           {
             name: "ERP configuration",
@@ -444,7 +444,7 @@ const servicePillars = [
           {
             name: "Retail ERP",
             description:
-              "ERP covering merchandising, store operations, inventory, and omnichannel retail.",
+              "Retail ERP in UAE for multi-store and omnichannel retailers — unifying POS, inventory, merchandising, and finance.",
           },
           {
             name: "Healthcare ERP",
@@ -839,7 +839,7 @@ const servicePillars = [
           {
             name: "Custom commerce platforms",
             description:
-              "Bespoke commerce engines when catalogue, pricing, or workflow needs exceed packaged tools.",
+              "Custom commerce platforms and headless commerce solutions in UAE for complex catalogues, pricing, and omnichannel experiences.",
           },
           {
             name: "B2B ordering portals",
