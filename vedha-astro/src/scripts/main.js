@@ -1084,6 +1084,12 @@
       logo.style.transform =
         `scale(${0.94 + endLocal * 0.06}) translateY(${(1 - endLocal) * 1.2}rem)`;
     }
+    const copy = heroSlideshowEnd.querySelector(".hero-slideshow__copy");
+    if (copy) {
+      const copyLocal = clamp01((endLocal - 0.18) / 0.72);
+      copy.style.opacity = String(copyLocal);
+      copy.style.transform = `translateY(${(1 - copyLocal) * 0.7}rem)`;
+    }
     const ctas = heroSlideshowEnd.querySelector(".hero-slideshow__ctas");
     if (ctas) {
       const ctaLocal = clamp01((endLocal - 0.32) / 0.68);
@@ -1260,6 +1266,8 @@
       heroSlideshowEnd.setAttribute("aria-hidden", "false");
       heroSlideshow.classList.add("is-light");
       syncHeaderTheme();
+      const copy = heroSlideshowEnd.querySelector(".hero-slideshow__copy");
+      if (copy) { copy.style.opacity = "1"; copy.style.transform = "none"; }
       const ctas = heroSlideshowEnd.querySelector(".hero-slideshow__ctas");
       if (ctas) { ctas.style.opacity = "1"; ctas.style.transform = "none"; }
     }
