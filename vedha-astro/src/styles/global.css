@@ -821,7 +821,8 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
 .stats,
 .story,
 .blog,
-.contact {
+.contact,
+.estimator-seo {
   max-width: var(--content-max);
   margin-inline: auto;
   width: 100%;
