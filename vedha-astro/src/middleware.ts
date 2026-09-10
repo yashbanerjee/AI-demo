@@ -7,7 +7,7 @@ import { SESSION_COOKIE, verifyToken } from "./lib/auth";
  * tells crawlers those URLs are permanently deleted, which deindexes them
  * faster. None of these patterns overlap with real routes.
  */
-const realRoutes = /^\/(blog|services|products|contact|llms|admin|api|media|images|icons|fonts|videos|favicon|robots\.txt|sitemap|rss|manifest)(\/|$|\.|-)/i;
+const realRoutes = /^\/(blog|services|products|contact|llms|admin|api|media|images|icons|fonts|videos|favicon|robots\.txt|sitemap|rss|manifest|cost-estimator|web-development-dubai)(\/|$|\.|-)/i;
 const wpLeftovers = /^\/(wp-(admin|content|includes|json|login)|xmlrpc\.php|feed|comments|tag|category|author|hello-world|thank-you)(\/|$|\.)/i;
 const spamKeywords = /(casino|slots?|roulette|blackjack|bingo|gambl|jackpot|no-deposit|free-spins?|bet365|betting|baccarat|craps|gamstop|bookmaker)/i;
 
@@ -25,6 +25,21 @@ export const onRequest = defineMiddleware((context, next) => {
   if (wpLeftovers.test(pathname)) return gone();
   if (pathname !== "/" && !realRoutes.test(pathname) && spamKeywords.test(pathname)) return gone();
 
+  // Site uses trailingSlash: always — slashless page URLs 404 before the route.
+  // Uploaded files are stored as /media/file.jpg (no slash); serve that path too.
+  if (pathname.startsWith("/media/") && !pathname.endsWith("/")) {
+    return context.rewrite(`${pathname}/`);
+  }
+  if (pathname === "/api/admin/login") {
+    return context.redirect("/admin/login/");
+  }
+  if (
+    !pathname.endsWith("/") &&
+    (pathname.startsWith("/admin") || pathname.startsWith("/api/admin"))
+  ) {
+    return context.redirect(`${pathname}/${context.url.search}`);
+  }
+
   const isAdminPage = pathname.startsWith("/admin") && !pathname.startsWith("/admin/login");
   const isAdminApi = pathname.startsWith("/api/admin") && !pathname.startsWith("/api/admin/login");
 
@@ -37,7 +52,7 @@ export const onRequest = defineMiddleware((context, next) => {
           headers: { "Content-Type": "application/json" },
         });
       }
-      return context.redirect("/admin/login");
+      return context.redirect("/admin/login/");
     }
   }
 

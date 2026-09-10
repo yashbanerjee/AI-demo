@@ -7,7 +7,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   const path = String(form.get("path") ?? "").trim();
 
   if (!path.startsWith("/")) {
-    return redirect("/admin/seo?error=path");
+    return redirect("/admin/seo/?error=path");
   }
 
   if (action === "delete") {
@@ -21,5 +21,5 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     });
   }
 
-  return redirect("/admin/seo?saved=1");
+  return redirect("/admin/seo/?saved=1");
 };

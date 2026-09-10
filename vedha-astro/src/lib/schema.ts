@@ -110,6 +110,115 @@ export const faqPageSchema = (
   })),
 });
 
+export const webApplicationSchema = ({
+  name,
+  description,
+  path,
+  lowPrice,
+  highPrice,
+  offerCount,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  lowPrice: number;
+  highPrice: number;
+  offerCount: number;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name,
+  description,
+  url: absoluteUrl(path),
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Any",
+  browserRequirements: "Requires JavaScript",
+  inLanguage: "en",
+  isAccessibleForFree: true,
+  provider: {
+    "@type": "Organization",
+    name: "Vedha Technologies",
+    url: siteUrl,
+  },
+  areaServed: [
+    { "@type": "City", name: "Dubai" },
+    { "@type": "Country", name: "United Arab Emirates" },
+  ],
+  offers: {
+    "@type": "AggregateOffer",
+    priceCurrency: "AED",
+    lowPrice: String(lowPrice),
+    highPrice: String(highPrice),
+    offerCount,
+  },
+});
+
+export const offerCatalogSchema = ({
+  name,
+  description,
+  path,
+  offers,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  offers: Array<{ name: string; description: string; price: number; url?: string }>;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  name,
+  description,
+  url: absoluteUrl(path),
+  itemListElement: offers.map((offer, index) => ({
+    "@type": "Offer",
+    position: index + 1,
+    name: offer.name,
+    description: offer.description,
+    price: offer.price,
+    priceCurrency: "AED",
+    availability: "https://schema.org/InStock",
+    url: absoluteUrl(offer.url ?? path),
+    itemOffered: {
+      "@type": "Service",
+      name: offer.name,
+      description: offer.description,
+      provider: {
+        "@type": "Organization",
+        name: "Vedha Technologies",
+        url: siteUrl,
+      },
+      areaServed: {
+        "@type": "Country",
+        name: "United Arab Emirates",
+      },
+    },
+  })),
+});
+
+export const howToSchema = ({
+  name,
+  description,
+  path,
+  steps,
+}: {
+  name: string;
+  description: string;
+  path: string;
+  steps: Array<{ name: string; text: string }>;
+}) => ({
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  name,
+  description,
+  url: absoluteUrl(path),
+  step: steps.map((step, index) => ({
+    "@type": "HowToStep",
+    position: index + 1,
+    name: step.name,
+    text: step.text,
+  })),
+});
+
 export const productSchema = ({
   name,
   description,

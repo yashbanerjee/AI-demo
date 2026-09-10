@@ -1,0 +1,107 @@
+---
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
+import EstimatorImageField from "../../../../components/admin/EstimatorImageField.astro";
+import { getEstimatorBase, getEstimatorCatalog, MODULE_TAGS } from "../../../../lib/estimator-catalog";
+
+const id = String(Astro.params.id ?? "");
+const base = await getEstimatorBase(id);
+if (!base) return Astro.redirect("/admin/estimator/");
+
+const catalog = await getEstimatorCatalog();
+const saved = Astro.url.searchParams.has("saved");
+const error = Astro.url.searchParams.get("error");
+const recommended = new Set(base.recommendedIds);
+const tagLabel = (gid: string) => MODULE_TAGS.find((t) => t.id === gid)?.label ?? gid;
+---
+
+<AdminLayout title={base.name} wide>
+  <p class="crumb"><a href="/admin/estimator/">Cost estimator</a> / {base.name}</p>
+  <h1>Edit base</h1>
+  {saved && <p class="notice notice--ok">Saved. The public estimator now uses this version.</p>}
+  {error === "missing" && <p class="notice notice--error">Name is required.</p>}
+  {error === "save" && <p class="notice notice--error">Could not save. Check the fields and try again.</p>}
+
+  <form class="panel form-grid" method="post" action="/api/admin/estimator/">
+    <input type="hidden" name="_action" value="update-base" />
+    <input type="hidden" name="_return" value={`/admin/estimator/bases/${base.id}/`} />
+    <input type="hidden" name="id" value={base.id} />
+
+    <label>
+      Name
+      <input type="text" name="name" value={base.name} required />
+    </label>
+    <label>
+      Id
+      <input type="text" value={base.id} disabled />
+    </label>
+    <label>
+      Description
+      <textarea name="description" rows="3" required>{base.description}</textarea>
+    </label>
+    <div class="form-row">
+      <label>
+        Price (AED)
+        <input type="number" name="priceAed" min="0" step="100" value={String(base.priceAed)} required />
+      </label>
+      <label>
+        Sort order
+        <input type="number" name="sortOrder" min="0" step="1" value={String(base.sortOrder)} />
+      </label>
+    </div>
+    <div class="form-row">
+      <label>
+        Delivery from (weeks)
+        <input type="number" name="weeksMin" min="0" step="1" value={String(base.weeksMin)} required />
+      </label>
+      <label>
+        Delivery to (weeks)
+        <input type="number" name="weeksMax" min="0" step="1" value={String(base.weeksMax)} required />
+      </label>
+    </div>
+
+    <EstimatorImageField value={base.image} />
+
+    <fieldset class="rec">
+      <legend>Recommended modules</legend>
+      <p class="muted">These appear first when this base is selected, and in the Recommended filter.</p>
+      <div class="rec-grid">
+        {catalog.addons.map((addon) => (
+          <label class="check">
+            <input type="checkbox" name="recommended" value={addon.id} checked={recommended.has(addon.id)} />
+            <span>
+              <strong>{addon.name}</strong>
+              <small>{tagLabel(addon.group)}{addon.popular ? " · Popular" : ""}</small>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button class="btn" type="submit">Save changes</button>
+      <a class="btn btn--subtle" href="/admin/estimator/">Back</a>
+    </div>
+  </form>
+
+  <form class="danger-zone" method="post" action="/api/admin/estimator/" onsubmit="return confirm('Delete this base permanently?')">
+    <input type="hidden" name="_action" value="delete-base" />
+    <input type="hidden" name="id" value={base.id} />
+    <button class="btn btn--danger" type="submit">Delete base</button>
+  </form>
+
+  <input type="file" id="filePicker" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" hidden />
+  <script src="../../../../scripts/admin-upload.js"></script>
+</AdminLayout>
+
+<style>
+  .crumb { color: var(--ink-soft); margin: 0 0 0.6rem; }
+  .crumb a { color: inherit; }
+  .actions { display: flex; gap: 0.8rem; align-items: center; }
+  .danger-zone { margin-top: 1.5rem; display: flex; justify-content: flex-end; }
+  .rec { border: 1px solid var(--line); border-radius: 8px; padding: 1rem; }
+  .rec legend { font-weight: 600; padding: 0 0.35rem; }
+  .rec-grid { display: grid; gap: 0.45rem; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); margin-top: 0.7rem; }
+  .check { display: flex; gap: 0.55rem; align-items: flex-start; font-weight: 400; }
+  .check input { width: auto; margin-top: 0.25rem; }
+  .check small { display: block; color: var(--ink-soft); }
+</style>

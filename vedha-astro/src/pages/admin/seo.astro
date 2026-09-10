@@ -13,6 +13,7 @@ const knownPaths = [
   "/services",
   "/blog",
   "/products",
+  "/cost-estimator",
   "/products/vedha-ai",
   "/products/vedha-commerce",
 ];
@@ -30,7 +31,7 @@ const suggestions = knownPaths.filter((p) => !entries.some((e) => e.path === p))
   {error === "path" && <p class="notice notice--error">Path must start with “/”.</p>}
 
   <h2>Add / edit override</h2>
-  <form class="panel form-grid" method="post" action="/api/admin/seo">
+  <form class="panel form-grid" method="post" action="/api/admin/seo/">
     <div class="form-row">
       <label>
         Page path
@@ -72,7 +73,7 @@ const suggestions = knownPaths.filter((p) => !entries.some((e) => e.path === p))
               <td class="desc">{e.description ?? <span class="muted">default</span>}</td>
               <td>{e.og_image ? <a href={e.og_image} target="_blank" rel="noopener">view</a> : <span class="muted">default</span>}</td>
               <td>
-                <form method="post" action="/api/admin/seo" onsubmit="return confirm('Remove this override?')">
+                <form method="post" action="/api/admin/seo/" onsubmit="return confirm('Remove this override?')">
                   <input type="hidden" name="_action" value="delete" />
                   <input type="hidden" name="path" value={e.path} />
                   <button class="btn btn--danger btn--small" type="submit">Remove</button>

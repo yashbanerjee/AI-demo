@@ -37,6 +37,7 @@ Vedha Technologies helps organisations across the UAE clarify technology choices
 - [Home](${origin}/): Company overview, studio, work, services, and contact
 - [Services](${origin}/services/): Full service catalogue across ${pillars.length} pillars and ${services.length} named services
 - [Products](${origin}/products/): Product offerings
+- [Website cost estimator](${origin}/cost-estimator/): Live AED quote builder for Dubai and UAE website packages — landing pages, corporate sites, ecommerce, and custom web apps, plus modules such as payments, SEO, and CMS
 - [Blog](${origin}/blog/): Insights on technology, product, and delivery
 - [Contact](${origin}/contact/): Enquiry form and consultation booking
 

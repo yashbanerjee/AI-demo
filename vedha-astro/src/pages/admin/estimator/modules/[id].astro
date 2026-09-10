@@ -1,0 +1,112 @@
+---
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
+import EstimatorImageField from "../../../../components/admin/EstimatorImageField.astro";
+import { getEstimatorAddon, getEstimatorCatalog, listBasesForAddon, MODULE_TAGS } from "../../../../lib/estimator-catalog";
+
+const id = String(Astro.params.id ?? "");
+const addon = await getEstimatorAddon(id);
+if (!addon) return Astro.redirect("/admin/estimator/");
+
+const catalog = await getEstimatorCatalog();
+const recommendedFor = new Set(await listBasesForAddon(addon.id));
+const saved = Astro.url.searchParams.has("saved");
+const error = Astro.url.searchParams.get("error");
+---
+
+<AdminLayout title={addon.name} wide>
+  <p class="crumb"><a href="/admin/estimator/">Cost estimator</a> / {addon.name}</p>
+  <h1>Edit module</h1>
+  {saved && <p class="notice notice--ok">Saved. The public estimator now uses this version.</p>}
+  {error === "missing" && <p class="notice notice--error">Name is required.</p>}
+  {error === "save" && <p class="notice notice--error">Could not save. Check the fields and try again.</p>}
+
+  <form class="panel form-grid" method="post" action="/api/admin/estimator/">
+    <input type="hidden" name="_action" value="update-addon" />
+    <input type="hidden" name="_return" value={`/admin/estimator/modules/${addon.id}/`} />
+    <input type="hidden" name="id" value={addon.id} />
+
+    <label>
+      Name
+      <input type="text" name="name" value={addon.name} required />
+    </label>
+    <label>
+      Id
+      <input type="text" value={addon.id} disabled />
+    </label>
+    <label>
+      Description
+      <textarea name="description" rows="3" required>{addon.description}</textarea>
+    </label>
+    <div class="form-row">
+      <label>
+        Tag
+        <select name="group" required>
+          {MODULE_TAGS.map((tag) => (
+            <option value={tag.id} selected={tag.id === addon.group}>{tag.label}</option>
+          ))}
+        </select>
+      </label>
+      <label>
+        Price (AED)
+        <input type="number" name="priceAed" min="0" step="100" value={String(addon.priceAed)} required />
+      </label>
+    </div>
+    <div class="form-row">
+      <label>
+        Extra weeks
+        <input type="number" name="weeksExtra" min="0" step="1" value={String(addon.weeksExtra)} required />
+      </label>
+      <label>
+        Sort order
+        <input type="number" name="sortOrder" min="0" step="1" value={String(addon.sortOrder)} />
+      </label>
+    </div>
+
+    <EstimatorImageField value={addon.image} />
+
+    <label class="check">
+      <input type="checkbox" name="popular" checked={Boolean(addon.popular)} />
+      <span>Popular <small>— shows a Popular badge and appears in the Popular filter</small></span>
+    </label>
+
+    <fieldset class="rec">
+      <legend>Recommended for bases</legend>
+      <p class="muted">When a visitor picks one of these bases, this module is marked Recommended.</p>
+      <div class="rec-grid">
+        {catalog.bases.map((base) => (
+          <label class="check">
+            <input type="checkbox" name="recommendFor" value={base.id} checked={recommendedFor.has(base.id)} />
+            <span>{base.name}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button class="btn" type="submit">Save changes</button>
+      <a class="btn btn--subtle" href="/admin/estimator/">Back</a>
+    </div>
+  </form>
+
+  <form class="danger-zone" method="post" action="/api/admin/estimator/" onsubmit="return confirm('Delete this module permanently?')">
+    <input type="hidden" name="_action" value="delete-addon" />
+    <input type="hidden" name="id" value={addon.id} />
+    <button class="btn btn--danger" type="submit">Delete module</button>
+  </form>
+
+  <input type="file" id="filePicker" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" hidden />
+  <script src="../../../../scripts/admin-upload.js"></script>
+</AdminLayout>
+
+<style>
+  .crumb { color: var(--ink-soft); margin: 0 0 0.6rem; }
+  .crumb a { color: inherit; }
+  .actions { display: flex; gap: 0.8rem; align-items: center; }
+  .danger-zone { margin-top: 1.5rem; display: flex; justify-content: flex-end; }
+  .check { display: flex; gap: 0.55rem; align-items: flex-start; font-weight: 400; }
+  .check input { width: auto; margin-top: 0.2rem; }
+  .check small { display: block; color: var(--ink-soft); font-weight: 400; }
+  .rec { border: 1px solid var(--line); border-radius: 8px; padding: 1rem; }
+  .rec legend { font-weight: 600; padding: 0 0.35rem; }
+  .rec-grid { display: grid; gap: 0.45rem; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); margin-top: 0.7rem; }
+</style>

@@ -10,7 +10,7 @@ const formatDate = (date: Date) =>
 <AdminLayout title="Posts">
   <div class="head">
     <h1>Blog posts</h1>
-    <a class="btn" href="/admin/posts/new">+ New post</a>
+    <a class="btn" href="/admin/posts/new/">+ New post</a>
   </div>
 
   <div class="panel">
@@ -31,7 +31,7 @@ const formatDate = (date: Date) =>
           {posts.map((post) => (
             <tr>
               <td>
-                <a href={`/admin/posts/${post.id}`}><strong>{post.title}</strong></a>
+                <a href={`/admin/posts/${post.id}/`}><strong>{post.title}</strong></a>
                 <div class="muted">/blog/{post.slug}/</div>
               </td>
               <td>{formatDate(post.pub_date)}</td>
@@ -41,7 +41,7 @@ const formatDate = (date: Date) =>
               </td>
               <td>
                 <div class="row-actions">
-                  <a class="btn btn--ghost btn--small" href={`/admin/posts/${post.id}`}>Edit</a>
+                  <a class="btn btn--ghost btn--small" href={`/admin/posts/${post.id}/`}>Edit</a>
                   {!post.draft && (
                     <a class="btn btn--subtle btn--small" href={`/blog/${post.slug}/`} target="_blank" rel="noopener">View</a>
                   )}

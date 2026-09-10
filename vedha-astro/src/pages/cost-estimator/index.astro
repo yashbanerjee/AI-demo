@@ -1,0 +1,1246 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ADDON_GROUPS, formatAed, getEstimatorCatalog } from "../../lib/estimator-catalog";
+import {
+  breadcrumbSchema,
+  faqPageSchema,
+  howToSchema,
+  offerCatalogSchema,
+  serviceSchema,
+  webApplicationSchema,
+} from "../../lib/schema";
+
+const { bases: estimatorBases, addons: estimatorAddons, recommendedByBase } = await getEstimatorCatalog();
+
+const catalog = {
+  bases: estimatorBases,
+  addons: estimatorAddons,
+  recommendedByBase,
+  groups: ADDON_GROUPS,
+};
+
+const steps = [
+  { id: 1, label: "Base" },
+  { id: 2, label: "Modules" },
+  { id: 3, label: "Details" },
+];
+
+const groupLabel = (id: string) => ADDON_GROUPS.find((g) => g.id === id)?.label ?? id;
+
+const pagePath = "/cost-estimator/";
+const pageTitle = "Website Cost Estimator Dubai | Live AED Quote | Vedha";
+const pageDescription =
+  "Estimate website cost in AED for Dubai and the UAE. Choose a landing page, corporate site, ecommerce store, or custom web app, add modules, and send Vedha a live project quote.";
+const prices = estimatorBases.map((base) => base.priceAed);
+const lowPrice = prices.length ? Math.min(...prices) : 1500;
+const highPrice = prices.length ? Math.max(...prices) : 85000;
+const popularAddons = estimatorAddons.filter((addon) => addon.popular);
+const faqs = [
+  {
+    question: "How much does a website cost in Dubai?",
+    answer:
+      "Starter marketing sites on this estimator begin around the lowest listed base package, while ecommerce, marketplaces, and custom web applications scale higher. Your live AED total updates as you add modules such as payments, SEO, or a CMS. Vedha confirms a final quote after a short discovery call.",
+  },
+  {
+    question: "Is the estimator a final quote?",
+    answer:
+      "No. It is a starter range for typical UAE scopes so you can compare packages before you talk to us. Complexity, integrations, content, and design direction can change the number. We reply within 48 hours with a confirmed path.",
+  },
+  {
+    question: "How long does a website take to build in the UAE?",
+    answer:
+      "Each base shows an estimated delivery window in weeks. Modules that add checkout, multilingual pages, or custom workflows can extend that timeline. We lock milestones after discovery.",
+  },
+  {
+    question: "Can I estimate ecommerce or a custom web app?",
+    answer:
+      "Yes. Pick Ecommerce store, Marketplace, or Custom web application as the base, then add modules for payments, inventory, vendor tools, or integrations. The cart keeps a running AED total and delivery range.",
+  },
+  {
+    question: "What happens after I send an estimate?",
+    answer:
+      "Your configuration is emailed to the Vedha studio in Dubai. We review the base, modules, and notes, then follow up within 48 hours to confirm scope, timing, and next steps.",
+  },
+  {
+    question: "Do you only work with Dubai businesses?",
+    answer:
+      "Dubai is home base, and we regularly deliver for UAE and GCC teams. The estimator is priced in AED and built around the website types we ship most often in the region.",
+  },
+];
+
+const schemas = [
+  breadcrumbSchema([
+    { name: "Home", path: "/" },
+    { name: "Website cost estimator", path: pagePath },
+  ]),
+  webApplicationSchema({
+    name: "Vedha website cost estimator",
+    description: pageDescription,
+    path: pagePath,
+    lowPrice,
+    highPrice,
+    offerCount: estimatorBases.length,
+  }),
+  offerCatalogSchema({
+    name: "Vedha website packages",
+    description: "AED starter packages for websites and web applications built in Dubai.",
+    path: pagePath,
+    offers: estimatorBases.map((base) => ({
+      name: base.name,
+      description: base.description,
+      price: base.priceAed,
+    })),
+  }),
+  serviceSchema({
+    name: "Website cost estimator",
+    description: pageDescription,
+    path: pagePath,
+    services: estimatorBases.slice(0, 8).map((base) => ({
+      name: base.name,
+      description: base.description,
+    })),
+  }),
+  howToSchema({
+    name: "How to estimate website cost with Vedha",
+    description: "Build a live AED website estimate in three steps.",
+    path: pagePath,
+    steps: [
+      { name: "Choose a base", text: "Select a website package such as a landing page, corporate site, ecommerce store, or custom web app." },
+      { name: "Add modules", text: "Layer recommended or popular modules including payments, SEO, CMS, and integrations." },
+      { name: "Send details", text: "Share your name, email, and phone so Vedha can confirm the quote within 48 hours." },
+    ],
+  }),
+  faqPageSchema(faqs),
+];
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  ogImage="/images/photo-dubai-marina.jpg"
+  ogImageAlt="Dubai marina skyline — Vedha website cost estimator"
+>
+  <article class="estimator" id="costEstimator" data-estimator data-header-dark data-step="1">
+    <div class="estimator__glow" aria-hidden="true"></div>
+    <div class="estimator__grain" aria-hidden="true"></div>
+    <p class="visually-hidden" data-cart-announce aria-live="polite" aria-atomic="true"></p>
+
+    <div class="estimator__stage">
+      <header class="estimator__hero">
+        <div class="estimator__hero-copy">
+          <nav class="estimator__crumbs" aria-label="Breadcrumb">
+            <a href="/">Home</a>
+            <span aria-hidden="true">/</span>
+            <span>Website cost estimator</span>
+          </nav>
+          <p class="estimator__kicker">Private studio · Dubai</p>
+          <h1 class="estimator__title">Website cost estimator</h1>
+          <p class="estimator__lede">Live AED quotes for landing pages, corporate sites, ecommerce, and custom web apps in the UAE. Pick a base, add modules, send when ready.</p>
+        </div>
+        <nav aria-label="Estimator steps">
+          <ol class="estimator-steps" data-stepper>
+            {steps.map((step) => (
+              <li>
+                <button
+                  type="button"
+                  class:list={["estimator-steps__item", { "is-active": step.id === 1 }]}
+                  data-step-indicator={String(step.id)}
+                  data-go-step={String(step.id)}
+                  aria-current={step.id === 1 ? "step" : undefined}
+                  disabled={step.id !== 1}
+                >
+                  <span class="estimator-steps__num" aria-hidden="true">{String(step.id).padStart(2, "0")}</span>
+                  <span class="estimator-steps__label">{step.label}</span>
+                  <span class="estimator-steps__tick" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" width="10" height="10"><path d="M2 6.2l2.6 2.6L10 3.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </header>
+
+      <div class="estimator__layout">
+        <div class="estimator__main" data-estimator-main>
+          <!-- Step 1: Base -->
+          <section class="estimator-panel is-active" data-panel="1" aria-labelledby="estimatorBasesHeading">
+            <div class="estimator__section-head">
+              <h2 id="estimatorBasesHeading" tabindex="-1">Choose a website package</h2>
+              <p>AED starter prices for typical Dubai and UAE scopes. Change anytime from your estimate.</p>
+            </div>
+            <div class="estimator__bases" role="radiogroup" aria-label="Base packages" data-base-group>
+              {estimatorBases.map((base) => (
+                <button
+                  type="button"
+                  class="estimator-base"
+                  data-base-id={base.id}
+                  data-base-price={String(base.priceAed)}
+                  data-base-name={base.name}
+                  role="radio"
+                  aria-checked="false"
+                >
+                  <span class="estimator-base__media">
+                    <img
+                      src={base.image}
+                      alt={`${base.name} website package in Dubai from ${formatAed(base.priceAed)}`}
+                      width="640"
+                      height="400"
+                      loading={base.id === estimatorBases[0]?.id ? "eager" : "lazy"}
+                      decoding="async"
+                    />
+                    <span class="estimator-check" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8.4l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                  </span>
+                  <span class="estimator-base__body">
+                    <span class="estimator-base__top">
+                      <span class="estimator-base__name">{base.name}</span>
+                      <span class="estimator-base__price">{formatAed(base.priceAed)}</span>
+                    </span>
+                    <span class="estimator-base__desc">{base.description}</span>
+                    <span class="estimator-base__meta">
+                      <span>{base.weeksMin}–{base.weeksMax} weeks</span>
+                      <span class="estimator-base__state" data-base-state>Select</span>
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+            <div class="estimator-nav">
+              <button type="button" class="btn btn--light" data-next-step disabled>
+                <span>Continue to modules</span>
+              </button>
+            </div>
+          </section>
+
+          <!-- Step 2: Modules -->
+          <section class="estimator-panel" data-panel="2" aria-labelledby="estimatorAddonsHeading" hidden>
+            <div class="estimator__section-head">
+              <h2 id="estimatorAddonsHeading" tabindex="-1">Add modules</h2>
+              <p>Tap to add or remove. Recommended for your base appear first.</p>
+            </div>
+
+            <div class="estimator__chips" data-addon-chips role="tablist" aria-label="Filter modules">
+              {ADDON_GROUPS.map((group, i) => (
+                <button
+                  type="button"
+                  class:list={["estimator-chip", { "is-active": i === 0 }]}
+                  data-filter={group.id}
+                  role="tab"
+                  aria-selected={i === 0 ? "true" : "false"}
+                >
+                  {group.label}
+                </button>
+              ))}
+            </div>
+
+            <div class="estimator__addons" data-addon-grid aria-live="polite">
+              {estimatorAddons.map((addon) => (
+                <button
+                  type="button"
+                  class="estimator-addon"
+                  data-addon-id={addon.id}
+                  data-addon-price={String(addon.priceAed)}
+                  data-addon-name={addon.name}
+                  data-addon-group={addon.group}
+                  data-addon-popular={addon.popular ? "1" : "0"}
+                  aria-pressed="false"
+                >
+                  <span class="estimator-addon__media">
+                    <img
+                      src={addon.image}
+                      alt={`${addon.name} website module from ${formatAed(addon.priceAed)}`}
+                      width="480"
+                      height="300"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span class="estimator-check" aria-hidden="true">
+                      <svg viewBox="0 0 16 16" width="14" height="14"><path d="M3 8.4l3.2 3.2L13 4.8" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </span>
+                  </span>
+                  <span class="estimator-addon__body">
+                    <span class="estimator-addon__badges">
+                      <span class="estimator-badge">{groupLabel(addon.group)}</span>
+                      {addon.popular && <span class="estimator-badge estimator-badge--popular">Popular</span>}
+                      <span class="estimator-badge estimator-badge--rec" data-rec-badge hidden>Recommended</span>
+                    </span>
+                    <span class="estimator-addon__top">
+                      <span class="estimator-addon__name">{addon.name}</span>
+                      <span class="estimator-addon__price">{formatAed(addon.priceAed)}</span>
+                    </span>
+                    <span class="estimator-addon__desc">{addon.description}</span>
+                    <span class="estimator-addon__foot">
+                      <span class="estimator-addon__meta">
+                        {addon.weeksExtra > 0 ? `+${addon.weeksExtra} wk${addon.weeksExtra === 1 ? "" : "s"}` : "No extra time"}
+                      </span>
+                      <span class="estimator-addon__action" data-addon-action>Add</span>
+                    </span>
+                  </span>
+                </button>
+              ))}
+            </div>
+            <p class="estimator__empty" data-addons-empty hidden>No modules in this filter. Try another chip.</p>
+
+            <div class="estimator-nav">
+              <button type="button" class="btn btn--ghost" data-prev-step><span>Back to base</span></button>
+              <button type="button" class="btn btn--light" data-next-step><span>Continue to details</span></button>
+            </div>
+          </section>
+
+          <!-- Step 3: Details -->
+          <section class="estimator-panel" data-panel="3" aria-labelledby="estimatorSendHeading" hidden>
+            <div class="estimator__section-head">
+              <h2 id="estimatorSendHeading" tabindex="-1">Your details</h2>
+              <p>We’ll follow up within 48 hours with a confirmed path.</p>
+            </div>
+
+            <div class="estimator-details">
+              <form class="estimator-form" data-mail-form="cost-estimate" data-estimator-form novalidate>
+                <input type="hidden" name="base" data-field-base value="" />
+                <input type="hidden" name="addons" data-field-addons value="" />
+                <input type="hidden" name="totalAed" data-field-total value="0" />
+                <input type="hidden" name="description" data-field-description value="" />
+                <input type="hidden" name="deliveryEstimate" data-field-delivery value="" />
+                <input type="hidden" name="service" value="cost-estimator" />
+
+                <div class="estimator-form__grid">
+                  <div class="estimator-field">
+                    <label for="estName">Name</label>
+                    <input id="estName" type="text" name="name" placeholder="Your name" required autocomplete="name" />
+                  </div>
+                  <div class="estimator-field">
+                    <label for="estEmail">Email</label>
+                    <input id="estEmail" type="email" name="email" placeholder="you@company.com" required autocomplete="email" inputmode="email" />
+                  </div>
+                  <div class="estimator-field">
+                    <label for="estPhone">Phone number</label>
+                    <input id="estPhone" type="tel" name="phone" placeholder="+971 50 000 0000" required autocomplete="tel" inputmode="tel" />
+                  </div>
+                  <div class="estimator-field">
+                    <label for="estPref">Preferred delivery timing</label>
+                    <div class="estimator-select">
+                      <select id="estPref" name="deliveryPreference" required data-delivery-preference>
+                        <option value="" disabled selected>Select a preference</option>
+                        <option value="As soon as possible">As soon as possible</option>
+                        <option value="Match the estimate">Match the estimate</option>
+                        <option value="Flexible / no rush">Flexible / no rush</option>
+                        <option value="Need a fixed deadline">Need a fixed deadline</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="estimator-field estimator-field--full">
+                    <label for="estNotes">Notes <span class="estimator-form__optional">(optional)</span></label>
+                    <textarea id="estNotes" name="notes" rows="3" placeholder="Deadline, must-haves, or context we should know"></textarea>
+                  </div>
+                </div>
+
+                <p class="form-note form-note--light" data-form-note hidden role="status" aria-live="polite"></p>
+
+                <div class="estimator-nav estimator-nav--form">
+                  <button type="button" class="btn btn--ghost" data-prev-step><span>Back to modules</span></button>
+                  <button class="btn btn--light" type="submit" data-submit-estimate disabled>
+                    <span>Send estimate</span>
+                  </button>
+                </div>
+                <p class="estimator__disclaimer">
+                  Starter estimates for typical UAE scopes. Final quote after discovery.
+                </p>
+              </form>
+
+              <aside class="estimator-delivery" data-delivery-card aria-label="Estimated delivery">
+                <p class="estimator__kicker">Estimated delivery</p>
+                <p class="estimator-delivery__value" data-delivery-label>—</p>
+                <p class="estimator-delivery__note">Based on your base and modules. We confirm the timeline after a short discovery call.</p>
+                <dl class="estimator-delivery__facts">
+                  <div><dt>Base</dt><dd data-summary-base>—</dd></div>
+                  <div><dt>Modules</dt><dd data-summary-modules>0</dd></div>
+                  <div><dt>Total</dt><dd data-summary-total>AED 0</dd></div>
+                </dl>
+              </aside>
+            </div>
+
+            <div class="estimator-success" data-estimator-success hidden role="status">
+              <span class="estimator-success__icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="22" height="22"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              <div>
+                <p class="estimator-success__title">Estimate sent</p>
+                <p class="estimator-success__text">We’ve received your configuration and will reply within 48 hours.</p>
+              </div>
+              <button type="button" class="btn btn--ghost" data-reset-estimator><span>Start another</span></button>
+            </div>
+          </section>
+        </div>
+
+        <aside class="estimator-cart" data-cart aria-label="Your estimate">
+          <div class="estimator-cart__panel">
+            <header class="estimator-cart__head">
+              <p class="estimator__kicker">Your estimate</p>
+              <span class="estimator-cart__count" data-cart-count>0 items</span>
+            </header>
+            <ul class="estimator-cart__lines" data-cart-lines>
+              <li class="estimator-cart__empty" data-cart-empty>Select a base to begin.</li>
+            </ul>
+            <div class="estimator-cart__foot">
+              <div class="estimator-cart__meta">
+                <span>Delivery</span>
+                <strong data-delivery-label-cart>—</strong>
+              </div>
+              <div class="estimator-cart__total">
+                <span>Total</span>
+                <strong data-cart-total>AED 0</strong>
+              </div>
+              <button type="button" class="btn btn--light btn--wide" data-cart-continue disabled>
+                <span data-cart-continue-label>Continue</span>
+              </button>
+              <button type="button" class="estimator-cart__back" data-cart-back hidden>← Back a step</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <section class="estimator-seo" aria-labelledby="estimatorSeoHeading">
+      <div class="estimator-seo__inner">
+        <p class="estimator__kicker">How pricing works</p>
+        <h2 id="estimatorSeoHeading">Website packages we price in AED</h2>
+        <p class="estimator-seo__lead">
+          This estimator is a live quote builder for <a href="/web-development-dubai/">web development in Dubai</a>.
+          Bases cover landing pages, corporate sites, ecommerce, and custom web apps. Modules add payments, SEO, CMS, and integrations.
+          Send the configuration and the Vedha studio follows up within 48 hours —
+          or <a href="/contact/">book a consultation</a>.
+        </p>
+
+        <ul class="estimator-seo__packages">
+          {estimatorBases.map((base) => (
+            <li>
+              <strong>{base.name}</strong>
+              <span>{formatAed(base.priceAed)} · {base.weeksMin}–{base.weeksMax} weeks</span>
+              <p>{base.description}</p>
+            </li>
+          ))}
+        </ul>
+
+        {popularAddons.length > 0 && (
+          <div class="estimator-seo__modules">
+            <h3>Popular modules</h3>
+            <ul>
+              {popularAddons.map((addon) => (
+                <li>
+                  <strong>{addon.name}</strong>
+                  <span>{formatAed(addon.priceAed)}</span>
+                  — {addon.description}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <h3 id="estimatorFaqHeading">Questions about website cost in the UAE</h3>
+        <div class="estimator-faq">
+          {faqs.map((faq) => (
+            <details>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <div class="estimator-dock" data-cart-dock>
+      <button type="button" class="estimator-dock__toggle" data-cart-open aria-expanded="false" aria-controls="estimatorSheet">
+        <span data-dock-count>0 items</span>
+        <strong data-dock-total>AED 0</strong>
+      </button>
+      <button type="button" class="btn btn--light" data-cart-continue data-dock-continue disabled>
+        <span>Next</span>
+      </button>
+    </div>
+
+    <div class="estimator-sheet" id="estimatorSheet" data-cart-sheet hidden>
+      <div class="estimator-sheet__backdrop" data-cart-close></div>
+      <div class="estimator-sheet__panel" role="dialog" aria-modal="true" aria-label="Your estimate">
+        <header class="estimator-sheet__head">
+          <p class="estimator__kicker">Your estimate</p>
+          <button type="button" class="estimator-sheet__close" data-cart-close aria-label="Close">×</button>
+        </header>
+        <ul class="estimator-cart__lines" data-cart-lines-mobile></ul>
+        <div class="estimator-cart__meta">
+          <span>Delivery</span>
+          <strong data-delivery-label-mobile>—</strong>
+        </div>
+        <div class="estimator-cart__total">
+          <span>Total</span>
+          <strong data-cart-total-mobile>AED 0</strong>
+        </div>
+        <button type="button" class="btn btn--light btn--wide" data-cart-continue data-cart-close>
+          <span>Continue</span>
+        </button>
+      </div>
+    </div>
+  </article>
+
+  <script id="estimator-catalog" type="application/json" set:html={JSON.stringify(catalog)} />
+  <script src="../../scripts/cost-estimator.js"></script>
+  {schemas.map((schema) => (
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
+  ))}
+</BaseLayout>
+
+<style is:global>
+  /* —— Exclusive dark studio —— */
+  body:has(.estimator) { background: #050505; }
+  body:has(.estimator) .site-footer { border-top: 1px solid rgba(255, 255, 255, 0.06); }
+
+  .estimator {
+    --studio-bg: #070707;
+    --studio-panel: #121212;
+    --studio-elevated: #1a1a1a;
+    --studio-line: rgba(255, 255, 255, 0.1);
+    --studio-ink: #f4f2ee;
+    --studio-mute: rgba(244, 242, 238, 0.58);
+    --studio-accent: #d4b483;
+    --studio-accent-soft: rgba(212, 180, 131, 0.16);
+    --studio-shadow: 0 24px 64px rgba(0, 0, 0, 0.55), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+    --fast: 0.18s;
+    --med: 0.3s;
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    background:
+      radial-gradient(ellipse 90% 55% at 15% -10%, rgba(212, 180, 131, 0.12), transparent 55%),
+      radial-gradient(ellipse 70% 50% at 90% 10%, rgba(90, 110, 140, 0.1), transparent 50%),
+      radial-gradient(ellipse 60% 40% at 50% 100%, rgba(255, 255, 255, 0.03), transparent 55%),
+      var(--studio-bg);
+    color: var(--studio-ink);
+    overflow: clip;
+  }
+  .estimator :focus-visible {
+    outline: 2px solid var(--studio-accent);
+    outline-offset: 3px;
+    border-radius: 0.5rem;
+  }
+
+  .estimator__glow {
+    pointer-events: none;
+    position: absolute;
+    inset: -20% 20% auto;
+    height: 40%;
+    background: radial-gradient(circle, rgba(212, 180, 131, 0.08), transparent 70%);
+    filter: blur(40px);
+    z-index: 0;
+  }
+  .estimator__grain {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.35;
+    mix-blend-mode: soft-light;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    background-size: 180px;
+  }
+
+  .estimator__stage {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding: 7.25rem max(var(--gutter), env(safe-area-inset-right)) 1.25rem max(var(--gutter), env(safe-area-inset-left));
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  @media (min-width: 64rem) {
+    .estimator__stage {
+      height: 100vh;
+      height: 100dvh;
+      min-height: 36rem;
+    }
+  }
+
+  .estimator__kicker {
+    margin: 0;
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--studio-accent);
+    font-weight: 600;
+  }
+
+  .estimator__hero {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.55rem 1.25rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--studio-line);
+  }
+  .estimator__hero-copy { display: grid; gap: 0.15rem; max-width: 38rem; }
+  .estimator__crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0 0 0.35rem;
+    font-size: 0.72rem;
+    color: rgba(244, 242, 238, 0.45);
+  }
+  .estimator__crumbs a { color: inherit; }
+  .estimator__crumbs a:hover { color: var(--studio-ink); }
+  .estimator__title {
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.1;
+    color: var(--studio-ink);
+  }
+  .estimator__lede { color: var(--studio-mute); font-size: 0.82rem; line-height: 1.35; }
+
+  /* Stepper (clickable once reachable) */
+  .estimator-steps { list-style: none; display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0; padding: 0; }
+  .estimator-steps__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.15rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    border: 1px solid var(--studio-line);
+    color: var(--studio-mute);
+    font: inherit;
+    font-size: 0.78rem;
+    background: rgba(255, 255, 255, 0.02);
+    cursor: pointer;
+    transition: background var(--fast), color var(--fast), border-color var(--fast), box-shadow var(--med), transform var(--fast);
+  }
+  .estimator-steps__item:disabled { cursor: not-allowed; opacity: 0.55; }
+  .estimator-steps__item:not(:disabled):hover { border-color: rgba(255, 255, 255, 0.3); color: var(--studio-ink); }
+  .estimator-steps__item.is-active {
+    background: var(--studio-accent-soft);
+    border-color: rgba(212, 180, 131, 0.5);
+    color: var(--studio-ink);
+    box-shadow: 0 0 24px rgba(212, 180, 131, 0.14);
+    opacity: 1;
+  }
+  .estimator-steps__item.is-done { border-color: rgba(255, 255, 255, 0.22); color: rgba(244, 242, 238, 0.85); opacity: 1; }
+  .estimator-steps__num { font-variant-numeric: tabular-nums; font-weight: 600; letter-spacing: 0.04em; color: var(--studio-accent); }
+  .estimator-steps__tick { display: none; color: var(--studio-accent); }
+  .estimator-steps__item.is-done .estimator-steps__num { display: none; }
+  .estimator-steps__item.is-done .estimator-steps__tick { display: inline-flex; }
+
+  /* Layout */
+  .estimator__layout {
+    flex: 1 1 auto;
+    min-height: 0;
+    display: grid;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  @media (min-width: 64rem) {
+    .estimator__layout { grid-template-columns: minmax(0, 1fr) minmax(17rem, 21rem); gap: 1.15rem; }
+    .estimator__main {
+      min-height: 0;
+      height: 100%;
+      overflow: auto;
+      padding-right: 0.35rem;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+      scroll-behavior: smooth;
+    }
+  }
+
+  .estimator-panel {
+    display: none;
+    gap: 0.6rem;
+    align-content: start;
+    padding: 0;
+    margin: 0;
+  }
+  .estimator-panel.is-active { display: grid; animation: estimator-panel-in var(--med) var(--ease-out); }
+  @keyframes estimator-panel-in {
+    from { opacity: 0; transform: translateY(0.35rem); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .estimator__section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.2rem 1rem;
+  }
+  .estimator__section-head h2 { font-size: 0.95rem; letter-spacing: -0.02em; font-weight: 600; outline: none; }
+  .estimator__section-head p { color: var(--studio-mute); font-size: 0.78rem; }
+
+  /* Shared check badge on media */
+  .estimator-check {
+    position: absolute;
+    top: 0.45rem;
+    right: 0.45rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    display: grid;
+    place-items: center;
+    border-radius: 999px;
+    background: var(--studio-accent);
+    color: #1a1408;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+    transform: scale(0.4);
+    opacity: 0;
+    transition: transform var(--fast) var(--ease-spring), opacity var(--fast);
+  }
+  [aria-checked="true"] .estimator-check,
+  [aria-pressed="true"] .estimator-check { transform: scale(1); opacity: 1; }
+
+  /* Bases */
+  .estimator__bases { display: grid; gap: 0.55rem; grid-template-columns: 1fr; }
+  @media (min-width: 36rem) { .estimator__bases { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 52rem) { .estimator__bases { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @media (min-width: 90rem) { .estimator__bases { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+  .estimator-base {
+    text-align: left;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 0.85rem;
+    border: 1px solid var(--studio-line);
+    background: var(--studio-panel);
+    color: inherit;
+    cursor: pointer;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+    transition: border-color var(--fast), transform var(--fast) var(--ease-out), box-shadow var(--med) var(--ease-out), background var(--fast);
+  }
+  .estimator-base:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.22); box-shadow: var(--studio-shadow); }
+  .estimator-base:active { transform: scale(0.985); transition-duration: 0.08s; }
+  .estimator-base[aria-checked="true"] {
+    border-color: rgba(212, 180, 131, 0.7);
+    background: #161410;
+    box-shadow: 0 0 0 1px rgba(212, 180, 131, 0.4), 0 18px 40px rgba(0, 0, 0, 0.5), 0 0 36px rgba(212, 180, 131, 0.14);
+  }
+  .estimator-base__media {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #000;
+    overflow: hidden;
+  }
+  .estimator-base__media img {
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.92;
+    transition: transform 0.6s var(--ease-out), opacity var(--fast);
+  }
+  .estimator-base:hover .estimator-base__media img,
+  .estimator-base[aria-checked="true"] .estimator-base__media img { transform: scale(1.05); opacity: 1; }
+  .estimator-base__body { display: grid; gap: 0.25rem; padding: 0.55rem 0.7rem 0.6rem; align-content: start; }
+  .estimator-base__top { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
+  .estimator-base__name { font-weight: 600; letter-spacing: -0.02em; font-size: 0.92rem; line-height: 1.25; }
+  .estimator-base__price { font-variant-numeric: tabular-nums; font-size: 0.78rem; color: var(--studio-accent); white-space: nowrap; font-weight: 600; }
+  .estimator-base__desc {
+    color: var(--studio-mute);
+    font-size: 0.75rem;
+    line-height: 1.35;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .estimator-base__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.66rem;
+    color: rgba(244, 242, 238, 0.45);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding-top: 0.15rem;
+  }
+  .estimator-base__state { font-weight: 600; color: rgba(244, 242, 238, 0.7); transition: color var(--fast); }
+  .estimator-base[aria-checked="true"] .estimator-base__state { color: var(--studio-accent); }
+
+  /* Chips */
+  .estimator__chips { display: flex; flex-wrap: nowrap; gap: 0.4rem; overflow-x: auto; padding-bottom: 0.15rem; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+  .estimator-chip {
+    flex: 0 0 auto;
+    min-height: 2.15rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--studio-line);
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--studio-mute);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: background var(--fast), color var(--fast), border-color var(--fast), transform var(--fast);
+  }
+  .estimator-chip:hover { color: var(--studio-ink); border-color: rgba(255, 255, 255, 0.28); }
+  .estimator-chip:active { transform: scale(0.96); }
+  .estimator-chip.is-active { background: var(--studio-accent-soft); color: var(--studio-ink); border-color: rgba(212, 180, 131, 0.5); }
+
+  /* Modules */
+  .estimator__addons { display: grid; gap: 0.55rem; grid-template-columns: 1fr; }
+  /* Author `display: grid` would otherwise override the hidden attribute */
+  .estimator-addon[hidden],
+  .estimator-addon.is-filtered-out {
+    display: none !important;
+  }
+  @media (min-width: 40rem) { .estimator__addons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 80rem) { .estimator__addons { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+  .estimator-addon {
+    position: relative;
+    text-align: left;
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    align-items: stretch;
+    min-height: 6.25rem;
+    padding: 0;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 1px solid var(--studio-line);
+    background: var(--studio-panel);
+    color: inherit;
+    cursor: pointer;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+    transition: border-color var(--fast), transform var(--fast) var(--ease-out), box-shadow var(--med) var(--ease-out), background var(--fast);
+  }
+  .estimator-addon:hover { transform: translateY(-1px); border-color: rgba(255, 255, 255, 0.22); box-shadow: var(--studio-shadow); }
+  .estimator-addon:active { transform: scale(0.985); transition-duration: 0.08s; }
+  .estimator-addon[aria-pressed="true"] {
+    border-color: rgba(212, 180, 131, 0.7);
+    background: #161410;
+    box-shadow: 0 0 0 1px rgba(212, 180, 131, 0.35), 0 14px 32px rgba(0, 0, 0, 0.45), 0 0 28px rgba(212, 180, 131, 0.12);
+  }
+  .estimator-addon.is-recommended:not([aria-pressed="true"]) { border-color: rgba(212, 180, 131, 0.3); }
+  .estimator-addon__media { position: relative; display: block; min-height: 100%; background: #000; overflow: hidden; }
+  .estimator-addon__media img { width: 100%; height: 100%; object-fit: cover; opacity: 0.9; transition: transform 0.6s var(--ease-out); }
+  .estimator-addon:hover .estimator-addon__media img { transform: scale(1.06); }
+  .estimator-addon__media .estimator-check { top: 0.35rem; right: 0.35rem; width: 1.35rem; height: 1.35rem; }
+  .estimator-addon__body { display: grid; gap: 0.28rem; align-content: start; padding: 0.55rem 0.7rem 0.55rem; }
+  .estimator-addon__badges { display: flex; flex-wrap: wrap; gap: 0.25rem; min-height: 0.95rem; }
+  .estimator-badge {
+    font-size: 0.58rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 0.12rem 0.38rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--studio-mute);
+  }
+  .estimator-badge--popular { background: rgba(212, 180, 131, 0.18); color: var(--studio-accent); }
+  .estimator-badge--rec { background: rgba(244, 242, 238, 0.92); color: #111; }
+  .estimator-addon__top { display: flex; justify-content: space-between; gap: 0.45rem; align-items: baseline; }
+  .estimator-addon__name { font-weight: 600; letter-spacing: -0.02em; font-size: 0.86rem; line-height: 1.25; }
+  .estimator-addon__price { font-variant-numeric: tabular-nums; font-size: 0.74rem; color: var(--studio-accent); white-space: nowrap; font-weight: 600; }
+  .estimator-addon__desc { color: var(--studio-mute); font-size: 0.73rem; line-height: 1.4; }
+  .estimator-addon__foot { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding-top: 0.1rem; }
+  .estimator-addon__meta { font-size: 0.64rem; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(244, 242, 238, 0.45); }
+  .estimator-addon__action {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: rgba(244, 242, 238, 0.85);
+    transition: background var(--fast), color var(--fast), border-color var(--fast);
+  }
+  .estimator-addon:hover .estimator-addon__action { border-color: rgba(255, 255, 255, 0.4); }
+  .estimator-addon[aria-pressed="true"] .estimator-addon__action { background: var(--studio-accent); border-color: var(--studio-accent); color: #1a1408; }
+
+  .estimator__empty { color: var(--studio-mute); padding: 0.5rem 0; font-size: 0.88rem; }
+
+  /* Navigation rows */
+  .estimator-nav { display: flex; flex-wrap: wrap; gap: 0.55rem; align-items: center; padding-top: 0.35rem; }
+  @media (min-width: 64rem) { .estimator-panel[data-panel="1"] .estimator-nav { display: none; } }
+  .estimator .btn { transition-duration: 0.22s; }
+  .estimator .btn--ghost { border-color: rgba(255, 255, 255, 0.22); color: var(--studio-ink); background: rgba(255, 255, 255, 0.03); }
+  .estimator .btn--ghost:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+  .estimator .btn--light { box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45); }
+  .estimator .btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; transform: none; }
+  .estimator .btn:disabled::before { display: none; }
+
+  /* Details step */
+  .estimator-details { display: grid; gap: 0.85rem; align-items: start; }
+  @media (min-width: 64rem) { .estimator-details { grid-template-columns: minmax(0, 1fr) 17rem; } }
+
+  .estimator-form {
+    display: grid;
+    gap: 0.85rem;
+    padding: 1rem;
+    border-radius: 0.95rem;
+    border: 1px solid var(--studio-line);
+    background: var(--studio-panel);
+    box-shadow: var(--studio-shadow);
+  }
+  .estimator-form__grid { display: grid; gap: 0.7rem; grid-template-columns: 1fr; }
+  @media (min-width: 40rem) { .estimator-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  .estimator-field { display: grid; gap: 0.3rem; min-width: 0; }
+  .estimator-field--full { grid-column: 1 / -1; }
+  .estimator-field label { font-size: 0.74rem; letter-spacing: 0.02em; color: var(--studio-mute); font-weight: 500; }
+  .estimator-field:focus-within label { color: var(--studio-ink); }
+  .estimator-form__optional { color: rgba(244, 242, 238, 0.4); font-weight: 400; }
+  .estimator-field input,
+  .estimator-field select,
+  .estimator-field textarea {
+    width: 100%;
+    min-height: 2.85rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: var(--studio-elevated);
+    color: var(--studio-ink);
+    font: inherit;
+    font-size: max(16px, 0.92rem);
+    line-height: 1.3;
+    color-scheme: dark;
+    transition: border-color var(--fast), box-shadow var(--fast), background var(--fast);
+  }
+  .estimator-field input::placeholder,
+  .estimator-field textarea::placeholder { color: rgba(244, 242, 238, 0.35); }
+  .estimator-field textarea { min-height: 5.5rem; resize: vertical; line-height: 1.45; }
+  .estimator-field input:hover,
+  .estimator-field select:hover,
+  .estimator-field textarea:hover { border-color: rgba(255, 255, 255, 0.28); }
+  .estimator-field input:focus,
+  .estimator-field select:focus,
+  .estimator-field textarea:focus {
+    outline: none;
+    border-color: rgba(212, 180, 131, 0.7);
+    box-shadow: 0 0 0 3px rgba(212, 180, 131, 0.18);
+    background: #1e1c18;
+  }
+  .estimator-field input:user-invalid,
+  .estimator-field select:user-invalid { border-color: rgba(255, 130, 110, 0.7); }
+  .estimator-select { position: relative; }
+  .estimator-select select { appearance: none; padding-right: 2.4rem; cursor: pointer; }
+  .estimator-select::after {
+    content: "";
+    position: absolute;
+    right: 0.95rem;
+    top: 50%;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 1.5px solid var(--studio-mute);
+    border-bottom: 1.5px solid var(--studio-mute);
+    transform: translateY(-70%) rotate(45deg);
+    pointer-events: none;
+  }
+  .estimator-select select option { background: #1a1a1a; color: var(--studio-ink); }
+  .estimator-nav--form { justify-content: space-between; padding-top: 0.1rem; }
+  .estimator .form-note { margin: 0; border-radius: 0.5rem; }
+  .estimator__disclaimer { margin: 0; color: rgba(244, 242, 238, 0.42); font-size: 0.74rem; line-height: 1.4; }
+
+  .estimator-delivery {
+    background: linear-gradient(165deg, rgba(212, 180, 131, 0.1), rgba(18, 18, 18, 0.9) 60%);
+    border: 1px solid rgba(212, 180, 131, 0.25);
+    border-radius: 0.95rem;
+    padding: 1rem 1.05rem;
+    display: grid;
+    gap: 0.35rem;
+    box-shadow: var(--studio-shadow);
+  }
+  .estimator-delivery__value { font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 600; letter-spacing: -0.02em; color: var(--studio-accent); line-height: 1.1; }
+  .estimator-delivery__note { color: var(--studio-mute); font-size: 0.76rem; line-height: 1.4; }
+  .estimator-delivery__facts { margin: 0.5rem 0 0; display: grid; gap: 0.35rem; border-top: 1px solid var(--studio-line); padding-top: 0.6rem; }
+  .estimator-delivery__facts div { display: flex; justify-content: space-between; gap: 0.75rem; font-size: 0.78rem; }
+  .estimator-delivery__facts dt { color: var(--studio-mute); }
+  .estimator-delivery__facts dd { margin: 0; font-weight: 600; text-align: right; }
+
+  .estimator-success {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 0.85rem;
+    align-items: center;
+    padding: 1rem 1.05rem;
+    border-radius: 0.95rem;
+    border: 1px solid rgba(212, 180, 131, 0.45);
+    background: linear-gradient(165deg, rgba(212, 180, 131, 0.14), rgba(18, 18, 18, 0.95) 65%);
+    box-shadow: var(--studio-shadow);
+    animation: estimator-panel-in var(--med) var(--ease-out);
+  }
+  .estimator-success[hidden] { display: none; }
+  .estimator-success__icon { width: 2.4rem; height: 2.4rem; display: grid; place-items: center; border-radius: 999px; background: var(--studio-accent); color: #1a1408; }
+  .estimator-success__title { font-weight: 600; font-size: 1rem; }
+  .estimator-success__text { color: var(--studio-mute); font-size: 0.82rem; }
+  .estimator-success .btn { grid-column: 1 / -1; justify-self: start; }
+
+  /* Cart — side console */
+  .estimator-cart { display: none; }
+  @media (min-width: 64rem) { .estimator-cart { display: block; height: 100%; min-height: 0; } }
+  .estimator-cart__panel {
+    background: linear-gradient(165deg, rgba(28, 28, 28, 0.96), rgba(14, 14, 14, 0.98));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1rem 1.05rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    height: 100%;
+    min-height: 0;
+    box-shadow: var(--studio-shadow);
+  }
+  .estimator-cart__head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+  .estimator-cart__count { font-size: 0.72rem; color: var(--studio-mute); font-variant-numeric: tabular-nums; }
+  .estimator-cart__lines {
+    list-style: none;
+    display: grid;
+    gap: 0.5rem;
+    align-content: start;
+    margin: 0;
+    padding: 0 0.1rem 0 0;
+    flex: 1 1 auto;
+    min-height: 3rem;
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+  .estimator-cart__empty { color: var(--studio-mute); font-size: 0.85rem; padding: 0.35rem 0; }
+  .estimator-cart__line {
+    display: grid;
+    grid-template-columns: 2.35rem minmax(0, 1fr) auto;
+    gap: 0.2rem 0.55rem;
+    align-items: center;
+    padding: 0.45rem;
+    border-radius: 0.6rem;
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, 0.03);
+    animation: estimator-line-in var(--med) var(--ease-out);
+  }
+  .estimator-cart__line.is-new { border-color: rgba(212, 180, 131, 0.45); background: rgba(212, 180, 131, 0.08); }
+  .estimator-cart__line--base { border-color: rgba(212, 180, 131, 0.25); }
+  @keyframes estimator-line-in {
+    from { opacity: 0; transform: translateX(0.4rem); }
+    to { opacity: 1; transform: none; }
+  }
+  .estimator-cart__thumb { grid-row: 1 / span 2; width: 2.35rem; height: 2.35rem; border-radius: 0.4rem; overflow: hidden; background: #000; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); }
+  .estimator-cart__thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .estimator-cart__line strong { font-size: 0.8rem; font-weight: 600; grid-column: 2; grid-row: 1; color: var(--studio-ink); line-height: 1.25; }
+  .estimator-cart__price { font-size: 0.74rem; color: var(--studio-accent); font-variant-numeric: tabular-nums; grid-column: 3; grid-row: 1; font-weight: 600; white-space: nowrap; }
+  .estimator-cart__remove {
+    grid-column: 2 / -1;
+    grid-row: 2;
+    justify-self: start;
+    border: 0;
+    background: transparent;
+    color: var(--studio-mute);
+    font: inherit;
+    font-size: 0.7rem;
+    cursor: pointer;
+    padding: 0.1rem 0;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    transition: color var(--fast);
+  }
+  .estimator-cart__remove:hover { color: var(--studio-accent); }
+  .estimator-cart__foot { display: grid; gap: 0.55rem; flex: 0 0 auto; }
+  .estimator-cart__meta,
+  .estimator-cart__total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+  .estimator-cart__meta { font-size: 0.82rem; color: var(--studio-mute); }
+  .estimator-cart__meta strong { color: var(--studio-accent); font-weight: 600; }
+  .estimator-cart__total { font-size: 0.95rem; color: var(--studio-mute); padding-top: 0.45rem; border-top: 1px solid var(--studio-line); }
+  .estimator-cart__total strong {
+    display: inline-block;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+    color: var(--studio-ink);
+    transition: transform var(--fast) var(--ease-spring), color var(--fast);
+  }
+  .estimator-cart__total strong.is-bump { transform: scale(1.06); color: var(--studio-accent); }
+  .estimator-cart__back {
+    justify-self: center;
+    border: 0;
+    background: transparent;
+    color: var(--studio-mute);
+    font: inherit;
+    font-size: 0.76rem;
+    cursor: pointer;
+    padding: 0.2rem 0.4rem;
+    transition: color var(--fast);
+  }
+  .estimator-cart__back:hover { color: var(--studio-ink); }
+  .estimator-cart__back[hidden] { display: none; }
+
+  /* Mobile dock + sheet */
+  .estimator-dock {
+    position: fixed;
+    z-index: 40;
+    left: max(0.75rem, env(safe-area-inset-left));
+    right: max(0.75rem, env(safe-area-inset-right));
+    bottom: max(0.75rem, env(safe-area-inset-bottom));
+    display: flex;
+    gap: 0.55rem;
+    align-items: stretch;
+    padding: 0.55rem;
+    border-radius: 1rem;
+    background: rgba(12, 12, 12, 0.94);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transform: translateY(120%);
+    transition: transform 0.35s var(--ease-spring);
+  }
+  .estimator-dock.is-visible { transform: none; }
+  @media (min-width: 64rem) { .estimator-dock { display: none; } }
+  .estimator-dock__toggle {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border: 0;
+    border-radius: 0.75rem;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    text-align: left;
+  }
+  .estimator-dock__toggle span { color: rgba(255, 255, 255, 0.55); font-size: 0.85rem; }
+  .estimator-dock__toggle strong { font-variant-numeric: tabular-nums; font-size: 1.05rem; }
+  .estimator-dock .btn { align-self: center; min-width: 5.2rem; }
+
+  .estimator-sheet { position: fixed; inset: 0; z-index: 50; }
+  .estimator-sheet__backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.7); }
+  .estimator-sheet__panel {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: min(78vh, 36rem);
+    overflow: auto;
+    background: #121212;
+    color: var(--studio-ink);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.15rem 1.15rem 0 0;
+    padding: 1.15rem var(--gutter) max(1.4rem, env(safe-area-inset-bottom));
+    display: grid;
+    gap: 1rem;
+    box-shadow: 0 -20px 60px rgba(0, 0, 0, 0.55);
+    animation: estimator-sheet-up var(--med) var(--ease-out);
+  }
+  .estimator-sheet__head { display: flex; justify-content: space-between; align-items: center; }
+  .estimator-sheet__close {
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  @keyframes estimator-sheet-up {
+    from { transform: translateY(12%); opacity: 0.6; }
+    to { transform: none; opacity: 1; }
+  }
+
+  .estimator-seo {
+    position: relative;
+    z-index: 1;
+    border-top: 1px solid var(--studio-line);
+    padding: 3.5rem max(var(--gutter), env(safe-area-inset-right)) 4.5rem max(var(--gutter), env(safe-area-inset-left));
+  }
+  .estimator-seo__inner { max-width: 52rem; }
+  .estimator-seo h2,
+  .estimator-seo h3 {
+    letter-spacing: -0.03em;
+    font-weight: 600;
+    margin: 0 0 0.7rem;
+  }
+  .estimator-seo h2 { font-size: clamp(1.35rem, 2.4vw, 1.85rem); }
+  .estimator-seo h3 { font-size: 1.05rem; margin-top: 2rem; }
+  .estimator-seo__lead {
+    color: var(--studio-mute);
+    font-size: 0.95rem;
+    line-height: 1.55;
+    max-width: 42rem;
+    margin: 0 0 1.6rem;
+  }
+  .estimator-seo__lead a { color: var(--studio-accent); text-decoration: underline; text-underline-offset: 0.18em; }
+  .estimator-seo__packages {
+    list-style: none;
+    display: grid;
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+  }
+  @media (min-width: 40rem) { .estimator-seo__packages { grid-template-columns: 1fr 1fr; } }
+  .estimator-seo__packages li {
+    padding: 0.85rem 0.95rem;
+    border: 1px solid var(--studio-line);
+    border-radius: 0.75rem;
+    background: var(--studio-panel);
+  }
+  .estimator-seo__packages strong { display: block; font-size: 0.92rem; }
+  .estimator-seo__packages span {
+    display: block;
+    margin: 0.2rem 0 0.4rem;
+    color: var(--studio-accent);
+    font-size: 0.78rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .estimator-seo__packages p { color: var(--studio-mute); font-size: 0.8rem; line-height: 1.45; }
+  .estimator-seo__modules ul { list-style: none; display: grid; gap: 0.55rem; margin: 0; padding: 0; }
+  .estimator-seo__modules li { color: var(--studio-mute); font-size: 0.86rem; line-height: 1.45; }
+  .estimator-seo__modules strong { color: var(--studio-ink); }
+  .estimator-seo__modules span { color: var(--studio-accent); font-variant-numeric: tabular-nums; }
+  .estimator-faq { display: grid; gap: 0.45rem; }
+  .estimator-faq details {
+    border: 1px solid var(--studio-line);
+    border-radius: 0.7rem;
+    background: var(--studio-panel);
+    padding: 0.75rem 0.95rem;
+  }
+  .estimator-faq summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    list-style: none;
+  }
+  .estimator-faq summary::-webkit-details-marker { display: none; }
+  .estimator-faq p {
+    margin: 0.55rem 0 0;
+    color: var(--studio-mute);
+    font-size: 0.86rem;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 63.99rem) {
+    .estimator__stage { padding-bottom: clamp(6.5rem, 14vh, 8rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .estimator *,
+    .estimator *::before,
+    .estimator *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
+    .estimator__main { scroll-behavior: auto; }
+  }
+</style>

@@ -75,6 +75,12 @@ export async function buildPagesSitemap(site: URL) {
     },
     { loc: abs(site, "/contact/"), changefreq: "monthly", priority: "0.8" },
     {
+      loc: abs(site, "/cost-estimator/"),
+      lastmod: new Date().toISOString(),
+      changefreq: "weekly",
+      priority: "0.9",
+    },
+    {
       loc: abs(site, "/web-development-dubai/"),
       changefreq: "weekly",
       priority: "0.9",

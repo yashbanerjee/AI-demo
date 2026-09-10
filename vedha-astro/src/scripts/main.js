@@ -1453,7 +1453,7 @@
       (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact) ? contact : "");
     const payload = { type, email };
 
-    if (type === "enquiry" || type === "service-enquiry" || type === "lp-enquiry") {
+    if (type === "enquiry" || type === "service-enquiry" || type === "lp-enquiry" || type === "cost-estimate") {
       payload.name = String(data.get("name") || "").trim();
       payload.service = String(data.get("service") || "").trim();
       payload.category = String(data.get("category") || "").trim();
@@ -1463,6 +1463,14 @@
       payload.phone = String(data.get("phone") || "").trim();
       if (!payload.phone && contact && !email) {
         payload.phone = contact;
+      }
+      if (type === "cost-estimate") {
+        payload.base = String(data.get("base") || "").trim();
+        payload.addons = String(data.get("addons") || "").trim();
+        payload.totalAed = String(data.get("totalAed") || "").trim();
+        payload.notes = String(data.get("notes") || "").trim();
+        payload.deliveryEstimate = String(data.get("deliveryEstimate") || "").trim();
+        payload.deliveryPreference = String(data.get("deliveryPreference") || "").trim();
       }
     }
     return payload;
@@ -1540,6 +1548,18 @@
           }
           if (!hasEmail && !hasPhone) {
             throw new Error("Please enter an email or WhatsApp number.");
+          }
+        }
+
+        if (type === "cost-estimate") {
+          if (!String(payload.base || "").trim()) {
+            throw new Error("Please select a base package before sending.");
+          }
+          if (!String(payload.phone || "").trim()) {
+            throw new Error("Please enter a phone number.");
+          }
+          if (!String(payload.deliveryPreference || "").trim()) {
+            throw new Error("Please choose a preferred delivery timing.");
           }
         }
 

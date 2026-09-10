@@ -56,6 +56,34 @@ async function init() {
       data BYTEA NOT NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
+    CREATE TABLE IF NOT EXISTS estimator_bases (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      description TEXT NOT NULL DEFAULT '',
+      price_aed INTEGER NOT NULL DEFAULT 0,
+      image TEXT NOT NULL DEFAULT '',
+      weeks_min INTEGER NOT NULL DEFAULT 2,
+      weeks_max INTEGER NOT NULL DEFAULT 4,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+    CREATE TABLE IF NOT EXISTS estimator_addons (
+      id TEXT PRIMARY KEY,
+      name TEXT NOT NULL,
+      description TEXT NOT NULL DEFAULT '',
+      price_aed INTEGER NOT NULL DEFAULT 0,
+      group_id TEXT NOT NULL DEFAULT 'platform',
+      image TEXT NOT NULL DEFAULT '',
+      weeks_extra INTEGER NOT NULL DEFAULT 0,
+      popular BOOLEAN NOT NULL DEFAULT false,
+      sort_order INTEGER NOT NULL DEFAULT 0,
+      updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+    CREATE TABLE IF NOT EXISTS estimator_recommended (
+      base_id TEXT NOT NULL REFERENCES estimator_bases(id) ON DELETE CASCADE,
+      addon_id TEXT NOT NULL REFERENCES estimator_addons(id) ON DELETE CASCADE,
+      PRIMARY KEY (base_id, addon_id)
+    );
   `);
   // Insert any markdown posts that are not yet in the DB (never overwrites
   // posts already edited in admin). Lets new files ship via deploy.
