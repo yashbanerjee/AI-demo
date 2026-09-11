@@ -81,7 +81,7 @@ This file lists ${services.length} named services under ${pillars.length} pillar
 - Services: ${origin}/services/
 - Products: ${origin}/products/
 - Blog: ${origin}/blog/
-- Website cost estimator (AED quotes for Dubai / UAE website packages): ${origin}/cost-estimator/
+- Website development cost in Dubai (website cost calculator / website price calculator, AED quotes): ${origin}/cost-estimator/
 - Contact: ${origin}/contact/
 
 ${sections}

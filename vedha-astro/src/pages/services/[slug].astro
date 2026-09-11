@@ -168,19 +168,19 @@ const schema = [
 
 <style>
   .svc-cat {
-    max-width: min(var(--content-max), 72rem);
+    max-width: var(--content-max);
     width: 100%;
     margin-inline: auto;
     padding:
-      calc(4.5rem + clamp(1.2rem, 3vh, 2rem))
+      calc(5rem + clamp(1.5rem, 4vh, 2.5rem))
       var(--gutter)
-      clamp(3rem, 8vh, 5rem);
+      clamp(4.5rem, 12vh, 8rem);
   }
   .svc-cat .scene-banner {
-    margin-bottom: clamp(1.8rem, 4vh, 2.6rem);
+    margin-bottom: clamp(2.4rem, 6vh, 3.6rem);
   }
   .svc-cat .scene-banner__title {
-    width: min(96%, 16ch);
+    width: min(96%, 28ch);
     font-size: clamp(2.4rem, 6vw, 4.8rem);
   }
 
@@ -189,19 +189,21 @@ const schema = [
     flex-wrap: wrap;
     align-items: flex-end;
     justify-content: space-between;
-    gap: 1.25rem 2rem;
-    margin-bottom: clamp(1.4rem, 3vh, 2rem);
+    gap: 1.5rem 2.4rem;
+    margin-bottom: clamp(2.2rem, 5vh, 3.2rem);
   }
   .svc-cat__intro-copy {
     display: grid;
-    gap: 0.7rem;
-    max-width: 40rem;
+    gap: var(--stack-md);
+    max-width: none;
+    width: 100%;
   }
   .svc-cat__lede {
     margin: 0;
     color: var(--ink-soft);
     font-size: clamp(1.02rem, 1.8vw, 1.2rem);
     line-height: 1.55;
+    max-width: none;
   }
   .svc-cat__intro-actions {
     display: flex;
@@ -210,10 +212,10 @@ const schema = [
   }
 
   .svc-cat .svc-search {
-    margin: 0 0 1rem;
+    margin: 0 0 clamp(1.6rem, 3.5vh, 2.2rem);
   }
   .svc-cat__status {
-    margin: 0 0 1rem;
+    margin: 0 0 clamp(1.4rem, 3vh, 2rem);
     font-size: 0.78rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -233,8 +235,8 @@ const schema = [
     flex-wrap: wrap;
     align-items: baseline;
     justify-content: space-between;
-    gap: 0.5rem 1.5rem;
-    margin-bottom: 1.15rem;
+    gap: 0.65rem 1.5rem;
+    margin-bottom: clamp(1.6rem, 3.5vh, 2.2rem);
   }
   .svc-cat__main-head h2 {
     margin: 0;
@@ -253,7 +255,7 @@ const schema = [
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.75rem;
+    gap: var(--stack-md);
     grid-template-columns: 1fr;
   }
   .svc-cat__grid > li.is-hidden { display: none; }
@@ -346,9 +348,9 @@ const schema = [
   }
 
   .svc-cat__related {
-    margin-top: clamp(3.2rem, 8vh, 5rem);
+    margin-top: clamp(4rem, 10vh, 6.5rem);
     display: grid;
-    gap: 1.4rem;
+    gap: var(--stack-xl);
   }
   .svc-cat__related-head h2 {
     margin: 0.35rem 0 0;

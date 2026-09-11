@@ -112,7 +112,7 @@ const schema = breadcrumbSchema([
           <a href="/#studio">Studio</a>
           <a href="/#work">Work</a>
           <a href="/services/">Services</a>
-          <a href="/cost-estimator/">Website cost estimator</a>
+          <a href="/cost-estimator/">Website development cost in Dubai</a>
           <a href="/blog/">Blog</a>
           <a href="/contact/" aria-current="page">Contact</a>
         </nav>
@@ -124,16 +124,16 @@ const schema = breadcrumbSchema([
 
 <style>
   .contact-page {
-    max-width: min(var(--content-max), 72rem);
+    max-width: var(--content-max);
     width: 100%;
     margin-inline: auto;
     padding:
-      calc(4.5rem + clamp(1.2rem, 3vh, 2rem))
+      calc(5rem + clamp(1.5rem, 4vh, 2.5rem))
       var(--gutter)
-      clamp(3rem, 8vh, 5rem);
+      clamp(4.5rem, 12vh, 8rem);
   }
   .contact-page .scene-banner {
-    margin-bottom: clamp(1.8rem, 4vh, 2.8rem);
+    margin-bottom: clamp(2.4rem, 6vh, 3.6rem);
   }
   .contact-page .scene-banner__title {
     width: min(96%, 12ch);
@@ -142,17 +142,17 @@ const schema = breadcrumbSchema([
 
   .contact-page__layout {
     display: grid;
-    gap: clamp(2.4rem, 5vw, 3.5rem);
+    gap: clamp(3rem, 6vw, 4.5rem);
     align-items: start;
   }
   .contact-page__main {
     display: grid;
-    gap: clamp(1.8rem, 4vh, 2.6rem);
+    gap: clamp(2.4rem, 5vh, 3.4rem);
     min-width: 0;
   }
   .contact-page__intro {
     display: grid;
-    gap: 0.85rem;
+    gap: var(--stack-md);
     justify-items: start;
   }
   .contact-page__intro h2 {
@@ -164,7 +164,7 @@ const schema = breadcrumbSchema([
   .contact-page__intro > p:not(.kicker) {
     margin: 0;
     color: var(--ink-soft);
-    max-width: 36rem;
+    max-width: var(--measure-prose);
     line-height: 1.55;
     font-size: 1.05rem;
   }

@@ -8,6 +8,7 @@ import ServiceEnquiryModal from "../components/ServiceEnquiryModal.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 import { getSeoForPath } from "../lib/db";
 import "@fontsource-variable/inter/wght.css";
+import "../styles/typography.css";
 import "../styles/global.css";
 
 interface Props {
@@ -36,9 +37,9 @@ const title = seoOverride?.title || props.title;
 const description =
   seoOverride?.description ||
   props.description ||
-  "Vedha is a Dubai-based technology agency delivering web development, UI/UX, e-commerce, AI and digital transformation services.";
+  "Vedha is a software development company in Dubai building custom web apps, mobile apps, ERP systems and business automation for UAE & GCC businesses.";
 const ogImage = seoOverride?.og_image || props.ogImage || "/og-image.png";
-const ogImageAlt = props.ogImageAlt || "Vedha Technologies — Dubai technology studio";
+const ogImageAlt = props.ogImageAlt || "Vedha Technologies — custom software development company in Dubai";
 const {
   ogType = "website",
   publishedTime,
@@ -62,7 +63,7 @@ const organizationSchema = {
   url: Astro.site?.toString(),
   logo: new URL("/images/vedha-logo.png", Astro.site).toString(),
   description:
-    "Dubai-based technology agency delivering web development, UI/UX, e-commerce, AI and digital transformation services.",
+    "Software development company in Dubai building custom web apps, mobile apps, ERP systems and business automation for UAE and GCC businesses.",
   email: "info@vedha.ae",
   address: {
     "@type": "PostalAddress",

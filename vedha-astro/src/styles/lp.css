@@ -100,9 +100,10 @@ body:has(.lp) .site-header__nav {
 
 .lp-hero__kicker {
   margin-bottom: clamp(0.9rem, 2vh, 1.25rem);
-  font-size: 0.72rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  line-height: var(--leading-none);
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.62);
 }
@@ -113,10 +114,11 @@ body:has(.lp) .site-header__nav {
   margin: 0 auto clamp(1rem, 2.2vh, 1.4rem);
   width: 100%;
   max-width: 100%;
-  font-size: clamp(2.1rem, 4.2vw, 3.45rem);
-  font-weight: 700;
-  letter-spacing: -0.045em;
-  line-height: 1.08;
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-light);
+  letter-spacing: var(--tracking-tighter);
+  line-height: var(--leading-display);
   text-wrap: balance;
   text-align: center;
 }
@@ -130,8 +132,10 @@ body:has(.lp) .site-header__nav {
   max-width: 36rem;
   margin: 0 auto clamp(1.35rem, 2.8vh, 1.8rem);
   color: rgba(255, 255, 255, 0.78);
-  font-size: clamp(1rem, 1.3vw, 1.12rem);
-  line-height: 1.55;
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-none);
+  line-height: var(--leading-relaxed);
   text-align: center;
 }
 
@@ -326,7 +330,7 @@ body:has(.lp) .site-header__nav {
 /* —— Shared section heads (all LP content sections) —— */
 .lp-section-head {
   display: grid;
-  gap: 0.65rem;
+  gap: var(--stack-sm);
   margin-bottom: clamp(1.6rem, 3.5vh, 2.5rem);
   justify-items: start;
 }
@@ -338,10 +342,11 @@ body:has(.lp) .site-header__nav {
 
 .lp-section-head__title {
   margin: 0;
-  font-size: clamp(1.85rem, 3.6vw, 2.75rem);
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.12;
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-display);
   max-width: 18ch;
   text-wrap: balance;
 }
@@ -361,8 +366,10 @@ body:has(.lp) .site-header__nav {
 .lp-section-head__sub {
   margin: 0;
   max-width: 38ch;
-  font-size: clamp(0.95rem, 1.2vw, 1.05rem);
-  line-height: 1.5;
+  font-size: var(--text-md);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-none);
+  line-height: var(--leading-relaxed);
   color: var(--ink-soft);
 }
 
@@ -675,11 +682,11 @@ body:has(.lp) .site-header__nav {
 
   .lp-section-head {
     margin-bottom: 1.25rem;
-    gap: 0.5rem;
+    gap: var(--stack-xs);
   }
 
   .lp-section-head__title {
-    font-size: clamp(1.55rem, 6.5vw, 1.95rem);
+    font-size: var(--text-4xl);
     max-width: 16ch;
   }
 
@@ -690,7 +697,7 @@ body:has(.lp) .site-header__nav {
   }
 
   .lp-section-head__sub {
-    font-size: 0.92rem;
+    font-size: var(--text-sm);
     max-width: none;
   }
 

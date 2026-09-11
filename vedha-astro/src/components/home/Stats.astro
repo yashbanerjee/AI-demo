@@ -1,36 +1,28 @@
 ---
 const cards = [
   {
-    label: "Years of experience",
+    label: "Experience brought into Vedha",
     count: 10,
     suffix: "+",
-    blurb: "Strategy, tech, and a touch of clever.",
-    tag: "Boutique, senior-led",
-    quote: "We work with a limited number of clients to keep senior-level oversight on every project.",
+    blurb: "Strategy, tech and sharp thinking.",
   },
   {
     label: "Solutions delivered",
     count: 120,
     suffix: "+",
-    blurb: "Driving outcomes across industries.",
-    tag: "Future-ready tech",
-    quote: "Scalable platforms with clean architecture — AI only where it genuinely adds value.",
+    blurb: "Products, platforms and systems across industries.",
   },
   {
     label: "Client satisfaction",
     count: 98,
     suffix: "%",
-    blurb: "Partnerships built on trust.",
-    tag: "Clear communication",
-    quote: "Transparent process, simple updates — clients always know what’s happening and why.",
+    blurb: "Trust earned through the work.",
   },
   {
-    label: "Long-term clients",
+    label: "Long-term relationships",
     count: 100,
     suffix: "+",
-    blurb: "Built for lasting partnerships.",
-    tag: "Beyond launch",
-    quote: "We prioritise relationships that keep delivering value well after go-live.",
+    blurb: "Partnerships built to last.",
   },
 ];
 ---
@@ -41,26 +33,25 @@ const cards = [
     <picture>
       <img
         src="/images/photo-alpine-glow.jpg"
-        alt=""
+        alt="Vedha project experience across UAE and GCC businesses"
         width="1600"
         height="1068"
         loading="lazy"
         decoding="async"
-        aria-hidden="true"
       />
     </picture>
-    <h2 class="scene-banner__title">Vedha stands behind the data.</h2>
+    <h2 class="scene-banner__title">Experience behind every build.</h2>
     <figcaption class="scene-banner__meta">
       <span>Outcomes</span>
       <a href="/contact/">Let’s talk</a>
     </figcaption>
   </figure>
   <p class="stats__lead" data-reveal>
-    Our success is reflected in the numbers we achieve for our clients. Every project is designed with measurable growth at its core.
+    Vedha brings proven experience in building the systems, products and workflows that help businesses operate and grow. Our clients trust us to turn complex challenges into technology they can rely on.
   </p>
   <div class="stats__grid">
-    {cards.map((card, i) => (
-      <article class="stat-card" data-reveal>
+    {cards.map((card) => (
+      <article class="stat-card stat-card--compact" data-reveal>
         <header class="stat-card__top">
           <p class="stat-card__label">{card.label}</p>
           <p
@@ -70,18 +61,17 @@ const cards = [
           >{card.count}{card.suffix}</p>
           <p class="stat-card__blurb">{card.blurb}</p>
         </header>
-        <footer class="stat-card__quote">
-          <div class="stat-card__tag">
-            <span class="stat-card__index">{String(i + 1).padStart(3, "0")}</span>
-            <span class="stat-card__topic">{card.tag}</span>
-          </div>
-          <p class="stat-card__stars" aria-label="5 out of 5">
-            <span aria-hidden="true">★★★★★</span>
-          </p>
-          <p class="stat-card__text">“{card.quote}”</p>
-          <cite class="stat-card__author">Vedha Team</cite>
-        </footer>
       </article>
     ))}
   </div>
 </section>
+
+<style is:global>
+  .stat-card--compact {
+    justify-content: center;
+  }
+
+  .stat-card--compact .stat-card__top {
+    gap: 0.65rem;
+  }
+</style>
