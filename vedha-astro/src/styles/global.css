@@ -161,20 +161,6 @@ input, summary { touch-action: manipulation; }
 }
 [data-reveal].is-visible { opacity: 1; transform: none; }
 
-/* Split text (lines/words animated by JS) */
-.split-words .w {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: top;
-}
-.split-words .w > i {
-  display: inline-block;
-  font-style: normal;
-  transform: translateY(110%);
-  transition: transform 0.8s var(--ease-out);
-}
-.split-words.is-visible .w > i { transform: none; }
-
 /* ============ Preloader ============ */
 .preloader {
   position: fixed; inset: 0; z-index: 200;
@@ -188,7 +174,6 @@ input, summary { touch-action: manipulation; }
   width: 100%;
   display: flex; justify-content: space-between; align-items: flex-end;
 }
-.preloader__logo { font-size: clamp(2rem, 6vw, 4rem); font-weight: 700; letter-spacing: -0.03em; }
 .preloader__logo-img { width: clamp(10rem, 30vw, 20rem); height: auto; }
 .preloader__count { font-size: clamp(2rem, 6vw, 4rem); font-weight: 700; font-variant-numeric: tabular-nums; }
 
@@ -259,10 +244,6 @@ input, summary { touch-action: manipulation; }
 .site-header__logo {
   display: inline-flex; align-items: center; gap: 0.5em;
   font-weight: 700; font-size: 1.05rem; letter-spacing: -0.02em;
-}
-.logo-dot {
-  width: 1.1em; height: 1.1em; border-radius: 50%;
-  background: conic-gradient(from 210deg, #7b5cff, #ff7ad9, #ffb37a, #7b5cff);
 }
 /* Wordmark asset is pale cream — flatten to ink on light, keep cream on dark */
 .site-header__logo-img {
@@ -670,15 +651,23 @@ body.menu-open .site-header__logo-img { filter: none; }
   height: 100%;
   object-fit: cover;
   transform: scale(1.02);
+  /* Recover punch lost in compression / dark overlays */
+  filter: saturate(1.1) contrast(1.06) brightness(1.03);
   animation: hero-slide-drift 32s infinite;
   animation-delay: calc(var(--slide-index) * 8s - 1.6s);
+}
+.hero-slideshow__slide picture {
+  position: absolute;
+  inset: 0;
+  display: block;
 }
 .hero-slideshow__veil {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 50% 50%, transparent 0%, rgba(0, 0, 0, 0.1) 48%, rgba(0, 0, 0, 0.42) 100%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.14), transparent 40%, rgba(0, 0, 0, 0.16));
+    radial-gradient(circle at 50% 48%, transparent 0%, rgba(0, 0, 0, 0.04) 58%, rgba(0, 0, 0, 0.22) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.06), transparent 42%, rgba(0, 0, 0, 0.1));
+  pointer-events: none;
 }
 /* The mark stays fixed while the banner texture flows inside it. */
 .hero-slideshow__mark {
@@ -688,16 +677,19 @@ body.menu-open .site-header__logo-img { filter: none; }
   width: min(29vw, 19rem);
   aspect-ratio: 566 / 493;
   background-image:
-    radial-gradient(circle at 18% 20%, rgba(255, 255, 255, 0.62), transparent 34%),
-    linear-gradient(115deg, rgba(255, 255, 255, 0.08), rgba(255, 214, 150, 0.36) 48%, rgba(170, 220, 255, 0.16)),
-    var(--slide-image);
-  background-position: 18% 20%, 50% 50%, 50% 50%;
-  background-size: 160% 160%, 220% 220%, 145% auto;
+    radial-gradient(circle at 24% 17%, rgba(255, 255, 255, 0.88), transparent 31%),
+    linear-gradient(125deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.08) 42%, rgba(205, 229, 255, 0.28) 72%, rgba(255, 225, 184, 0.2));
+  background-color: rgba(255, 255, 255, 0.1);
+  background-position: 18% 20%, 50% 50%;
+  background-size: 160% 160%, 220% 220%;
   -webkit-mask: url("/images/vedha-mark-mask.svg") center / contain no-repeat;
   mask: url("/images/vedha-mark-mask.svg") center / contain no-repeat;
+  -webkit-backdrop-filter: blur(12px) saturate(1.65) contrast(1.08);
+  backdrop-filter: blur(12px) saturate(1.65) contrast(1.08);
   filter:
-    drop-shadow(0 0 1.2rem rgba(255, 237, 204, 0.26))
-    drop-shadow(0 0 3.5rem rgba(120, 190, 255, 0.15));
+    drop-shadow(0 1px 0 rgba(255, 255, 255, 0.78))
+    drop-shadow(0 0 1.25rem rgba(224, 240, 255, 0.3))
+    drop-shadow(0 0 3.8rem rgba(120, 190, 255, 0.2));
   transform: scale(1);
   opacity: 0;
   animation:
@@ -711,13 +703,20 @@ body.menu-open .site-header__logo-img { filter: none; }
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(105deg, transparent 28%, rgba(255, 255, 255, 0.52) 48%, transparent 68%);
+    linear-gradient(
+      105deg,
+      transparent 24%,
+      rgba(255, 255, 255, 0.18) 38%,
+      rgba(255, 255, 255, 0.82) 49%,
+      rgba(225, 242, 255, 0.2) 61%,
+      transparent 74%
+    );
   background-size: 220% 100%;
   background-position: 130% 0;
   -webkit-mask: url("/images/vedha-mark-mask.svg") center / contain no-repeat;
   mask: url("/images/vedha-mark-mask.svg") center / contain no-repeat;
   mix-blend-mode: screen;
-  opacity: 0.56;
+  opacity: 0.72;
   animation: hero-mark-sheen 5s ease-in-out infinite;
 }
 .hero-slideshow__scroll {
@@ -856,8 +855,8 @@ body.menu-open .site-header__logo-img { filter: none; }
   30%, 100% { opacity: 0; filter: drop-shadow(0 0 0 rgba(255, 255, 255, 0)); }
 }
 @keyframes hero-mark-flow {
-  0%, 100% { background-position: 18% 20%, 45% 48%, 47% 52%; }
-  50% { background-position: 76% 66%, 58% 44%, 56% 46%; }
+  0%, 100% { background-position: 18% 20%, 45% 48%; }
+  50% { background-position: 76% 66%, 58% 44%; }
 }
 @keyframes hero-mark-sheen {
   0%, 25% { background-position: 130% 0; }
@@ -888,9 +887,7 @@ section { padding: clamp(4.25rem, 12vh, 9.5rem) var(--gutter); }
   justify-content: space-between; align-items: flex-end;
   margin-bottom: clamp(2.5rem, 8vh, 5.5rem);
 }
-.section-head--split { align-items: flex-start; margin-bottom: 1rem; }
 .section-head__sub { color: var(--ink-soft); max-width: 18rem; }
-.section-head__aside { max-width: 24rem; display: grid; gap: 1.2rem; justify-items: start; }
 
 /* ============ Work ============ */
 .work__grid {
@@ -2243,50 +2240,6 @@ a.svc-ask {
   line-height: var(--leading-relaxed);
   max-width: 24ch;
 }
-.stat-card__quote {
-  border-top: 1px solid rgba(17, 17, 17, 0.08);
-  padding-top: 1.25rem;
-  display: grid;
-  gap: 0.55rem;
-}
-.stat-card__tag {
-  display: flex;
-  align-items: baseline;
-  gap: 0.55rem;
-  flex-wrap: wrap;
-}
-.stat-card__index {
-  font-size: 0.65rem;
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0.08em;
-  color: rgba(17, 17, 17, 0.35);
-}
-.stat-card__topic {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--ink);
-}
-.stat-card__stars {
-  font-size: 0.65rem;
-  letter-spacing: 0.12em;
-  color: rgba(17, 17, 17, 0.55);
-  line-height: 1;
-}
-.stat-card__text {
-  font-size: 0.88rem;
-  line-height: 1.45;
-  color: rgba(17, 17, 17, 0.72);
-}
-.stat-card__author {
-  font-style: normal;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--ink);
-}
 
 @media (min-width: 48rem) { .stats__grid { grid-template-columns: repeat(2, 1fr); } }
 @media (min-width: 64rem) { .stats__grid { grid-template-columns: repeat(4, 1fr); } }
@@ -2312,14 +2265,6 @@ a.svc-ask {
   line-height: var(--leading-display);
   max-width: 18ch;
 }
-.story__quote {
-  font-family: var(--font-display);
-  font-size: var(--text-4xl);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-snug);
-  max-width: var(--measure-wide);
-}
 .story__body {
   margin: 0;
   color: var(--ink-soft);
@@ -2329,12 +2274,6 @@ a.svc-ask {
   line-height: var(--leading-relaxed);
   max-width: var(--measure-prose);
 }
-.story__author {
-  color: var(--ink-soft);
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
-}
-.story__author b { color: var(--ink); }
 .story__media {
   width: 100%;
   border-radius: var(--radius);
@@ -2756,13 +2695,6 @@ a.svc-ask {
   padding: clamp(3rem, 9vh, 6.5rem) var(--gutter);
 }
 .site-footer__brand { display: grid; gap: 1rem; justify-items: start; }
-.site-footer__logo {
-  font-family: var(--font-display);
-  font-size: var(--text-5xl);
-  font-weight: var(--weight-bold);
-  letter-spacing: var(--tracking-tight);
-  line-height: var(--leading-none);
-}
 .site-footer__logo-img { width: clamp(9rem, 18vw, 14rem); height: auto; }
 .newsletter { display: flex; gap: 0.6rem; width: 100%; max-width: 24rem; }
 .newsletter input {

@@ -161,7 +161,10 @@ const schema = [
       </header>
       <ul class="svc-leaf__outcomes">
         {landing.outcomes.map((o) => (
-          <li>{o}</li>
+          <li>
+            <span class="svc-leaf__outcome-mark" aria-hidden="true"></span>
+            <span>{o}</span>
+          </li>
         ))}
       </ul>
     </section>
@@ -430,19 +433,20 @@ const schema = [
     gap: 0;
   }
   .svc-leaf__outcomes li {
-    position: relative;
-    padding: 1.15rem 0 1.15rem 1.4rem;
+    display: grid;
+    grid-template-columns: 0.55rem minmax(0, 1fr);
+    align-items: start;
+    column-gap: 0.85rem;
+    padding: 1.15rem 0;
     border-bottom: 1px solid var(--line);
     font-size: 1rem;
     line-height: 1.55;
   }
-  .svc-leaf__outcomes li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 1.25em;
+  .svc-leaf__outcome-mark {
+    display: block;
     width: 0.55rem;
     height: 1px;
+    margin-top: calc((1.55em - 1px) / 2);
     background: var(--ink);
   }
 
