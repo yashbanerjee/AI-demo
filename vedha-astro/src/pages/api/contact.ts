@@ -20,6 +20,12 @@ type Body = {
   description?: string;
   message?: string;
   budget?: string;
+  base?: string;
+  addons?: string;
+  totalAed?: string | number;
+  notes?: string;
+  deliveryEstimate?: string;
+  deliveryPreference?: string;
 };
 
 const json = (data: unknown, status = 200) =>
@@ -64,6 +70,16 @@ export const POST: APIRoute = async ({ request }) => {
     const category = String(body.category || "").trim();
     const description = String(body.description || body.message || "").trim();
     const budget = String(body.budget || "").trim();
+    const base = String(body.base || "").trim();
+    const addons = String(body.addons || "").trim();
+    const totalAedRaw = body.totalAed;
+    const totalAed =
+      typeof totalAedRaw === "number"
+        ? totalAedRaw
+        : Number(String(totalAedRaw || "").replace(/[^\d.]/g, "")) || 0;
+    const notes = String(body.notes || "").trim();
+    const deliveryEstimate = String(body.deliveryEstimate || "").trim();
+    const deliveryPreference = String(body.deliveryPreference || "").trim();
     const contactRaw = String(body.contact || "").trim();
     const phoneRaw = String(body.phone || "").trim();
 
@@ -162,6 +178,38 @@ export const POST: APIRoute = async ({ request }) => {
         "",
         `Time: ${new Date().toISOString()}`,
       ].join("\n");
+    } else if (type === "cost-estimate") {
+      if (!name) {
+        return json({ error: "Name is required." }, 400);
+      }
+      if (!base) {
+        return json({ error: "Please select a base package before sending." }, 400);
+      }
+      if (!hasPhone) {
+        return json({ error: "Phone number is required." }, 400);
+      }
+      const totalLabel = `AED ${Math.round(totalAed).toLocaleString("en-AE")}`;
+      subject = `Cost estimate — ${base} — ${totalLabel}`;
+      text = [
+        "New cost estimator submission from the Vedha website.",
+        "",
+        `Name: ${name}`,
+        `Email: ${email}`,
+        `Phone: ${phone}`,
+        `Base: ${base}`,
+        `Modules: ${addons || "none"}`,
+        `Total: ${totalLabel}`,
+        `Estimated delivery: ${deliveryEstimate || "—"}`,
+        `Preferred timing: ${deliveryPreference || "—"}`,
+        "",
+        "Breakdown:",
+        description || "—",
+        "",
+        notes ? `Extra notes:\n${notes}` : "",
+        `Time: ${new Date().toISOString()}`,
+      ]
+        .filter(Boolean)
+        .join("\n");
     } else {
       return json({ error: "Unknown form type." }, 400);
     }

@@ -37,6 +37,7 @@ Vedha Technologies helps organisations across the UAE clarify technology choices
 - [Home](${origin}/): Company overview, studio, work, services, and contact
 - [Services](${origin}/services/): Full service catalogue across ${pillars.length} pillars and ${services.length} named services
 - [Products](${origin}/products/): Product offerings
+- [Website development cost in Dubai](${origin}/cost-estimator/): Website cost calculator and website price calculator online for AED quotes — landing pages, corporate sites, ecommerce, and custom web apps, plus website design cost in Dubai and modules such as payments, SEO, and CMS
 - [Blog](${origin}/blog/): Insights on technology, product, and delivery
 - [Contact](${origin}/contact/): Enquiry form and consultation booking
 

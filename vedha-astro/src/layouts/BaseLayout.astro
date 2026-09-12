@@ -8,12 +8,14 @@ import ServiceEnquiryModal from "../components/ServiceEnquiryModal.astro";
 import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 import { getSeoForPath } from "../lib/db";
 import "@fontsource-variable/inter/wght.css";
+import "../styles/typography.css";
 import "../styles/global.css";
 
 interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   ogType?: "website" | "article";
   publishedTime?: Date;
   modifiedTime?: Date;
@@ -35,8 +37,9 @@ const title = seoOverride?.title || props.title;
 const description =
   seoOverride?.description ||
   props.description ||
-  "Vedha is a Dubai-based technology agency delivering web development, UI/UX, e-commerce, AI and digital transformation services.";
+  "Vedha is a software development company in Dubai building custom web apps, mobile apps, ERP systems and business automation for UAE & GCC businesses.";
 const ogImage = seoOverride?.og_image || props.ogImage || "/og-image.png";
+const ogImageAlt = props.ogImageAlt || "Vedha Technologies — custom software development company in Dubai";
 const {
   ogType = "website",
   publishedTime,
@@ -60,7 +63,7 @@ const organizationSchema = {
   url: Astro.site?.toString(),
   logo: new URL("/images/vedha-logo.png", Astro.site).toString(),
   description:
-    "Dubai-based technology agency delivering web development, UI/UX, e-commerce, AI and digital transformation services.",
+    "Software development company in Dubai building custom web apps, mobile apps, ERP systems and business automation for UAE and GCC businesses.",
   email: "info@vedha.ae",
   address: {
     "@type": "PostalAddress",
@@ -125,12 +128,14 @@ const websiteSchema = {
   <meta property="og:image" content={ogImageAbsolute} />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={ogImageAlt} />
   {publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
   {modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={ogImageAbsolute} />
+  <meta name="twitter:image:alt" content={ogImageAlt} />
   <link rel="icon" href="/favicon.svg?v=vedha-v" type="image/svg+xml" />
   <script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
   <script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />

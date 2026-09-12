@@ -4,7 +4,7 @@
 const servicePillars = [
   {
     name: "Consult",
-    blurb: "Clarity before code — strategy, audits, and roadmaps that de-risk every build.",
+    blurb: "Clarity before code: strategy, audits and roadmaps that de-risk every build.",
     categories: [
       {
         name: "Technology Consulting & Strategy",
@@ -77,7 +77,7 @@ const servicePillars = [
   },
   {
     name: "Design",
-    blurb: "Research-led product design and brand identities built to carry the business.",
+    blurb: "Research-led product design and brand identities built to carry your business forward.",
     categories: [
       {
         name: "UX/UI & Product Design",
@@ -272,7 +272,7 @@ const servicePillars = [
   },
   {
     name: "Build",
-    blurb: "Software engineered end to end — enterprise platforms, products, apps, and sites.",
+    blurb: "Software engineered end to end for enterprise platforms, products, apps and sites.",
     categories: [
       {
         name: "Enterprise Software",
@@ -912,7 +912,7 @@ const servicePillars = [
   },
   {
     name: "Automate",
-    blurb: "Workflows, CRM, and marketing systems that run the busywork for you.",
+    blurb: "Workflows, CRM and marketing systems that take the busywork off your team.",
     categories: [
       {
         name: "Business Automation",
@@ -1169,7 +1169,7 @@ const servicePillars = [
   },
   {
     name: "Intelligence",
-    blurb: "AI assistants, analytics, and data platforms working quietly behind the business.",
+    blurb: "AI assistants, analytics and data platforms working quietly behind your business.",
     categories: [
       {
         name: "AI Solutions",
@@ -1394,7 +1394,7 @@ const servicePillars = [
   },
   {
     name: "Connect",
-    blurb: "APIs, middleware, and integrations that make every system talk to every other.",
+    blurb: "APIs, middleware and integrations that make your systems work together.",
     categories: [
       {
         name: "API & Systems Integration",
@@ -1502,7 +1502,7 @@ const servicePillars = [
   },
   {
     name: "Scale",
-    blurb: "Visibility, infrastructure, security, and quality engineering for growth.",
+    blurb: "Visibility, infrastructure, security and quality engineering built for growth.",
     categories: [
       {
         name: "Search & AI Visibility",
@@ -1933,7 +1933,7 @@ const servicePillars = [
   },
   {
     name: "Support",
-    blurb: "Teams, training, and managed care that keep everything improving after launch.",
+    blurb: "Teams, training and managed care that keep your systems improving after launch.",
     categories: [
       {
         name: "Managed Technology Services",

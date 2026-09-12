@@ -2,8 +2,9 @@
 interface Props {
   title: string;
   showNav?: boolean;
+  wide?: boolean;
 }
-const { title, showNav = true } = Astro.props;
+const { title, showNav = true, wide = false } = Astro.props;
 const current = Astro.url.pathname;
 ---
 <!DOCTYPE html>
@@ -21,18 +22,19 @@ const current = Astro.url.pathname;
 <body>
   {showNav && (
     <header class="topbar">
-      <a class="topbar__brand" href="/admin">VEDHA<span>Admin</span></a>
+      <a class="topbar__brand" href="/admin/">VEDHA<span>Admin</span></a>
       <nav class="topbar__nav">
-        <a href="/admin" class:list={{ active: current === "/admin" }}>Posts</a>
-        <a href="/admin/seo" class:list={{ active: current.startsWith("/admin/seo") }}>SEO</a>
+        <a href="/admin/" class:list={{ active: current === "/admin/" || current.startsWith("/admin/posts") }}>Posts</a>
+        <a href="/admin/estimator/" class:list={{ active: current.startsWith("/admin/estimator") }}>Estimator</a>
+        <a href="/admin/seo/" class:list={{ active: current.startsWith("/admin/seo") }}>SEO</a>
         <a href="/" target="_blank" rel="noopener">View site ↗</a>
       </nav>
-      <form method="post" action="/api/admin/logout">
+      <form method="post" action="/api/admin/logout/">
         <button class="btn btn--subtle" type="submit">Log out</button>
       </form>
     </header>
   )}
-  <main class="wrap">
+  <main class:list={["wrap", { "wrap--wide": wide }]}>
     <slot />
   </main>
 </body>
@@ -91,6 +93,7 @@ const current = Astro.url.pathname;
   .topbar__nav a.active { color: var(--ink); border-bottom-color: var(--ink); }
   .topbar__nav a:hover { color: var(--ink); }
   .wrap { max-width: 60rem; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  .wrap--wide { max-width: 76rem; }
 
   h1 { font-size: 1.6rem; margin: 0 0 1.5rem; }
   h2 { font-size: 1.15rem; margin: 2rem 0 0.8rem; }
@@ -122,7 +125,7 @@ const current = Astro.url.pathname;
 
   label { display: grid; gap: 0.35rem; font-weight: 500; }
   label small { font-weight: 400; color: var(--ink-soft); }
-  input[type="text"], input[type="password"], input[type="date"], textarea, select {
+  input[type="text"], input[type="password"], input[type="date"], input[type="number"], textarea, select {
     font: inherit;
     padding: 0.6rem 0.75rem;
     border: 1px solid var(--line);

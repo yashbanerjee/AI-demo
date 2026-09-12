@@ -1,0 +1,93 @@
+---
+import AdminLayout from "../../../../layouts/AdminLayout.astro";
+import EstimatorImageField from "../../../../components/admin/EstimatorImageField.astro";
+import { getEstimatorCatalog, MODULE_TAGS } from "../../../../lib/estimator-catalog";
+
+const catalog = await getEstimatorCatalog();
+const error = Astro.url.searchParams.get("error");
+const tagLabel = (id: string) => MODULE_TAGS.find((t) => t.id === id)?.label ?? id;
+---
+
+<AdminLayout title="New base" wide>
+  <p class="crumb"><a href="/admin/estimator/">Cost estimator</a> / New base</p>
+  <h1>New base service</h1>
+  {error === "missing" && <p class="notice notice--error">Name is required.</p>}
+  {error === "exists" && <p class="notice notice--error">That id already exists.</p>}
+  {error === "save" && <p class="notice notice--error">Could not save. Check the fields and try again.</p>}
+
+  <form class="panel form-grid" method="post" action="/api/admin/estimator/">
+    <input type="hidden" name="_action" value="create-base" />
+    <input type="hidden" name="_return" value="/admin/estimator/bases/new/" />
+
+    <label>
+      Name
+      <input type="text" name="name" required />
+    </label>
+    <label>
+      Id <small>(leave empty to generate from the name)</small>
+      <input type="text" name="id" placeholder="corporate-website" />
+    </label>
+    <label>
+      Description
+      <textarea name="description" rows="3" required></textarea>
+    </label>
+    <div class="form-row">
+      <label>
+        Price (AED)
+        <input type="number" name="priceAed" min="0" step="100" value="10000" required />
+      </label>
+      <label>
+        Sort order
+        <input type="number" name="sortOrder" min="0" step="1" value="99" />
+      </label>
+    </div>
+    <div class="form-row">
+      <label>
+        Delivery from (weeks)
+        <input type="number" name="weeksMin" min="0" step="1" value="2" required />
+      </label>
+      <label>
+        Delivery to (weeks)
+        <input type="number" name="weeksMax" min="0" step="1" value="4" required />
+      </label>
+    </div>
+
+    <EstimatorImageField />
+
+    <fieldset class="rec">
+      <legend>Recommended modules</legend>
+      <p class="muted">These appear first when this base is selected, and in the Recommended filter.</p>
+      <div class="rec-grid">
+        {catalog.addons.map((addon) => (
+          <label class="check">
+            <input type="checkbox" name="recommended" value={addon.id} />
+            <span>
+              <strong>{addon.name}</strong>
+              <small>{tagLabel(addon.group)}</small>
+            </span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button class="btn" type="submit">Create base</button>
+      <a class="btn btn--subtle" href="/admin/estimator/">Cancel</a>
+    </div>
+  </form>
+
+  <input type="file" id="filePicker" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" hidden />
+  <script src="../../../../scripts/admin-upload.js"></script>
+</AdminLayout>
+
+<style>
+  .crumb { color: var(--ink-soft); margin: 0 0 0.6rem; }
+  .crumb a { color: inherit; }
+  .actions { display: flex; gap: 0.8rem; align-items: center; }
+  .rec { border: 1px solid var(--line); border-radius: 8px; padding: 1rem; }
+  .rec legend { font-weight: 600; padding: 0 0.35rem; }
+  .rec-grid { display: grid; gap: 0.45rem; grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr)); margin-top: 0.7rem; }
+  .check { display: flex; gap: 0.55rem; align-items: flex-start; font-weight: 400; }
+  .check input { width: auto; margin-top: 0.25rem; }
+  .check small { display: block; color: var(--ink-soft); }
+</style>

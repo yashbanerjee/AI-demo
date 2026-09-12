@@ -5,7 +5,7 @@ import { getPostById } from "../../../lib/db";
 
 const post = await getPostById(Number(Astro.params.id));
 if (!post) {
-  return Astro.redirect("/admin");
+  return Astro.redirect("/admin/");
 }
 
 const saved = Astro.url.searchParams.has("saved");

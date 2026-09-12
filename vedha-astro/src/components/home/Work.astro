@@ -53,12 +53,15 @@ const projects = [
         aria-hidden="true"
       />
     </picture>
-    <h2 class="scene-banner__title">Work <sup>(4)</sup></h2>
+    <h2 class="scene-banner__title">Work <sup>({projects.length})</sup></h2>
     <figcaption class="scene-banner__meta">
+      <span>Software in use</span>
       <span>Selected projects</span>
-      <span>View all work</span>
     </figcaption>
   </figure>
+  <p class="section-lead" data-reveal>
+    The strongest proof is software in use. Our work spans customer journeys, operational workflows and the connective layer between the systems businesses rely on every day.
+  </p>
   <div class="work__grid">
     {projects.map((project) => (
       <article class="work-card" data-reveal>

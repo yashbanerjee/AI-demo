@@ -1,9 +1,14 @@
+---
+import { pillars } from "../data/services.js";
+
+const servicesCount = pillars.reduce((n, p) => n + p.categories.length, 0);
+---
 <div class="menu-overlay" id="menuOverlay" aria-hidden="true">
   <nav class="menu-overlay__nav" aria-label="Overlay">
     <a href="/"><em>01</em>Home</a>
-    <a href="/#studio"><em>02</em>Studio</a>
-    <a href="/#work"><em>03</em>Work</a>
-    <a href="/services/"><em>04</em>Services</a>
+    <a href="/cost-estimator/"><em>02</em>Studio <span class="site-header__try">Must Try</span></a>
+    <a href="/#work"><em>03</em>Work <sup>(4)</sup></a>
+    <a href="/services/"><em>04</em>Services <sup>({servicesCount})</sup></a>
     <a href="/blog/"><em>05</em>Blog</a>
     <a href="/contact/"><em>06</em>Contact</a>
   </nav>

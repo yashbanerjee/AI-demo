@@ -53,6 +53,8 @@ export const GET: APIRoute = async ({ site }) => {
       products: `${origin}/products/`,
       blog: `${origin}/blog/`,
       contact: `${origin}/contact/`,
+      costEstimator: `${origin}/cost-estimator/`,
+      webDevelopmentDubai: `${origin}/web-development-dubai/`,
     },
     maps: {
       llmsTxt: `${origin}/llms.txt`,

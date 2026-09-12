@@ -71,7 +71,8 @@ const formatDate = (date: Date) =>
 
 <style>
   .blog--page {
-    padding-top: calc(4.5rem + clamp(2rem, 6vh, 4rem));
+    padding-top: calc(5rem + clamp(2.2rem, 6vh, 4.5rem));
+    padding-bottom: clamp(3.5rem, 10vh, 6rem);
     min-height: 70vh;
     max-width: var(--content-max);
     margin-inline: auto;
@@ -81,7 +82,7 @@ const formatDate = (date: Date) =>
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 3rem;
+    margin-top: clamp(3.5rem, 8vh, 5rem);
     color: var(--ink-soft);
   }
 </style>

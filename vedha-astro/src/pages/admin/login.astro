@@ -5,7 +5,7 @@ const error = Astro.url.searchParams.has("error");
 ---
 <AdminLayout title="Log in" showNav={false}>
   <div class="login">
-    <form class="panel form-grid" method="post" action="/api/admin/login">
+    <form class="panel form-grid" method="post" action="/api/admin/login/">
       <h1>Vedha Admin</h1>
       {error && <p class="notice notice--error">Wrong password. Try again.</p>}
       <label>

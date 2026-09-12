@@ -1,0 +1,188 @@
+/* ============================================================
+   Vedha type system
+   Single source of truth for font family, size, leading,
+   tracking, weight, and vertical rhythm. Prefer these tokens
+   over one-off font-size / line-height values.
+   ============================================================ */
+
+:root {
+  /* —— Families —— */
+  --font-sans:
+    "Inter Variable",
+    "Inter",
+    -apple-system,
+    "Helvetica Neue",
+    Arial,
+    sans-serif;
+  --font-display: var(--font-sans);
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  /* —— Size scale (rem, fluid where it matters) —— */
+  --text-2xs: 0.6875rem;   /* 11px @ 16 */
+  --text-xs: 0.75rem;      /* 12 */
+  --text-sm: 0.875rem;     /* 14 */
+  --text-md: 1rem;         /* 16 — body */
+  --text-lg: 1.125rem;     /* 18 — lead / large body */
+  --text-xl: 1.25rem;      /* 20 — card titles (sm) */
+  --text-2xl: 1.5rem;      /* 24 — card titles */
+  --text-3xl: clamp(1.625rem, 2.2vw, 1.875rem);   /* ~26–30 */
+  --text-4xl: clamp(1.85rem, 3.2vw, 2.5rem);      /* section H2 compact */
+  --text-5xl: clamp(2.125rem, 4.2vw, 3.25rem);    /* section H2 */
+  --text-6xl: clamp(2.5rem, 5.5vw, 4.25rem);      /* large H2 / process */
+  --text-7xl: clamp(3rem, 7vw, 5.5rem);           /* scene / display */
+  --text-display: clamp(3.25rem, 8vw, 6.5rem);    /* hero display */
+
+  /* —— Leading —— */
+  --leading-none: 1;
+  --leading-display: 1.08;
+  --leading-tight: 1.18;
+  --leading-snug: 1.32;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* —— Tracking —— */
+  --tracking-tighter: -0.035em;
+  --tracking-tight: -0.022em;
+  --tracking-normal: -0.01em;
+  --tracking-none: 0;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.14em;
+
+  /* —— Weight —— */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* —— Vertical rhythm (paragraph / stack gaps) —— */
+  --stack-3xs: 0.25rem;
+  --stack-2xs: 0.375rem;
+  --stack-xs: 0.5rem;
+  --stack-sm: 0.75rem;
+  --stack-md: 1rem;
+  --stack-lg: 1.5rem;
+  --stack-xl: 2rem;
+  --stack-2xl: 2.5rem;
+  --stack-3xl: 3.25rem;
+
+  /* —— Measure (line length for body / leads) ——
+     Wide enough to fill most of the content rail on desktop,
+     while still wrapping cleanly on smaller screens. */
+  --measure-narrow: 34ch;
+  --measure-prose: min(58rem, 100%);
+  --measure-wide: min(68rem, 100%);
+}
+
+/* —— Semantic type roles —— */
+
+.type-kicker,
+.kicker {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wider);
+  line-height: var(--leading-none);
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.type-caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  line-height: var(--leading-normal);
+  color: var(--ink-soft);
+}
+
+.type-body-sm {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-none);
+  line-height: var(--leading-relaxed);
+  color: var(--ink-soft);
+}
+
+.type-body {
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-none);
+  line-height: var(--leading-relaxed);
+  color: var(--ink-soft);
+}
+
+.type-lead {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-normal);
+  line-height: var(--leading-relaxed);
+  color: var(--ink-soft);
+  max-width: var(--measure-wide);
+}
+
+.type-card-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--ink);
+}
+
+.type-h3 {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+.type-h2 {
+  font-family: var(--font-display);
+  font-size: var(--text-5xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-display);
+}
+
+.type-h1 {
+  font-family: var(--font-display);
+  font-size: var(--text-6xl);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tighter);
+  line-height: var(--leading-display);
+}
+
+.type-display {
+  font-family: var(--font-display);
+  font-size: var(--text-display);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tighter);
+  line-height: var(--leading-display);
+}
+
+/* Large titles sitting on photography — always light */
+.type-on-media {
+  font-family: var(--font-display);
+  font-weight: var(--weight-light);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-display);
+}
+
+/* Stack helpers for multi-paragraph copy */
+.type-stack {
+  display: grid;
+  gap: var(--stack-md);
+}
+
+.type-stack--loose {
+  gap: var(--stack-lg);
+}
+
+.type-stack > * {
+  margin: 0;
+}

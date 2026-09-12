@@ -36,9 +36,9 @@ export const POST: APIRoute = async ({ request, redirect }) => {
   try {
     if (action === "create") {
       const input = parsePost(form);
-      if (!input.title || !input.slug) return redirect("/admin/posts/new?error=missing");
+      if (!input.title || !input.slug) return redirect("/admin/posts/new/?error=missing");
       const id = await createPost(input);
-      return redirect(`/admin/posts/${id}?saved=1`);
+      return redirect(`/admin/posts/${id}/?saved=1`);
     }
 
     const id = Number(form.get("id"));
@@ -47,14 +47,14 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     if (action === "update") {
       const input = parsePost(form);
-      if (!input.title || !input.slug) return redirect(`/admin/posts/${id}?error=missing`);
+      if (!input.title || !input.slug) return redirect(`/admin/posts/${id}/?error=missing`);
       await updatePost(id, input);
-      return redirect(`/admin/posts/${id}?saved=1`);
+      return redirect(`/admin/posts/${id}/?saved=1`);
     }
 
     if (action === "delete") {
       await deletePost(id);
-      return redirect("/admin");
+      return redirect("/admin/");
     }
 
     return new Response("Unknown action", { status: 400 });

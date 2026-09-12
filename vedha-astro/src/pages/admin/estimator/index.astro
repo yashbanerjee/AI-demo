@@ -1,0 +1,336 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { formatAed, getEstimatorCatalog, MODULE_TAGS } from "../../../lib/estimator-catalog";
+
+const catalog = await getEstimatorCatalog();
+const saved = Astro.url.searchParams.has("saved");
+const error = Astro.url.searchParams.get("error");
+const tagLabel = (id: string) => MODULE_TAGS.find((t) => t.id === id)?.label ?? id;
+---
+
+<AdminLayout title="Cost estimator" wide>
+  <div class="head">
+    <div>
+      <h1>Cost estimator</h1>
+      <p class="muted intro">Click Edit to open a slide-over. Changes appear on the public estimator immediately.</p>
+    </div>
+    <a class="btn btn--subtle" href="/cost-estimator/" target="_blank" rel="noopener">View estimator ↗</a>
+  </div>
+
+  {saved && <p class="notice notice--ok">Saved.</p>}
+  {error === "missing" && <p class="notice notice--error">Name is required.</p>}
+  {error === "exists" && <p class="notice notice--error">That id already exists.</p>}
+  {error === "save" && <p class="notice notice--error">Could not save. Check the fields and try again.</p>}
+
+  <div class="head head--section">
+    <h2>Base services</h2>
+    <button type="button" class="btn" data-open-drawer="base" data-id="">+ New base</button>
+  </div>
+  <div class="panel">
+    {catalog.bases.length === 0 ? (
+      <p class="muted">No bases yet.</p>
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Delivery</th>
+            <th>Recommended</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {catalog.bases.map((base) => (
+            <tr>
+              <td>
+                {base.image ? <img class="thumb" src={base.image} alt="" width="64" height="40" /> : <span class="muted">—</span>}
+              </td>
+              <td>
+                <button type="button" class="linkish" data-open-drawer="base" data-id={base.id}><strong>{base.name}</strong></button>
+                <div class="muted">{base.id}</div>
+              </td>
+              <td>{formatAed(base.priceAed)}</td>
+              <td>{base.weeksMin}–{base.weeksMax} wks</td>
+              <td>{catalog.recommendedByBase[base.id]?.length ?? 0}</td>
+              <td>
+                <button type="button" class="btn btn--ghost btn--small" data-open-drawer="base" data-id={base.id}>Edit</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+
+  <div class="head head--section">
+    <h2>Modules</h2>
+    <button type="button" class="btn" data-open-drawer="addon" data-id="">+ New module</button>
+  </div>
+  <div class="panel">
+    {catalog.addons.length === 0 ? (
+      <p class="muted">No modules yet.</p>
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Tag</th>
+            <th>Price</th>
+            <th>Flags</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {catalog.addons.map((addon) => (
+            <tr>
+              <td>
+                {addon.image ? <img class="thumb" src={addon.image} alt="" width="64" height="40" /> : <span class="muted">—</span>}
+              </td>
+              <td>
+                <button type="button" class="linkish" data-open-drawer="addon" data-id={addon.id}><strong>{addon.name}</strong></button>
+                <div class="muted">{addon.id}</div>
+              </td>
+              <td>{tagLabel(addon.group)}</td>
+              <td>{formatAed(addon.priceAed)}</td>
+              <td>
+                {addon.popular && <span class="pill">Popular</span>}
+                {!addon.popular && <span class="muted">—</span>}
+              </td>
+              <td>
+                <button type="button" class="btn btn--ghost btn--small" data-open-drawer="addon" data-id={addon.id}>Edit</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+
+  <div class="drawer" id="estimatorDrawer" hidden>
+    <div class="drawer__backdrop" data-drawer-backdrop data-drawer-close></div>
+    <aside class="drawer__panel" data-drawer-panel role="dialog" aria-modal="true" aria-labelledby="estimatorDrawerTitle">
+      <header class="drawer__head">
+        <h2 id="estimatorDrawerTitle" data-drawer-title tabindex="-1">Edit</h2>
+        <button type="button" class="drawer__close" data-drawer-close aria-label="Close">×</button>
+      </header>
+      <p class="notice" data-drawer-note hidden></p>
+
+      <form class="form-grid" data-form-base hidden>
+        <input type="hidden" name="_action" value="update-base" />
+        <label>
+          Name
+          <input type="text" name="name" required />
+        </label>
+        <label data-id-field>
+          Id <small data-id-hint></small>
+          <input type="text" name="id" placeholder="corporate-website" />
+        </label>
+        <label>
+          Description
+          <textarea name="description" rows="3" required></textarea>
+        </label>
+        <div class="form-row">
+          <label>Price (AED)<input type="number" name="priceAed" min="0" step="100" required /></label>
+          <label>Sort order<input type="number" name="sortOrder" min="0" step="1" /></label>
+        </div>
+        <div class="form-row">
+          <label>Delivery from (weeks)<input type="number" name="weeksMin" min="0" step="1" required /></label>
+          <label>Delivery to (weeks)<input type="number" name="weeksMax" min="0" step="1" required /></label>
+        </div>
+        <label>
+          Image
+          <div class="upload-row">
+            <input type="text" name="image" placeholder="/images/photo-dubai-marina.jpg" />
+            <button type="button" class="btn btn--ghost" data-upload>Upload…</button>
+          </div>
+          <img class="cover-preview" data-image-preview alt="" hidden />
+        </label>
+        <fieldset class="rec">
+          <legend>Recommended modules</legend>
+          <div class="rec-grid">
+            {catalog.addons.map((addon) => (
+              <label class="check">
+                <input type="checkbox" name="recommended" value={addon.id} />
+                <span>{addon.name}<small>{tagLabel(addon.group)}</small></span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="drawer__actions">
+          <button class="btn" type="submit">Save</button>
+          <button class="btn btn--subtle" type="button" data-drawer-close>Cancel</button>
+          <button class="btn btn--danger" type="button" data-delete hidden>Delete</button>
+        </div>
+      </form>
+
+      <form class="form-grid" data-form-addon hidden>
+        <input type="hidden" name="_action" value="update-addon" />
+        <label>
+          Name
+          <input type="text" name="name" required />
+        </label>
+        <label data-id-field>
+          Id <small data-id-hint></small>
+          <input type="text" name="id" placeholder="seo-pages" />
+        </label>
+        <label>
+          Description
+          <textarea name="description" rows="3" required></textarea>
+        </label>
+        <div class="form-row">
+          <label>
+            Tag
+            <select name="group" required>
+              {MODULE_TAGS.map((tag) => <option value={tag.id}>{tag.label}</option>)}
+            </select>
+          </label>
+          <label>Price (AED)<input type="number" name="priceAed" min="0" step="100" required /></label>
+        </div>
+        <div class="form-row">
+          <label>Extra weeks<input type="number" name="weeksExtra" min="0" step="1" required /></label>
+          <label>Sort order<input type="number" name="sortOrder" min="0" step="1" /></label>
+        </div>
+        <label>
+          Image
+          <div class="upload-row">
+            <input type="text" name="image" placeholder="/images/photo-dubai-marina.jpg" />
+            <button type="button" class="btn btn--ghost" data-upload>Upload…</button>
+          </div>
+          <img class="cover-preview" data-image-preview alt="" hidden />
+        </label>
+        <label class="check">
+          <input type="checkbox" name="popular" />
+          <span>Popular <small>Badge + Popular filter</small></span>
+        </label>
+        <fieldset class="rec">
+          <legend>Recommended for bases</legend>
+          <div class="rec-grid">
+            {catalog.bases.map((base) => (
+              <label class="check">
+                <input type="checkbox" name="recommendFor" value={base.id} />
+                <span>{base.name}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+        <div class="drawer__actions">
+          <button class="btn" type="submit">Save</button>
+          <button class="btn btn--subtle" type="button" data-drawer-close>Cancel</button>
+          <button class="btn btn--danger" type="button" data-delete hidden>Delete</button>
+        </div>
+      </form>
+    </aside>
+  </div>
+
+  <input type="file" id="filePicker" accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml" hidden />
+  <script id="estimator-admin-catalog" type="application/json" set:html={JSON.stringify({
+    bases: catalog.bases,
+    addons: catalog.addons,
+    recommendedByBase: catalog.recommendedByBase,
+    tags: MODULE_TAGS,
+  })} />
+  <script src="../../../scripts/estimator-admin.js"></script>
+</AdminLayout>
+
+<style>
+  .head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+  .head h1 { margin: 0 0 0.35rem; }
+  .head--section { align-items: center; margin: 2rem 0 0.8rem; }
+  .head--section h2 { margin: 0; }
+  .intro { max-width: 40rem; margin: 0; }
+  .thumb { width: 64px; height: 40px; object-fit: cover; border-radius: 6px; background: #111; display: block; }
+  .linkish {
+    border: 0;
+    background: none;
+    padding: 0;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+    text-align: left;
+  }
+  .linkish:hover strong { text-decoration: underline; }
+
+  .drawer [hidden],
+  .drawer[hidden] { display: none !important; }
+  .drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+  }
+  .drawer__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(16, 16, 14, 0.45);
+    opacity: 0;
+    transition: opacity 0.22s ease;
+  }
+  .drawer__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: min(34rem, 100%);
+    height: 100%;
+    background: #fff;
+    border-left: 1px solid var(--line);
+    box-shadow: -18px 0 40px rgba(0, 0, 0, 0.12);
+    overflow: auto;
+    padding: 1.25rem 1.35rem 2rem;
+    transform: translateX(100%);
+    transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .drawer.is-open .drawer__backdrop { opacity: 1; }
+  .drawer.is-open .drawer__panel { transform: none; }
+  .drawer__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    position: sticky;
+    top: 0;
+    background: #fff;
+    padding-bottom: 0.7rem;
+    z-index: 1;
+  }
+  .drawer__head h2 { margin: 0; font-size: 1.2rem; outline: none; }
+  .drawer__close {
+    width: 2.2rem;
+    height: 2.2rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: #fff;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  .drawer__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    align-items: center;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(#fff0, #fff 30%);
+    padding-top: 1rem;
+  }
+  .upload-row { display: flex; gap: 0.55rem; }
+  .upload-row input { flex: 1; }
+  .cover-preview {
+    margin-top: 0.55rem;
+    width: 100%;
+    max-height: 140px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--line);
+    background: #111;
+  }
+  .rec { border: 1px solid var(--line); border-radius: 8px; padding: 0.85rem; }
+  .rec legend { font-weight: 600; padding: 0 0.3rem; }
+  .rec-grid { display: grid; gap: 0.4rem; margin-top: 0.55rem; }
+  .check { display: flex; gap: 0.5rem; align-items: flex-start; font-weight: 400; }
+  .check input { width: auto; margin-top: 0.2rem; }
+  .check small { display: block; color: var(--ink-soft); }
+</style>

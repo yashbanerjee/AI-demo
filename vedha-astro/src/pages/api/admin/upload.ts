@@ -31,5 +31,5 @@ export const POST: APIRoute = async ({ request }) => {
 
   await saveMedia(filename, file.type, Buffer.from(await file.arrayBuffer()));
 
-  return Response.json({ url: `/media/${filename}` });
+  return Response.json({ url: `/media/${filename}/` });
 };
