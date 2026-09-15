@@ -28,6 +28,7 @@ const heroSlides = [
   "hero-slide-interchange.jpg",
   "hero-slide-fields.jpg",
 ];
+const heroWidths = [640, 960, 1440, 1920, 2560];
 
 const workCards = ["work-cop28.png", "work-dunkin.png", "work-det.jpg", "work-baskin.jpg"];
 
@@ -115,10 +116,24 @@ async function optimizeHero() {
     const webp = path.join(imagesDir, `${base}.webp`);
     const jpeg = path.join(imagesDir, `${base}.jpg`);
     const tmpJpeg = path.join(imagesDir, `${base}.opt.jpg`);
-    // 2400 ≈ 1.25×–2× common desktop widths; quality high enough to avoid haze
-    await writeResized(input, webp, { width: 2400, quality: 92, format: "webp" });
-    await writeResized(input, tmpJpeg, { width: 2400, quality: 90, format: "jpeg" });
+    // Keep the high-resolution master as the final srcset candidate, while
+    // normal screens receive a much smaller responsive derivative.
+    await writeResized(input, webp, { width: 3840, quality: 95, format: "webp" });
+    await writeResized(input, tmpJpeg, { width: 3840, quality: 94, format: "jpeg" });
     await fs.rename(tmpJpeg, jpeg);
+
+    for (const width of heroWidths) {
+      await writeResized(input, path.join(imagesDir, `${base}-${width}.webp`), {
+        width,
+        quality: 82,
+        format: "webp",
+      });
+      await writeResized(input, path.join(imagesDir, `${base}-${width}.jpg`), {
+        width,
+        quality: 86,
+        format: "jpeg",
+      });
+    }
   }
 }
 

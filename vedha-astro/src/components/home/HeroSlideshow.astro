@@ -1,26 +1,41 @@
 ---
 const slides = [
   {
-    src: "/images/hero-slide-city.jpg",
-    alt: "Dubai city skyline at night",
-    title: "Digital systems",
-  },
-  {
-    src: "/images/hero-slide-mountains.jpg",
-    alt: "Mountain range above a cloud layer",
-    title: "Next chapter",
-  },
-  {
-    src: "/images/hero-slide-interchange.jpg",
+    base: "hero-slide-interchange",
     alt: "Aerial view of a city interchange at night",
     title: "Connected growth",
+    width: 3840,
+    height: 2880,
   },
   {
-    src: "/images/hero-slide-fields.jpg",
+    base: "hero-slide-city",
+    alt: "Dubai city skyline at night",
+    title: "Digital systems",
+    width: 3840,
+    height: 2560,
+  },
+  {
+    base: "hero-slide-mountains",
+    alt: "Mountain range above a cloud layer",
+    title: "Next chapter",
+    width: 3840,
+    height: 2158,
+  },
+  {
+    base: "hero-slide-fields",
     alt: "Green agricultural fields",
     title: "Built to scale",
+    width: 3840,
+    height: 2160,
   },
 ];
+
+const responsiveWidths = [640, 960, 1440, 1920, 2560];
+const srcsetFor = (base, extension) =>
+  responsiveWidths
+    .map((width) => `/images/${base}-${width}.${extension} ${width}w`)
+    .join(", ");
+const placeholder = "data:image/gif;base64,R0lGODlhAQABAAAAACw=";
 ---
 
 <section class="hero-slideshow" id="heroSlideshow">
@@ -29,17 +44,30 @@ const slides = [
       {slides.map((slide, index) => (
         <figure
           class="hero-slideshow__slide"
-          style={`--slide-index: ${index}; --slide-image: url("${slide.src}")`}
+          style={`--slide-index: ${index}`}
+          data-hero-slide
         >
-          <img
-            src={slide.src}
-            alt=""
-            width="2400"
-            height="1600"
-            decoding={index === 0 ? "sync" : "async"}
-            loading={index === 0 ? "eager" : "lazy"}
-            fetchpriority={index === 0 ? "high" : "low"}
-          />
+          <picture>
+            <source
+              type="image/webp"
+              srcset={index === 0 ? srcsetFor(slide.base, "webp") : undefined}
+              data-srcset={index > 0 ? srcsetFor(slide.base, "webp") : undefined}
+              sizes="100vw"
+            />
+            <img
+              src={index === 0 ? `/images/${slide.base}-640.jpg` : placeholder}
+              srcset={index === 0 ? srcsetFor(slide.base, "jpg") : undefined}
+              data-src={index > 0 ? `/images/${slide.base}-640.jpg` : undefined}
+              data-srcset={index > 0 ? srcsetFor(slide.base, "jpg") : undefined}
+              sizes="100vw"
+              alt=""
+              width={slide.width}
+              height={slide.height}
+              decoding={index === 0 ? "sync" : "async"}
+              loading={index === 0 ? "eager" : "lazy"}
+              fetchpriority={index === 0 ? "high" : "low"}
+            />
+          </picture>
           <span class="hero-slideshow__veil"></span>
           <span class="hero-slideshow__mark"></span>
           <span class="hero-slideshow__title">{slide.title}</span>
@@ -65,3 +93,35 @@ const slides = [
   </div>
   <h1 class="visually-hidden">Custom Software Development Company in Dubai | Vedha Technologies</h1>
 </section>
+
+<script>
+  const heroSlides = [...document.querySelectorAll<HTMLElement>("[data-hero-slide]")];
+
+  const loadHeroSlide = (index) => {
+    const slide = heroSlides[index];
+    if (!slide || slide.dataset.loaded === "true") return;
+    const source = slide.querySelector<HTMLSourceElement>("source[data-srcset]");
+    const image = slide.querySelector<HTMLImageElement>("img[data-src]");
+    if (source?.dataset.srcset) {
+      source.srcset = source.dataset.srcset;
+      source.removeAttribute("data-srcset");
+    }
+    if (image?.dataset.src) {
+      if (image.dataset.srcset) image.srcset = image.dataset.srcset;
+      image.src = image.dataset.src;
+      image.removeAttribute("data-src");
+      image.removeAttribute("data-srcset");
+    }
+    slide.dataset.loaded = "true";
+  };
+
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    const startDeferredSlides = () => {
+      [1, 2, 3].forEach((index) => {
+        window.setTimeout(() => loadHeroSlide(index), 2500 + (index - 1) * 8000);
+      });
+    };
+    if (document.readyState === "complete") startDeferredSlides();
+    else window.addEventListener("load", startDeferredSlides, { once: true });
+  }
+</script>

@@ -147,19 +147,6 @@ body:has(.lp) .site-header__nav {
   margin-bottom: clamp(1rem, 2vh, 1.25rem);
 }
 
-.btn--ghost-on-dark {
-  border-color: rgba(255, 255, 255, 0.4);
-  color: #fff;
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(8px);
-}
-
-.btn--ghost-on-dark:hover {
-  background: #fff;
-  color: var(--ink);
-  border-color: #fff;
-}
-
 .lp-hero__trust {
   display: flex;
   flex-wrap: wrap;
@@ -597,11 +584,6 @@ body:has(.lp) .site-header__nav {
   font-size: 0.78rem;
   line-height: 1.4;
   color: var(--ink-soft);
-}
-
-.lp-cta__form-actions {
-  display: grid;
-  gap: 0.7rem;
 }
 
 .lp-cta .contact__form textarea,
