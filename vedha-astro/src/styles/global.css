@@ -1135,6 +1135,31 @@ h2.scene-banner__title {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
   transition-delay: 0ms;
 }
+.s-card--icon {
+  min-height: 14rem;
+  gap: clamp(2rem, 4vh, 3rem);
+}
+.s-card__icon {
+  display: grid;
+  place-content: center;
+  width: 3rem;
+  height: 3rem;
+  color: var(--ink);
+  flex-shrink: 0;
+  transition: transform 0.5s var(--ease-out);
+}
+.s-card.is-visible:hover .s-card__icon {
+  transform: translateY(-0.15rem);
+}
+.s-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  max-width: 14ch;
+}
 .s-card--dark { background: var(--dark); color: #fff; }
 .s-card--dark .kicker { color: rgba(255,255,255,0.5); }
 .s-card--photo {

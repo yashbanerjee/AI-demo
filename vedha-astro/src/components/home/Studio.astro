@@ -1,3 +1,24 @@
+---
+const cards = [
+  {
+    title: "Senior thinking from the start",
+    icon: "thinking",
+  },
+  {
+    title: "Built around your way forward",
+    icon: "path",
+  },
+  {
+    title: "Clear scope, clear decisions",
+    icon: "scope",
+  },
+  {
+    title: "Support that stays close",
+    icon: "support",
+  },
+] as const;
+---
+
 <!-- ===== Studio / Who we are ===== -->
 <section class="studio" id="studio">
   <p class="kicker" data-reveal>(Who we are)&ensp;[VEDHA — Dubai]</p>
@@ -29,64 +50,40 @@
   </p>
 
   <div class="studio__cards">
-    <article class="s-card" data-reveal>
-      <p class="kicker">(Commercial edge)</p>
-      <div class="avatars" aria-hidden="true">
-        <img src="/images/photo-moraine-lake.jpg" alt="" width="96" height="96" loading="lazy" decoding="async" />
-        <img src="/images/photo-waterfall.jpg" alt="" width="96" height="96" loading="lazy" decoding="async" />
-        <img src="/images/photo-cliff-coast.jpg" alt="" width="96" height="96" loading="lazy" decoding="async" />
-        <span>+1</span>
-      </div>
-      <p class="s-card__big">
-        Commercial thinking from day one
-        <small>Strategy and engineering aligned to how you grow</small>
-      </p>
-    </article>
-
-    <article class="s-card s-card--dark" data-reveal>
-      <p class="kicker">(Your way forward)</p>
-      <p class="s-card__big">Built around your way forward</p>
-      <p class="s-card__note">
-        Systems shaped around how you serve customers, manage teams and make decisions — not generic templates.
-      </p>
-    </article>
-
-    <article class="s-card s-card--photo s-card--estimator" data-reveal>
-      <picture class="s-card__media">
-        <img
-          class="s-card__bg"
-          src="/images/photo-dubai-aerial.jpg"
-          alt=""
-          width="1600"
-          height="1067"
-          loading="lazy"
-          decoding="async"
-          aria-hidden="true"
-        />
-      </picture>
-
-      <div class="s-card__estimator" aria-hidden="true">
-        <p class="s-card__estimator-kicker">Live AED estimate</p>
-        <p class="s-card__estimator-total">AED 28,500</p>
-        <ul class="s-card__estimator-chips">
-          <li>Corporate site</li>
-          <li>CMS</li>
-          <li>SEO</li>
-        </ul>
-      </div>
-
-      <p class="s-card__big">Clear scope, clear decisions</p>
-      <a class="btn btn--light" href="/cost-estimator/"><span>Calculate cost</span></a>
-    </article>
-
-    <article class="s-card s-card--chat" data-reveal>
-      <p class="kicker">(Support that stays close)</p>
-      <p class="chat__time">Today 17:01</p>
-      <p class="chat__bubble">Can we review the sprint goals?</p>
-      <p class="chat__bubble">Need the timeline by Friday</p>
-      <p class="chat__time">Today 17:02</p>
-      <p class="chat__bubble chat__bubble--me">Shared — milestones locked in</p>
-      <p class="chat__bubble">Perfect, thanks Vedha.</p>
-    </article>
+    {cards.map((card) => (
+      <article class="s-card s-card--icon" data-reveal>
+        <span class="s-card__icon" aria-hidden="true">
+          {card.icon === "thinking" && (
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <circle cx="14" cy="11" r="6.25" stroke="currentColor" stroke-width="1.5" />
+              <path d="M10.5 16.5c.8 2.2 1.6 3.5 3.5 5.5 1.9-2 2.7-3.3 3.5-5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M12.2 9.2 14 7.5l1.8 1.7M14 7.5v5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          )}
+          {card.icon === "path" && (
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <path d="M6 20c4-1 5.5-4 8-8s4-6 8-7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              <circle cx="6" cy="20" r="2.25" stroke="currentColor" stroke-width="1.5" />
+              <circle cx="22" cy="5" r="2.25" stroke="currentColor" stroke-width="1.5" />
+              <path d="M14 12.5 16.2 10M14 12.5l-1.5 2.8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+          )}
+          {card.icon === "scope" && (
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <rect x="5.5" y="5.5" width="17" height="17" rx="2.5" stroke="currentColor" stroke-width="1.5" />
+              <path d="M9.5 14.2 12.2 16.8 18.5 10.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          )}
+          {card.icon === "support" && (
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+              <path d="M7 18.5V13a7 7 0 0 1 14 0v5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              <path d="M5.5 16.5h2.5v5H5.5a1.5 1.5 0 0 1-1.5-1.5v-2a1.5 1.5 0 0 1 1.5-1.5ZM22.5 16.5H20v5h2.5a1.5 1.5 0 0 0 1.5-1.5v-2a1.5 1.5 0 0 0-1.5-1.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+              <path d="M14 22.5v1.5a2 2 0 0 0 2 2h1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+          )}
+        </span>
+        <h3 class="s-card__title">{card.title}</h3>
+      </article>
+    ))}
   </div>
 </section>
