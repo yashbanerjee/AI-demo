@@ -160,9 +160,33 @@ async function seedIfEmpty(): Promise<void> {
   }
 }
 
+/** Keep seeded package/module names and blurbs in sync with the code catalog. */
+async function syncSeedCopy(): Promise<void> {
+  await ensureEstimatorTables();
+  for (const base of seedBases) {
+    await pool.query(
+      `UPDATE estimator_bases
+       SET name = $2, description = $3, updated_at = now()
+       WHERE id = $1
+         AND (name IS DISTINCT FROM $2 OR description IS DISTINCT FROM $3)`,
+      [base.id, base.name, base.description]
+    );
+  }
+  for (const addon of seedAddons) {
+    await pool.query(
+      `UPDATE estimator_addons
+       SET name = $2, description = $3, updated_at = now()
+       WHERE id = $1
+         AND (name IS DISTINCT FROM $2 OR description IS DISTINCT FROM $3)`,
+      [addon.id, addon.name, addon.description]
+    );
+  }
+}
+
 export async function getEstimatorCatalog(): Promise<EstimatorCatalog> {
   try {
     await seedIfEmpty();
+    await syncSeedCopy();
 
     const [basesRes, addonsRes, recRes] = await Promise.all([
       pool.query("SELECT * FROM estimator_bases ORDER BY sort_order, name"),

@@ -46,12 +46,123 @@ export const ADDON_GROUPS: { id: AddonGroup | "all" | "recommended" | "popular";
   { id: "ops", label: "Ops" },
 ];
 
+/** Longer package blurbs for the SEO section below the calculator. */
+export const estimatorBaseSeo: Record<string, string> = {
+  "landing-page":
+    "Focused one-page site for campaigns, offers and enquiry or booking flows.",
+  "corporate-website":
+    "Multi-page company site with services, about, blog-ready structure and enquiry flows for UAE businesses.",
+  "portfolio-site":
+    "Work-led site for studios and agencies with case studies, services and a polished brand presence.",
+  "blog-content-site":
+    "Editorial website with categories, search and SEO-ready article templates for regular publishing.",
+  "ecommerce-store":
+    "Online store with product pages, cart, checkout foundations and an admin-ready catalogue structure.",
+  marketplace:
+    "Multi-seller platform with listings, vendor profiles and buyer journeys built to scale.",
+  "booking-site":
+    "Service website with scheduling, service menus and confirmation-ready booking flows.",
+  "membership-portal":
+    "Member area with gated content or dashboards, account access and a public-facing website.",
+  "multilingual-corporate":
+    "Corporate website for Arabic, English or multilingual audiences with language switching and localised pages.",
+  "custom-web-app":
+    "Bespoke web application for workflows standard tools cannot cover, with defined modules, roles and data.",
+};
+
+/** Module blurbs featured below the calculator (order preserved). */
+export const estimatorAddonSeo: { id: string; name: string; description: string }[] = [
+  {
+    id: "payment-gateway",
+    name: "Payment gateway",
+    description:
+      "Card and local payment methods connected to checkout or invoicing with secure confirmation flows.",
+  },
+  {
+    id: "shipping-logistics",
+    name: "Shipping / logistics integration",
+    description:
+      "Connect courier and last-mile partners for rates, tracking and fulfilment updates.",
+  },
+  {
+    id: "product-catalog",
+    name: "Product catalogue",
+    description:
+      "Structured catalogue with variants, filters, search and merchandising controls for your team.",
+  },
+  {
+    id: "loyalty-platform",
+    name: "Loyalty platform",
+    description:
+      "Points, tiers and rewards that encourage repeat purchases and help measure retention.",
+  },
+  {
+    id: "third-party-api",
+    name: "Third-party API integration",
+    description:
+      "Connect an external ERP, booking engine, data provider or custom API securely.",
+  },
+  {
+    id: "crm-integration",
+    name: "CRM integration",
+    description:
+      "Send leads and customer events to HubSpot, Salesforce, Zoho or your CRM of choice.",
+  },
+  {
+    id: "whatsapp-business",
+    name: "WhatsApp Business",
+    description:
+      "Click-to-chat, enquiry routing and optional notifications through WhatsApp Business.",
+  },
+  {
+    id: "booking-engine",
+    name: "Booking engine",
+    description:
+      "Calendars, availability and confirmation flows for appointments, tables or resources.",
+  },
+  {
+    id: "ads-pixels",
+    name: "Google Ads and Meta Ads pixels",
+    description:
+      "Tracking pixels, conversion events and remarketing foundations for paid campaigns.",
+  },
+  {
+    id: "seo-setup",
+    name: "SEO setup",
+    description:
+      "Technical SEO foundations including metadata, sitemaps, structured data and on-page templates.",
+  },
+  {
+    id: "analytics-ga4",
+    name: "Analytics, GA4",
+    description:
+      "GA4 setup, key events and a clearer view of how visitors move through the site.",
+  },
+  {
+    id: "content-writing",
+    name: "Content writing",
+    description:
+      "Professional copy for key pages, including positioning, services and conversion-focused messaging.",
+  },
+  {
+    id: "multilingual",
+    name: "Multilingual, Arabic / English",
+    description:
+      "Language structure, switching and page layouts for Arabic and English experiences.",
+  },
+  {
+    id: "cms-admin",
+    name: "CMS / admin panel",
+    description:
+      "Editable pages, posts and media so your team can update the site without a developer.",
+  },
+];
+
 export const estimatorBases: EstimatorBase[] = [
   {
     id: "landing-page",
     name: "Landing page",
-    description:
-      "A focused single-page site built to convert campaigns — hero, proof, offer, and enquiry or booking CTA.",
+    description: "A focused one-page site for campaigns, launches and enquiries.",
     priceAed: 10000,
     image: "/images/photo-lake-jetty.jpg",
     weeksMin: 2,
@@ -60,8 +171,7 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "corporate-website",
     name: "Corporate website",
-    description:
-      "A multi-page company site with services, about, blog-ready structure, and enquiry flows for UAE businesses.",
+    description: "A professional website for your business, services and enquiries.",
     priceAed: 22000,
     image: "/images/photo-dubai-marina.jpg",
     weeksMin: 4,
@@ -70,8 +180,7 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "portfolio-site",
     name: "Portfolio / agency site",
-    description:
-      "Work-forward site for studios and agencies — case studies, services, and a polished brand presence.",
+    description: "A visual site for agencies, studios and creative businesses.",
     priceAed: 18000,
     image: "/images/photo-canyon-ridge.jpg",
     weeksMin: 3,
@@ -80,8 +189,7 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "blog-content-site",
     name: "Blog / content site",
-    description:
-      "Editorial-led website with categories, search, and SEO-ready article templates for ongoing publishing.",
+    description: "A content-led site for publishing articles, insights and updates.",
     priceAed: 16000,
     image: "/images/photo-forest-light.jpg",
     weeksMin: 3,
@@ -90,8 +198,7 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "ecommerce-store",
     name: "Ecommerce store",
-    description:
-      "Sell online with product pages, cart, checkout foundation, and an admin-ready catalog structure.",
+    description: "An online store for products, payments and customer orders.",
     priceAed: 45000,
     image: "/images/photo-blue-lake.jpg",
     weeksMin: 6,
@@ -100,8 +207,7 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "marketplace",
     name: "Marketplace",
-    description:
-      "Multi-seller marketplace foundation — listings, vendor profiles, and buyer journeys built for scale.",
+    description: "A platform connecting multiple sellers with customers online.",
     priceAed: 85000,
     image: "/images/photo-dubai-aerial.jpg",
     weeksMin: 10,
@@ -110,8 +216,7 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "booking-site",
     name: "Booking / appointments site",
-    description:
-      "Service business site with scheduling flows, service menus, and confirmation-ready booking UX.",
+    description: "A website for services, scheduling and customer bookings.",
     priceAed: 28000,
     image: "/images/photo-alpine-glow.jpg",
     weeksMin: 5,
@@ -120,8 +225,7 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "membership-portal",
     name: "Membership / portal",
-    description:
-      "Member area with gated content or dashboards, account access, and a public marketing shell.",
+    description: "A secure member area for accounts, content and customer access.",
     priceAed: 38000,
     image: "/images/photo-moon-peaks.jpg",
     weeksMin: 6,
@@ -130,8 +234,7 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "multilingual-corporate",
     name: "Multilingual corporate",
-    description:
-      "Corporate website structured for Arabic + English (or more) with language switch and localized pages.",
+    description: "A bilingual website for businesses serving regional audiences.",
     priceAed: 32000,
     image: "/images/photo-ridge-mist.jpg",
     weeksMin: 5,
@@ -140,15 +243,13 @@ export const estimatorBases: EstimatorBase[] = [
   {
     id: "custom-web-app",
     name: "Custom web application",
-    description:
-      "Bespoke web app for workflows that off-the-shelf tools cannot cover — scoped modules, roles, and data.",
+    description: "A tailored web application for your business workflows.",
     priceAed: 65000,
     image: "/images/hero-slide-interchange.jpg",
     weeksMin: 8,
     weeksMax: 14,
   },
 ];
-
 const addonImages = [
   "/images/photo-moraine-lake.jpg",
   "/images/photo-waterfall.jpg",
@@ -170,7 +271,8 @@ export const estimatorAddons: EstimatorAddon[] = [
   {
     id: "payment-gateway",
     name: "Payment gateway",
-    description: "Card and local payment methods wired into checkout or invoicing with secure confirmation flows.",
+    description:
+      "Card and local payment methods connected to checkout or invoicing with secure confirmation flows.",
     priceAed: 6500,
     group: "commerce",
     image: addonImages[0],
@@ -180,7 +282,8 @@ export const estimatorAddons: EstimatorAddon[] = [
   {
     id: "shipping-logistics",
     name: "Shipping / logistics integration",
-    description: "Connect courier and last-mile partners for rates, tracking, and fulfilment status updates.",
+    description:
+      "Connect courier and last-mile partners for rates, tracking and fulfilment updates.",
     priceAed: 7500,
     group: "commerce",
     image: addonImages[1],
@@ -189,8 +292,9 @@ export const estimatorAddons: EstimatorAddon[] = [
   },
   {
     id: "product-catalog",
-    name: "Product catalog",
-    description: "Structured catalog with variants, filters, search, and merchandising controls for your team.",
+    name: "Product catalogue",
+    description:
+      "Structured catalogue with variants, filters, search and merchandising controls for your team.",
     priceAed: 9000,
     group: "commerce",
     image: addonImages[2],
@@ -209,7 +313,8 @@ export const estimatorAddons: EstimatorAddon[] = [
   {
     id: "loyalty-platform",
     name: "Loyalty platform",
-    description: "Points, tiers, or rewards that encourage repeat purchases and measurable retention.",
+    description:
+      "Points, tiers and rewards that encourage repeat purchases and help measure retention.",
     priceAed: 12000,
     group: "commerce",
     image: addonImages[4],
@@ -254,8 +359,9 @@ export const estimatorAddons: EstimatorAddon[] = [
   },
   {
     id: "third-party-api",
-    name: "3rd-party API integration",
-    description: "Connect an external system — ERP, booking engine, data provider, or custom API — securely.",
+    name: "Third-party API integration",
+    description:
+      "Connect an external ERP, booking engine, data provider or custom API securely.",
     priceAed: 8000,
     group: "integrations",
     image: addonImages[9],
@@ -265,7 +371,8 @@ export const estimatorAddons: EstimatorAddon[] = [
   {
     id: "crm-integration",
     name: "CRM integration",
-    description: "Push leads and customer events into HubSpot, Salesforce, Zoho, or your CRM of choice.",
+    description:
+      "Send leads and customer events to HubSpot, Salesforce, Zoho or your CRM of choice.",
     priceAed: 5500,
     group: "integrations",
     image: addonImages[10],
@@ -274,8 +381,9 @@ export const estimatorAddons: EstimatorAddon[] = [
   },
   {
     id: "whatsapp-business",
-    name: "WhatsApp business",
-    description: "Click-to-chat, enquiry routing, and optional notification hooks via WhatsApp Business.",
+    name: "WhatsApp Business",
+    description:
+      "Click-to-chat, enquiry routing and optional notifications through WhatsApp Business.",
     priceAed: 3500,
     group: "integrations",
     image: addonImages[11],
@@ -294,7 +402,8 @@ export const estimatorAddons: EstimatorAddon[] = [
   {
     id: "booking-engine",
     name: "Booking engine",
-    description: "Calendars, availability, and confirmation flows for appointments, tables, or resources.",
+    description:
+      "Calendars, availability and confirmation flows for appointments, tables or resources.",
     priceAed: 9500,
     group: "integrations",
     image: addonImages[13],
@@ -312,8 +421,9 @@ export const estimatorAddons: EstimatorAddon[] = [
   },
   {
     id: "ads-pixels",
-    name: "Google Ads & Meta Ads pixels",
-    description: "Tracking pixels, conversion events, and remarketing foundations for paid acquisition.",
+    name: "Google Ads and Meta Ads pixels",
+    description:
+      "Tracking pixels, conversion events and remarketing foundations for paid campaigns.",
     priceAed: 3000,
     group: "growth",
     image: addonImages[1],
@@ -323,7 +433,8 @@ export const estimatorAddons: EstimatorAddon[] = [
   {
     id: "seo-setup",
     name: "SEO setup",
-    description: "Technical SEO foundations — metadata, sitemap, structured data, and on-page templates.",
+    description:
+      "Technical SEO foundations including metadata, sitemaps, structured data and on-page templates.",
     priceAed: 4500,
     group: "growth",
     image: addonImages[2],
@@ -332,8 +443,9 @@ export const estimatorAddons: EstimatorAddon[] = [
   },
   {
     id: "analytics-ga4",
-    name: "Analytics (GA4)",
-    description: "GA4 property wiring, key events, and a clear view of how visitors move through the site.",
+    name: "Analytics, GA4",
+    description:
+      "GA4 setup, key events and a clearer view of how visitors move through the site.",
     priceAed: 2500,
     group: "growth",
     image: addonImages[3],
@@ -343,7 +455,8 @@ export const estimatorAddons: EstimatorAddon[] = [
   {
     id: "content-writing",
     name: "Content writing",
-    description: "Professional copy for key pages — positioning, services, and conversion-focused messaging.",
+    description:
+      "Professional copy for key pages, including positioning, services and conversion-focused messaging.",
     priceAed: 5000,
     group: "content",
     image: addonImages[4],
@@ -352,8 +465,9 @@ export const estimatorAddons: EstimatorAddon[] = [
   },
   {
     id: "multilingual",
-    name: "Multilingual (AR / EN)",
-    description: "Language architecture, switcher, and page structure for Arabic and English experiences.",
+    name: "Multilingual, Arabic / English",
+    description:
+      "Language structure, switching and page layouts for Arabic and English experiences.",
     priceAed: 9000,
     group: "content",
     image: addonImages[5],
@@ -363,7 +477,8 @@ export const estimatorAddons: EstimatorAddon[] = [
   {
     id: "cms-admin",
     name: "CMS / admin panel",
-    description: "Editable pages, posts, and media so your team can update the site without a developer.",
+    description:
+      "Editable pages, posts and media so your team can update the site without a developer.",
     priceAed: 7500,
     group: "platform",
     image: addonImages[6],

@@ -1,6 +1,14 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import { ADDON_GROUPS, formatAed, getEstimatorCatalog } from "../../lib/estimator-catalog";
+import {
+  ADDON_GROUPS,
+  formatAed,
+  getEstimatorCatalog,
+} from "../../lib/estimator-catalog";
+import {
+  estimatorAddonSeo,
+  estimatorBaseSeo,
+} from "../../data/cost-estimator";
 import {
   breadcrumbSchema,
   faqPageSchema,
@@ -30,41 +38,54 @@ const groupLabel = (id: string) => ADDON_GROUPS.find((g) => g.id === id)?.label 
 const pagePath = "/cost-estimator/";
 const pageTitle = "Website Development Cost in Dubai | Price Calculator | Vedha";
 const pageDescription =
-  "Estimate website development cost in Dubai with Vedha’s online website price calculator. Compare website design cost in AED, add modules, and send a live website price estimate.";
+  "Estimate website development cost in Dubai with Vedha's online website price calculator. Compare website design cost in AED, add modules, and send a live website price estimate.";
 const prices = estimatorBases.map((base) => base.priceAed);
 const lowPrice = prices.length ? Math.min(...prices) : 1500;
 const highPrice = prices.length ? Math.max(...prices) : 85000;
-const popularAddons = estimatorAddons.filter((addon) => addon.popular);
+
+const seoPackages = estimatorBases.map((base) => ({
+  ...base,
+  seoDescription: estimatorBaseSeo[base.id] ?? base.description,
+}));
+
+const seoModules = estimatorAddonSeo.map((item) => {
+  const live = estimatorAddons.find((addon) => addon.id === item.id);
+  return {
+    ...item,
+    priceAed: live?.priceAed,
+  };
+});
+
 const faqs = [
   {
-    question: "How much is website development cost in Dubai?",
+    question: "How do I use this website cost calculator?",
     answer:
-      "Website development cost in Dubai on this calculator starts at the lowest listed base package for a focused marketing site, then rises for ecommerce, marketplaces, and custom web apps. The AED total updates as you add modules such as payments, SEO, or a CMS. Vedha confirms a final quote after a short discovery call.",
+      "Choose the website package that best matches your project, then add or remove modules such as payment gateways, SEO, CMS tools, analytics and integrations. Your estimate updates as you build your scope. Submit your details when you are ready and we will review the estimate before confirming the final requirements and quote.",
   },
   {
-    question: "What is the typical website design cost in Dubai?",
+    question: "How much does website development cost in Dubai?",
     answer:
-      "Website design cost in Dubai depends on pages, brand direction, and whether you need a redesign or a new visual system. Choose a base that matches the site type, then add design-led modules if you need richer UI. The website price calculator keeps design and build in one AED range so you can compare packages before we talk.",
+      "Website development cost in Dubai depends on the type of website, its scope and the systems it needs to connect with. A focused landing page costs less than an ecommerce store, marketplace or custom web application. Use the calculator to build an initial AED estimate, then confirm the final scope through discovery.",
   },
   {
-    question: "How does this website cost calculator work?",
+    question: "How much does website design cost in Dubai?",
     answer:
-      "Pick a base, add the modules you need, and the website development cost calculator shows a live AED total and delivery window. This website price calculator online is built for typical UAE scopes — send the configuration and we reply within 48 hours with a confirmed path.",
+      "Website design cost in Dubai depends on the number of pages, visual direction, content requirements and level of customisation. A template-led business website has a different scope from a fully custom corporate or multilingual experience. The calculator helps you compare starting packages and add the features your project needs.",
   },
   {
     question: "Is the website price estimate a final quote?",
     answer:
-      "No. It is a starter website price estimate so you can compare packages before a call. Complexity, integrations, content, and design direction can change the number. We lock the quote after discovery.",
+      "No. The calculator provides an indicative estimate based on typical UAE website scopes. The final quote depends on your confirmed requirements, content, integrations, technical complexity and delivery needs. We review your estimate and recommend the right next step before confirming the scope.",
   },
   {
-    question: "Can this website development calculator price ecommerce or a custom app?",
+    question: "What affects the cost of building a website in the UAE?",
     answer:
-      "Yes. Choose Ecommerce store, Marketplace, or Custom web application as the base, then add modules for payments, inventory, vendor tools, or integrations. The cart keeps a running AED total and delivery range.",
+      "The main cost factors are the website type, number of pages, custom design, ecommerce or booking functionality, content, multilingual support, SEO, payment methods, third-party integrations and CMS requirements. Adding more workflows or connected systems usually increases the scope and delivery time.",
   },
   {
     question: "Do you only work with Dubai businesses?",
     answer:
-      "Dubai is home base, and we regularly deliver for UAE and GCC teams. The calculator is priced in AED and built around the website types we ship most often in the region.",
+      "No. Vedha is based in Dubai and works with businesses across the UAE and GCC. We build websites for companies in Abu Dhabi, Sharjah and other locations, including Arabic and English experiences, ecommerce stores, booking websites, custom web applications and connected digital systems.",
   },
 ];
 
@@ -87,7 +108,7 @@ const schemas = [
     path: pagePath,
     offers: estimatorBases.map((base) => ({
       name: base.name,
-      description: base.description,
+      description: estimatorBaseSeo[base.id] ?? base.description,
       price: base.priceAed,
     })),
   }),
@@ -97,7 +118,7 @@ const schemas = [
     path: pagePath,
     services: estimatorBases.slice(0, 8).map((base) => ({
       name: base.name,
-      description: base.description,
+      description: estimatorBaseSeo[base.id] ?? base.description,
     })),
   }),
   howToSchema({
@@ -105,9 +126,18 @@ const schemas = [
     description: "Build a live website price estimate in AED in three steps.",
     path: pagePath,
     steps: [
-      { name: "Choose a base", text: "Select a website package such as a landing page, corporate site, ecommerce store, or custom web app." },
-      { name: "Add modules", text: "Layer recommended or popular modules including payments, SEO, CMS, and integrations." },
-      { name: "Send details", text: "Share your name, email, and phone so Vedha can confirm the website price estimate within 48 hours." },
+      {
+        name: "Choose your base package",
+        text: "Select a website package such as a landing page, corporate site, ecommerce store, or custom web app.",
+      },
+      {
+        name: "Choose your modules",
+        text: "Add or remove modules. Recommended options appear first.",
+      },
+      {
+        name: "Fill out your details",
+        text: "Share your details so Vedha can review your estimate and recommend the right next step within 48 hours.",
+      },
     ],
   }),
   faqPageSchema(faqs),
@@ -133,9 +163,9 @@ const schemas = [
             <span aria-hidden="true">/</span>
             <span>Website development cost in Dubai</span>
           </nav>
-          <p class="estimator__kicker">Website cost calculator · AED</p>
-          <h1 class="estimator__title">Website development cost in Dubai</h1>
-          <p class="estimator__lede">Use this website development calculator to get a live website price estimate for landing pages, corporate sites, ecommerce, and custom web apps in the UAE. Pick a base, add modules, send when ready.</p>
+          <p class="estimator__kicker">Website Cost Calculator · AED</p>
+          <h1 class="estimator__title">Calculate your website cost in Dubai</h1>
+          <p class="estimator__lede">Need a website for your brand or business? Choose a starting package, add the features you need and get a live estimate of your website development cost in Dubai or the UAE.</p>
         </div>
         <nav aria-label="Estimator steps">
           <ol class="estimator-steps" data-stepper>
@@ -166,8 +196,8 @@ const schemas = [
           <!-- Step 1: Base -->
           <section class="estimator-panel is-active" data-panel="1" aria-labelledby="estimatorBasesHeading">
             <div class="estimator__section-head">
-              <h2 id="estimatorBasesHeading" tabindex="-1">Choose a website package</h2>
-              <p>Starter website design cost in Dubai and the UAE. Change anytime from your estimate.</p>
+              <h2 id="estimatorBasesHeading" tabindex="-1">Choose your base package.</h2>
+              <p>Website design costs in Dubai and the UAE. Choose a package, then adjust your estimate anytime.</p>
             </div>
             <div class="estimator__bases" role="radiogroup" aria-label="Base packages" data-base-group>
               {estimatorBases.map((base) => (
@@ -217,8 +247,8 @@ const schemas = [
           <!-- Step 2: Modules -->
           <section class="estimator-panel" data-panel="2" aria-labelledby="estimatorAddonsHeading" hidden>
             <div class="estimator__section-head">
-              <h2 id="estimatorAddonsHeading" tabindex="-1">Add modules</h2>
-              <p>Tap to add or remove. Recommended for your base appear first.</p>
+              <h2 id="estimatorAddonsHeading" tabindex="-1">Choose your modules</h2>
+              <p>Add or remove modules. Recommended options appear first.</p>
             </div>
 
             <div class="estimator__chips" data-addon-chips role="tablist" aria-label="Filter modules">
@@ -285,15 +315,15 @@ const schemas = [
 
             <div class="estimator-nav">
               <button type="button" class="btn btn--ghost" data-prev-step><span>Back to base</span></button>
-              <button type="button" class="btn btn--light" data-next-step><span>Continue to details</span></button>
+              <button type="button" class="btn btn--light" data-next-step><span>Get your estimate</span></button>
             </div>
           </section>
 
           <!-- Step 3: Details -->
           <section class="estimator-panel" data-panel="3" aria-labelledby="estimatorSendHeading" hidden>
             <div class="estimator__section-head">
-              <h2 id="estimatorSendHeading" tabindex="-1">Your details</h2>
-              <p>We’ll follow up within 48 hours with a confirmed path.</p>
+              <h2 id="estimatorSendHeading" tabindex="-1">Fill out your details</h2>
+              <p>We'll review your estimate and recommend the right next step within 48 hours.</p>
             </div>
 
             <div class="estimator-details">
@@ -345,7 +375,7 @@ const schemas = [
                   </button>
                 </div>
                 <p class="estimator__disclaimer">
-                  Starter website price estimate for typical UAE scopes. Final quote after discovery.
+                  Indicative estimate for typical UAE website projects. Final quote confirmed after discovery.
                 </p>
               </form>
 
@@ -367,7 +397,7 @@ const schemas = [
               </span>
               <div>
                 <p class="estimator-success__title">Estimate sent</p>
-                <p class="estimator-success__text">We’ve received your configuration and will reply within 48 hours.</p>
+                <p class="estimator-success__text">We've received your estimate and will reply within 48 hours.</p>
               </div>
               <button type="button" class="btn btn--ghost" data-reset-estimator><span>Start another</span></button>
             </div>
@@ -437,35 +467,34 @@ const schemas = [
 
   <section class="estimator-seo" aria-labelledby="estimatorSeoHeading">
     <p class="kicker">(Website price calculator)</p>
-    <h2 class="statement" id="estimatorSeoHeading">Website design cost in Dubai, by package</h2>
+    <h2 class="statement" id="estimatorSeoHeading">Website development cost in Dubai, by package</h2>
     <p class="section-lead">
-      This website development cost calculator is a live quote builder for <a href="/web-development-dubai/">web development in Dubai</a>.
-      Bases cover landing pages, corporate sites, ecommerce, and custom web apps. Modules add payments, SEO, CMS, and integrations.
-      Send your website price estimate and the Vedha studio follows up within 48 hours — or <a href="/contact/">book a consultation</a>.
+      Build a live website price estimate with our website development cost calculator. Choose a base for landing pages, corporate websites, ecommerce stores or custom web apps, then add payments, SEO, CMS tools and integrations.
+    </p>
+    <p class="section-lead">
+      Send your estimate and the Vedha team will review it within 48 hours, or <a href="/contact/">book a free consultation</a> right away.
     </p>
     <ul class="estimator-seo__packages">
-      {estimatorBases.map((base) => (
+      {seoPackages.map((base) => (
         <li>
           <strong>{base.name}</strong>
           <span>{formatAed(base.priceAed)} · {base.weeksMin}–{base.weeksMax} weeks</span>
-          <p>{base.description}</p>
+          <p>{base.seoDescription}</p>
         </li>
       ))}
     </ul>
-    {popularAddons.length > 0 && (
-      <div class="estimator-seo__modules">
-        <p class="kicker">(Popular modules)</p>
-        <ul>
-          {popularAddons.map((addon) => (
-            <li>
-              <strong>{addon.name}</strong>
-              <span>{formatAed(addon.priceAed)}</span>
-              <p>{addon.description}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
-    )}
+    <div class="estimator-seo__modules">
+      <p class="kicker">(Modules)</p>
+      <ul>
+        {seoModules.map((addon) => (
+          <li>
+            <strong>{addon.name}</strong>
+            {typeof addon.priceAed === "number" && <span>{formatAed(addon.priceAed)}</span>}
+            <p>{addon.description}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
   </section>
 
   <section class="faq" id="faq">
@@ -481,7 +510,7 @@ const schemas = [
           aria-hidden="true"
         />
       </picture>
-      <h2 class="scene-banner__title">FAQ</h2>
+      <h2 class="scene-banner__title">FAQs</h2>
       <figcaption class="scene-banner__meta">
         <span>Answers</span>
         <span>Website development cost · Dubai</span>
@@ -504,10 +533,10 @@ const schemas = [
         <img src="/images/photo-waterfall.jpg" alt="" width="720" height="436" loading="lazy" decoding="async" />
       </figure>
       <div class="faq__more-copy">
-        <p class="kicker">(Looking for more?)</p>
-        <h4>Ready to turn this website price estimate into a build?</h4>
+        <p class="kicker">(Ready to build?)</p>
+        <h4>Turn your website estimate into a clear plan.</h4>
         <p class="faq__more-text">
-          Send the configuration from the website cost calculator above or book a short call. We’ll confirm scope, timing, and the right next step.
+          Send us your calculator results or book a short call. We'll review your scope, confirm what it involves, and recommend the right next step.
         </p>
         <a class="btn btn--dark" href="/#book" data-book-consultation><span>Book a free 30-minute consultation</span></a>
       </div>
@@ -520,7 +549,6 @@ const schemas = [
     <script type="application/ld+json" is:inline set:html={JSON.stringify(schema)} />
   ))}
 </BaseLayout>
-
 <style is:global>
   /* —— Exclusive dark studio —— */
   body:has(.estimator) { background: var(--bg); }

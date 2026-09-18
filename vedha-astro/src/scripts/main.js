@@ -1589,7 +1589,9 @@
           body.message ||
           (type === "newsletter"
             ? "You're subscribed. We'll send curated updates to your inbox."
-            : "Thank you. We have received your request and will contact you within 48 hours to discuss solutions.");
+            : type === "cost-estimate"
+              ? "We've received your estimate and will reply within 48 hours."
+              : "Thank you. We have received your request and will contact you within 48 hours to discuss solutions.");
 
         if (label) label.btn.textContent = "Sent";
         showFormNote(form, successMessage, false);

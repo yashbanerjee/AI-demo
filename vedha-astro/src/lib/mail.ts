@@ -280,7 +280,9 @@ export function buildUserConfirmation(opts: {
     "",
     opts.type === "lp-enquiry"
       ? "We have received your request and will reply within one business day."
-      : "We have received your request and will contact you within 48 hours to discuss more about the solutions.",
+      : opts.type === "cost-estimate"
+        ? "We've received your estimate and will reply within 48 hours."
+        : "We have received your request and will contact you within 48 hours to discuss more about the solutions.",
     "",
     "If you need to add anything in the meantime, reply to this email or write to info@vedha.ae.",
     "",
@@ -294,6 +296,8 @@ export function buildUserConfirmation(opts: {
     message:
       opts.type === "lp-enquiry"
         ? "Thank you. We have received your request and will reply within one business day."
-        : "Thank you. We have received your request and will contact you within 48 hours to discuss solutions.",
+        : opts.type === "cost-estimate"
+          ? "We've received your estimate and will reply within 48 hours."
+          : "Thank you. We have received your request and will contact you within 48 hours to discuss solutions.",
   };
 }

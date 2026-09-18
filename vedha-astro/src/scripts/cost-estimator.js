@@ -155,7 +155,7 @@
 
   function continueLabelFor(step) {
     if (step === 1) return "Continue to modules";
-    if (step === 2) return "Continue to details";
+    if (step === 2) return "Get your estimate";
     return "Send estimate";
   }
 
@@ -560,7 +560,7 @@
           successBox.querySelector(".btn")?.focus({ preventScroll: true });
         }
         syncButtons();
-        say("Estimate sent. We will reply within 48 hours.");
+        say("We've received your estimate and will reply within 48 hours.");
       }
     });
   });
