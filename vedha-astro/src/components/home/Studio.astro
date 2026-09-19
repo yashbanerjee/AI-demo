@@ -1,24 +1,3 @@
----
-const cards = [
-  {
-    title: "Commercial thinking from day one",
-    icon: "thinking",
-  },
-  {
-    title: "Built around your way forward",
-    icon: "path",
-  },
-  {
-    title: "Clear scope, clear decisions",
-    icon: "scope",
-  },
-  {
-    title: "Support that stays close",
-    icon: "support",
-  },
-] as const;
----
-
 <!-- ===== Studio / Who we are ===== -->
 <section class="studio" id="studio">
   <p class="kicker" data-reveal>(Who we are)&ensp;[VEDHA — Dubai]</p>
@@ -50,37 +29,64 @@ const cards = [
   </p>
 
   <div class="studio__cards">
-    {cards.map((card) => (
-      <article class="s-card s-card--icon" data-reveal>
-        <span class="s-card__icon" aria-hidden="true">
-          {card.icon === "thinking" && (
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <circle cx="9" cy="14" r="3.25" stroke="currentColor" stroke-width="1.5" />
-              <circle cx="14" cy="14" r="3.25" stroke="currentColor" stroke-width="1.5" />
-              <circle cx="19" cy="14" r="3.25" stroke="currentColor" stroke-width="1.5" />
-            </svg>
-          )}
-          {card.icon === "path" && (
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <circle cx="14" cy="14" r="9" stroke="currentColor" stroke-width="1.5" />
-              <path d="M14 8.5v5.2l3.2 1.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-            </svg>
-          )}
-          {card.icon === "scope" && (
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M9.5 8.5h9.2a1.8 1.8 0 0 1 1.8 1.8v2.1l-2.1 1.1-4.3 7.4a.9.9 0 0 1-1.55 0l-4.3-7.4-2.1-1.1V10.3a1.8 1.8 0 0 1 1.8-1.8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-              <path d="M9.2 12.2h9.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            </svg>
-          )}
-          {card.icon === "support" && (
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-              <path d="M8.5 11.5c0-3.2 2.5-5.8 5.5-5.8s5.5 2.6 5.5 5.8v3.2c0 .9-.4 1.7-1.1 2.2l-1.6 1.1v1.7a1.4 1.4 0 0 1-1.4 1.4h-1.8a1.4 1.4 0 0 1-1.4-1.4v-1.7l-1.6-1.1a2.7 2.7 0 0 1-1.1-2.2v-3.2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
-              <path d="M11.2 21.8h5.6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-            </svg>
-          )}
-        </span>
-        <h3 class="s-card__title">{card.title}</h3>
-      </article>
-    ))}
+    <article class="s-card" data-reveal>
+      <p class="kicker">(Commercial edge)</p>
+      <div class="avatars" aria-hidden="true">
+        <img src="/images/photo-moraine-lake.jpg" alt="" width="96" height="96" loading="lazy" decoding="async" />
+        <img src="/images/photo-waterfall.jpg" alt="" width="96" height="96" loading="lazy" decoding="async" />
+        <img src="/images/photo-cliff-coast.jpg" alt="" width="96" height="96" loading="lazy" decoding="async" />
+        <span>+1</span>
+      </div>
+      <p class="s-card__big">
+        Commercial thinking from day one
+        <small>Strategy and engineering aligned to how you grow</small>
+      </p>
+    </article>
+
+    <article class="s-card s-card--dark" data-reveal>
+      <p class="kicker">(Your way forward)</p>
+      <p class="s-card__big">Built around your way forward</p>
+      <p class="s-card__note">
+        Systems shaped around how you serve customers, manage teams and make decisions — not generic templates.
+      </p>
+    </article>
+
+    <article class="s-card s-card--photo s-card--estimator" data-reveal>
+      <picture class="s-card__media">
+        <img
+          class="s-card__bg"
+          src="/images/photo-dubai-aerial.jpg"
+          alt=""
+          width="1600"
+          height="1067"
+          loading="lazy"
+          decoding="async"
+          aria-hidden="true"
+        />
+      </picture>
+
+      <div class="s-card__estimator" aria-hidden="true">
+        <p class="s-card__estimator-kicker">Live AED estimate</p>
+        <p class="s-card__estimator-total">AED 28,500</p>
+        <ul class="s-card__estimator-chips">
+          <li>Corporate site</li>
+          <li>CMS</li>
+          <li>SEO</li>
+        </ul>
+      </div>
+
+      <p class="s-card__big">Clear scope, clear decisions</p>
+      <a class="btn btn--light" href="/cost-estimator/"><span>Calculate cost</span></a>
+    </article>
+
+    <article class="s-card s-card--chat" data-reveal>
+      <p class="kicker">(Support that stays close)</p>
+      <p class="chat__time">Today 17:01</p>
+      <p class="chat__bubble">Can we review the sprint goals?</p>
+      <p class="chat__bubble">Need the timeline by Friday</p>
+      <p class="chat__time">Today 17:02</p>
+      <p class="chat__bubble chat__bubble--me">Shared — milestones locked in</p>
+      <p class="chat__bubble">Perfect, thanks Vedha.</p>
+    </article>
   </div>
 </section>
