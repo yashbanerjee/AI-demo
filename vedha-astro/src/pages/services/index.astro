@@ -1,22 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { pillars, slugOf, servicePath } from "../../data/services.js";
+import { serviceCoverFor } from "../../lib/covers";
 
 const totalCategories = pillars.reduce((n, p) => n + p.categories.length, 0);
-
-/* HD natural-landscape photography for practice cards — cycled per category */
-const practicePhotos = [
-  "/images/photo-moraine-lake.jpg",
-  "/images/photo-mountain-mist.jpg",
-  "/images/photo-waterfall.jpg",
-  "/images/photo-forest-light.jpg",
-  "/images/photo-cliff-coast.jpg",
-  "/images/photo-lake-reflection.jpg",
-  "/images/photo-alpine-glow.jpg",
-  "/images/photo-misty-forest.jpg",
-  "/images/photo-lake-jetty.jpg",
-  "/images/photo-moon-peaks.jpg",
-];
 
 const blurbThemes = [
   "linear-gradient(120deg, #1a1a1a 0%, #5c4a3a 42%, #c4a574 100%)",
@@ -116,7 +103,7 @@ const blurbThemes = [
                 >
                   <a class="svc-card__media" href={`/services/${slug}/`}>
                     <img
-                      src={practicePhotos[ci % practicePhotos.length]}
+                      src={serviceCoverFor(slug)}
                       alt=""
                       width="1920"
                       height="1280"

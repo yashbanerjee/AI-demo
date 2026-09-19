@@ -4,6 +4,8 @@
  * so pages stay distinct without hand-authoring ~389 markdown files.
  */
 
+import { serviceCoverFor } from "./covers";
+
 export type ServiceLandingInput = {
   name: string;
   description: string;
@@ -49,35 +51,11 @@ export type ServiceLandingContent = {
   ctaSecondaryHref?: string;
 };
 
-const covers = [
-  "/images/photo-dubai-aerial.jpg",
-  "/images/photo-dubai-marina.jpg",
-  "/images/photo-summit-dusk.jpg",
-  "/images/photo-alpine-glow.jpg",
-  "/images/photo-cliff-coast.jpg",
-  "/images/photo-forest-light.jpg",
-  "/images/photo-lake-reflection.jpg",
-  "/images/photo-moraine-lake.jpg",
-  "/images/photo-waterfall.jpg",
-  "/images/photo-starry-peaks.jpg",
-  "/images/photo-moon-peaks.jpg",
-  "/images/photo-ridge-mist.jpg",
-  "/images/photo-canyon-ridge.jpg",
-  "/images/photo-blue-lake.jpg",
-  "/images/photo-misty-forest.jpg",
-  "/images/photo-vermilion-lake.jpg",
-  "/images/photo-skogafoss.jpg",
-  "/images/photo-lake-jetty.jpg",
-  "/images/hero-slide-city.jpg",
-  "/images/hero-slide-interchange.jpg",
-  "/images/hero-slide-mountains.jpg",
-  "/images/hero-slide-fields.jpg",
-];
-
 const hash = (s: string) =>
   [...s].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 0);
 
-const coverFor = (key: string) => covers[hash(key) % covers.length];
+const coverFor = (service: ServiceLandingInput) =>
+  serviceCoverFor(service.categorySlug, service.path);
 
 const clip = (text: string, max: number) => {
   const clean = text.replace(/\s+/g, " ").trim();
@@ -629,7 +607,7 @@ export function buildServiceLanding(
     outcomes,
     faqs: buildFaqs(service),
     keywords,
-    cover: coverFor(service.path),
+    cover: coverFor(service),
   };
 
   const custom = customLandings[service.slug];
