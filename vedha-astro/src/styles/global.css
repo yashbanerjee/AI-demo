@@ -2633,8 +2633,8 @@ a.svc-ask {
 .enquiry-modal.is-open .enquiry-modal__backdrop { opacity: 1; }
 .enquiry-modal__dialog {
   position: relative; z-index: 1;
-  width: min(100%, 26.5rem);
-  max-height: min(92vh, 42rem);
+  width: min(100%, 30.475rem);
+  max-height: min(96.6vh, 44.1rem);
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: 0 28px 70px rgba(0, 0, 0, 0.24);
