@@ -1,11 +1,11 @@
 ---
 import AdminLayout from "../../../layouts/AdminLayout.astro";
-import { getFormSubmission } from "../../../lib/db";
+import { getContact } from "../../../lib/db";
 
 export const prerender = false;
 
 const id = Number(Astro.params.id);
-const row = Number.isFinite(id) ? await getFormSubmission(id) : null;
+const row = Number.isFinite(id) ? await getContact(id) : null;
 
 if (!row) {
   return Astro.redirect("/admin/enquiries/");

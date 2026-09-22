@@ -84,9 +84,21 @@ async function init() {
       addon_id TEXT NOT NULL REFERENCES estimator_addons(id) ON DELETE CASCADE,
       PRIMARY KEY (base_id, addon_id)
     );
-    CREATE TABLE IF NOT EXISTS form_submissions (
+  `);
+
+  // Contacts / enquiries table (also applied via db/migrations/001_create_contacts.sql)
+  await ensureContactsTable();
+
+  // Insert any markdown posts that are not yet in the DB (never overwrites
+  // posts already edited in admin). Lets new files ship via deploy.
+  await seedFromMarkdown();
+}
+
+async function ensureContactsTable() {
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS contacts (
       id SERIAL PRIMARY KEY,
-      type TEXT NOT NULL,
+      type TEXT NOT NULL DEFAULT '',
       name TEXT NOT NULL DEFAULT '',
       email TEXT NOT NULL DEFAULT '',
       phone TEXT NOT NULL DEFAULT '',
@@ -103,14 +115,52 @@ async function init() {
       payload JSONB NOT NULL DEFAULT '{}',
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
-    CREATE INDEX IF NOT EXISTS form_submissions_created_at_idx
-      ON form_submissions (created_at DESC);
-    CREATE INDEX IF NOT EXISTS form_submissions_type_idx
-      ON form_submissions (type);
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS type TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS name TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS email TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS phone TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS service TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS description TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS budget TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS base_package TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS addons TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS total_aed INTEGER;
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS notes TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS delivery_estimate TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS delivery_preference TEXT NOT NULL DEFAULT '';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS payload JSONB NOT NULL DEFAULT '{}';
+    ALTER TABLE contacts ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ NOT NULL DEFAULT now();
+    CREATE INDEX IF NOT EXISTS contacts_created_at_idx ON contacts (created_at DESC);
+    CREATE INDEX IF NOT EXISTS contacts_type_idx ON contacts (type);
+    CREATE INDEX IF NOT EXISTS contacts_email_idx ON contacts (email);
+    CREATE INDEX IF NOT EXISTS contacts_phone_idx ON contacts (phone);
   `);
-  // Insert any markdown posts that are not yet in the DB (never overwrites
-  // posts already edited in admin). Lets new files ship via deploy.
-  await seedFromMarkdown();
+
+  // One-time copy from legacy form_submissions if that table still exists
+  await pool.query(`
+    DO $$
+    BEGIN
+      IF to_regclass('public.form_submissions') IS NOT NULL THEN
+        INSERT INTO contacts (
+          id, type, name, email, phone, service, category, description, budget,
+          base_package, addons, total_aed, notes, delivery_estimate, delivery_preference,
+          payload, created_at
+        )
+        SELECT
+          id, type, name, email, phone, service, category, description, budget,
+          base_package, addons, total_aed, notes, delivery_estimate, delivery_preference,
+          COALESCE(payload, '{}'::jsonb), created_at
+        FROM form_submissions fs
+        WHERE NOT EXISTS (SELECT 1 FROM contacts c WHERE c.id = fs.id);
+
+        PERFORM setval(
+          pg_get_serial_sequence('contacts', 'id'),
+          GREATEST((SELECT COALESCE(MAX(id), 1) FROM contacts), 1)
+        );
+      END IF;
+    END $$;
+  `);
 }
 
 /** Import missing markdown posts into the database (skip existing slugs). */
@@ -279,7 +329,7 @@ export async function listMedia(): Promise<{ filename: string; mime: string; cre
   return rows;
 }
 
-export interface FormSubmission {
+export interface Contact {
   id: number;
   type: string;
   name: string;
@@ -299,7 +349,10 @@ export interface FormSubmission {
   created_at: Date;
 }
 
-export type FormSubmissionInput = {
+/** @deprecated Use Contact */
+export type FormSubmission = Contact;
+
+export type ContactInput = {
   type: string;
   name?: string;
   email?: string;
@@ -317,10 +370,14 @@ export type FormSubmissionInput = {
   payload?: Record<string, unknown>;
 };
 
-export async function createFormSubmission(input: FormSubmissionInput): Promise<number> {
+/** @deprecated Use ContactInput */
+export type FormSubmissionInput = ContactInput;
+
+/** Save any enquiry / contact / newsletter / cost-estimate row into `contacts`. */
+export async function createContact(input: ContactInput): Promise<number> {
   await ensureDb();
   const { rows } = await pool.query(
-    `INSERT INTO form_submissions (
+    `INSERT INTO contacts (
       type, name, email, phone, service, category, description, budget,
       base_package, addons, total_aed, notes, delivery_estimate, delivery_preference, payload
     ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
@@ -346,13 +403,16 @@ export async function createFormSubmission(input: FormSubmissionInput): Promise<
   return rows[0].id as number;
 }
 
-export async function listFormSubmissions(limit = 200): Promise<FormSubmission[]> {
+/** @deprecated Use createContact */
+export const createFormSubmission = createContact;
+
+export async function listContacts(limit = 200): Promise<Contact[]> {
   await ensureDb();
   const { rows } = await pool.query(
     `SELECT id, type, name, email, phone, service, category, description, budget,
             base_package, addons, total_aed, notes, delivery_estimate, delivery_preference,
             payload, created_at
-     FROM form_submissions
+     FROM contacts
      ORDER BY created_at DESC
      LIMIT $1`,
     [limit]
@@ -366,13 +426,16 @@ export async function listFormSubmissions(limit = 200): Promise<FormSubmission[]
   }));
 }
 
-export async function getFormSubmission(id: number): Promise<FormSubmission | null> {
+/** @deprecated Use listContacts */
+export const listFormSubmissions = listContacts;
+
+export async function getContact(id: number): Promise<Contact | null> {
   await ensureDb();
   const { rows } = await pool.query(
     `SELECT id, type, name, email, phone, service, category, description, budget,
             base_package, addons, total_aed, notes, delivery_estimate, delivery_preference,
             payload, created_at
-     FROM form_submissions WHERE id = $1`,
+     FROM contacts WHERE id = $1`,
     [id]
   );
   if (!rows[0]) return null;
@@ -385,3 +448,6 @@ export async function getFormSubmission(id: number): Promise<FormSubmission | nu
         : {},
   };
 }
+
+/** @deprecated Use getContact */
+export const getFormSubmission = getContact;

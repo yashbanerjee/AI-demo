@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { createFormSubmission } from "../../lib/db";
+import { createContact } from "../../lib/db";
 import {
   buildUserConfirmation,
   mailConfigured,
@@ -53,16 +53,6 @@ export const GET: APIRoute = async () => {
 
 export const POST: APIRoute = async ({ request }) => {
   try {
-    if (!mailConfigured()) {
-      return json(
-        {
-          error:
-            "Email is not configured. Set SMTP_HOST, SMTP_USER, and SMTP_PASS on the server.",
-        },
-        503
-      );
-    }
-
     let body: Body;
     try {
       body = (await request.json()) as Body;
@@ -225,13 +215,17 @@ export const POST: APIRoute = async ({ request }) => {
       return json({ error: "Unknown form type." }, 400);
     }
 
-    // Persist lead for admin (non-fatal if DB is down).
+    const savedPhone = hasPhone ? phone : phoneRaw;
+    const savedEmail = hasEmail ? email : "";
+
+    // Persist every enquiry / contact / newsletter / estimate into `contacts`.
+    let submissionId: number;
     try {
-      await createFormSubmission({
+      submissionId = await createContact({
         type,
         name,
-        email: hasEmail ? email : "",
-        phone: hasPhone ? phone : phoneRaw,
+        email: savedEmail,
+        phone: savedPhone,
         service,
         category,
         description,
@@ -245,8 +239,8 @@ export const POST: APIRoute = async ({ request }) => {
         payload: {
           type,
           name,
-          email: hasEmail ? email : "",
-          phone: hasPhone ? phone : phoneRaw,
+          email: savedEmail,
+          phone: savedPhone,
           service,
           category,
           description,
@@ -261,9 +255,17 @@ export const POST: APIRoute = async ({ request }) => {
       });
     } catch (dbError) {
       console.error("Failed to save form submission:", dbError);
+      const detail = dbError instanceof Error ? dbError.message : "Unknown database error";
+      return json(
+        {
+          error: "Unable to save your enquiry right now. Please try again later.",
+          detail: detail.slice(0, 500),
+        },
+        500
+      );
     }
 
-    const confirmationEmail = hasEmail ? email : "";
+    const confirmationEmail = savedEmail;
     const confirmation = confirmationEmail
       ? buildUserConfirmation({ type, name, email: confirmationEmail })
       : {
@@ -273,37 +275,57 @@ export const POST: APIRoute = async ({ request }) => {
             "Thank you. We have received your request and will contact you on WhatsApp within one business day.",
         };
 
-    // Notify the team first — this is the critical delivery.
-    await sendContactMail({
-      subject: `[VEDHA] ${subject}`,
-      text,
-      replyTo: hasEmail ? email : undefined,
-    });
-
-    // Then confirm to the submitter when we have an email (non-fatal).
-    if (confirmationEmail) {
+    // Email is best-effort after DB save — never lose the lead if SMTP fails.
+    let mailSent = false;
+    if (mailConfigured()) {
       try {
         await sendContactMail({
-          to: confirmationEmail,
-          subject: confirmation.subject,
-          text: confirmation.text,
-          replyTo: "info@vedha.ae",
+          subject: `[VEDHA] ${subject}`,
+          text,
+          replyTo: hasEmail ? email : undefined,
         });
-      } catch (confirmError) {
-        console.error("Failed to send user confirmation email:", confirmError);
+        mailSent = true;
+
+        if (confirmationEmail) {
+          try {
+            await sendContactMail({
+              to: confirmationEmail,
+              subject: confirmation.subject,
+              text: confirmation.text,
+              replyTo: "info@vedha.ae",
+            });
+          } catch (confirmError) {
+            console.error("Failed to send user confirmation email:", confirmError);
+          }
+        }
+      } catch (mailError) {
+        console.error("Failed to send contact email (submission saved):", mailError, {
+          submissionId,
+          type,
+        });
       }
+    } else {
+      console.warn("SMTP not configured — enquiry saved to database only.", {
+        submissionId,
+        type,
+      });
     }
 
-    return json({ ok: true, message: confirmation.message });
+    return json({
+      ok: true,
+      message: confirmation.message,
+      saved: true,
+      id: submissionId,
+      mailSent,
+    });
   } catch (error) {
-    console.error("Failed to send contact email:", error);
-    const detail = error instanceof Error ? error.message : "Unknown mail error";
+    console.error("Contact form handler failed:", error);
+    const detail = error instanceof Error ? error.message : "Unknown error";
     return json(
       {
-        error: "Unable to send email right now. Please try again later.",
+        error: "Unable to process your enquiry right now. Please try again later.",
         detail: detail.slice(0, 500),
       },
-      // Avoid HTTP 502 — Cloudflare replaces origin 502 bodies with a blank "error code: 502".
       400
     );
   }
