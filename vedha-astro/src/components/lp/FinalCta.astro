@@ -1,4 +1,6 @@
 ---
+import PhoneField from "../PhoneField.astro";
+
 const whatsappHref =
   "https://wa.me/971506583342?text=" +
   encodeURIComponent("Hi Vedha — I'd like to talk about a website project.");
@@ -76,16 +78,10 @@ const whatsappHref =
         inputmode="email"
       />
     </label>
-    <label>WhatsApp / phone <span class="lp-cta__optional">(optional if email is given)</span>
-      <input
-        type="tel"
-        name="phone"
-        placeholder="+971…"
-        autocomplete="tel"
-        inputmode="tel"
-      />
+    <label>Mobile / WhatsApp <span class="lp-cta__optional">(optional if email is given)</span>
+      <PhoneField id="lpPhone" placeholder="50 000 0000" />
     </label>
-    <p class="lp-cta__contact-hint">Provide at least one: email or WhatsApp number.</p>
+    <p class="lp-cta__contact-hint">Provide at least one: email or mobile number.</p>
     <label>What you need
       <input
         type="text"

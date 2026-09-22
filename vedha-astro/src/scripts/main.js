@@ -1398,9 +1398,13 @@
         const name = enquiryForm.querySelector('[name="name"]');
         const email = enquiryForm.querySelector('[name="email"]');
         const desc = enquiryForm.querySelector('[name="description"]');
+        const phoneNumber = enquiryForm.querySelector("[data-phone-number]");
+        const phoneFull = enquiryForm.querySelector("[data-phone-full]");
         if (name) name.value = "";
         if (email) email.value = "";
         if (desc) desc.value = "";
+        if (phoneNumber) phoneNumber.value = "";
+        if (phoneFull) phoneFull.value = "";
       }
       if (enquiryLastFocus && enquiryLastFocus.focus) enquiryLastFocus.focus();
     };
@@ -1523,10 +1527,59 @@
     note.classList.remove("is-error");
   }
 
+  function syncPhoneField(field) {
+    const code = field.querySelector("[data-phone-code]");
+    const number = field.querySelector("[data-phone-number]");
+    const full = field.querySelector("[data-phone-full]");
+    if (!code || !number || !full) return;
+    const digits = String(number.value || "").replace(/\D/g, "");
+    if (number.value !== digits) number.value = digits;
+    const national = digits.replace(/^0+/, "");
+    full.value = national ? `${code.value}${national}` : "";
+  }
+
+  function initPhoneFields(root = document) {
+    root.querySelectorAll("[data-phone-field]").forEach((field) => {
+      if (field.dataset.phoneReady === "1") return;
+      field.dataset.phoneReady = "1";
+      const code = field.querySelector("[data-phone-code]");
+      const number = field.querySelector("[data-phone-number]");
+      number?.addEventListener("input", () => syncPhoneField(field));
+      number?.addEventListener("blur", () => syncPhoneField(field));
+      code?.addEventListener("change", () => syncPhoneField(field));
+      // Block non-digit key entry without breaking shortcuts / navigation
+      number?.addEventListener("keydown", (e) => {
+        if (
+          e.ctrlKey ||
+          e.metaKey ||
+          e.altKey ||
+          e.key.length !== 1
+        ) {
+          return;
+        }
+        if (!/[0-9]/.test(e.key)) e.preventDefault();
+      });
+      number?.addEventListener("paste", (e) => {
+        e.preventDefault();
+        const text = (e.clipboardData || window.clipboardData)?.getData("text") || "";
+        const digits = text.replace(/\D/g, "");
+        const start = number.selectionStart ?? number.value.length;
+        const end = number.selectionEnd ?? number.value.length;
+        number.value = `${number.value.slice(0, start)}${digits}${number.value.slice(end)}`.replace(/\D/g, "");
+        syncPhoneField(field);
+      });
+      syncPhoneField(field);
+    });
+  }
+
+  initPhoneFields();
+
   document.querySelectorAll("form").forEach((form) => {
     form.addEventListener("submit", async (e) => {
       const type = resolveMailType(form);
       if (!type) return;
+      form.querySelectorAll("[data-phone-field]").forEach((field) => syncPhoneField(field));
+
 
       e.preventDefault();
       if (form.dataset.submitting === "1") return;
@@ -1540,6 +1593,12 @@
       try {
         const payload = formPayload(form, type);
 
+        if (type === "enquiry" || type === "service-enquiry") {
+          if (!String(payload.phone || "").trim()) {
+            throw new Error("Please enter a mobile number.");
+          }
+        }
+
         if (type === "lp-enquiry") {
           const hasEmail = Boolean(payload.email && isValidEmail(payload.email));
           const hasPhone = Boolean(String(payload.phone || "").trim());
@@ -1547,7 +1606,7 @@
             throw new Error("Please enter a valid email address.");
           }
           if (!hasEmail && !hasPhone) {
-            throw new Error("Please enter an email or WhatsApp number.");
+            throw new Error("Please enter an email or mobile number.");
           }
         }
 
@@ -1556,7 +1615,7 @@
             throw new Error("Please select a base package before sending.");
           }
           if (!String(payload.phone || "").trim()) {
-            throw new Error("Please enter a phone number.");
+            throw new Error("Please enter a mobile number.");
           }
           if (!String(payload.deliveryPreference || "").trim()) {
             throw new Error("Please choose a preferred delivery timing.");
@@ -1625,9 +1684,13 @@
           const name = form.querySelector('[name="name"]');
           const email = form.querySelector('[name="email"]');
           const desc = form.querySelector('[name="description"]');
+          const phoneNumber = form.querySelector("[data-phone-number]");
+          const phoneFull = form.querySelector("[data-phone-full]");
           if (name) name.value = "";
           if (email) email.value = "";
           if (desc) desc.value = "";
+          if (phoneNumber) phoneNumber.value = "";
+          if (phoneFull) phoneFull.value = "";
         } else {
           form.reset();
         }

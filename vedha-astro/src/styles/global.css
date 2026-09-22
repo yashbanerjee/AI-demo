@@ -2437,6 +2437,89 @@ a.svc-ask {
 .contact__terms { font-size: 0.75rem; color: var(--ink-soft); }
 .contact__terms a { text-decoration: underline; }
 
+/* Phone field: country code + digits, matches surrounding input chrome */
+.phone-field {
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+  background: var(--bg);
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.35s var(--ease-out);
+}
+.phone-field:focus-within {
+  border-color: var(--ink);
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
+}
+.phone-field__code,
+.phone-field__number {
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  background: transparent !important;
+  font: inherit;
+  color: inherit;
+  min-height: 0 !important;
+  border-radius: 0 !important;
+}
+.phone-field__code {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: 7.75rem;
+  padding: 0.75rem 0.35rem 0.75rem 0.85rem;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%236b6b6b' d='M1 1l4 4 4-4'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.35rem center !important;
+  padding-right: 1.25rem !important;
+  cursor: pointer;
+  color: var(--ink-soft);
+  border-right: 1px solid var(--line) !important;
+  font-size: max(16px, 0.92em);
+}
+.phone-field__number {
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: max(16px, 1em);
+}
+.contact__form .phone-field,
+.enquiry-modal__form .phone-field {
+  background: var(--bg);
+}
+.estimator .phone-field {
+  min-height: 2.85rem;
+  border-radius: 0.6rem;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: var(--studio-elevated, #1a1a1a);
+  color: var(--studio-ink, #f4f2ee);
+}
+.estimator .phone-field:focus-within {
+  border-color: rgba(212, 180, 131, 0.7);
+  box-shadow: 0 0 0 3px rgba(212, 180, 131, 0.18);
+  background: #1e1c18;
+}
+.estimator .phone-field__code {
+  color: rgba(244, 242, 238, 0.72);
+  border-right-color: rgba(255, 255, 255, 0.14) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23a8a49c' d='M1 1l4 4 4-4'/%3E%3C/svg%3E") !important;
+  padding: 0.65rem 1.15rem 0.65rem 0.75rem !important;
+}
+.estimator .phone-field__number {
+  padding: 0.65rem 0.85rem;
+  color: var(--studio-ink, #f4f2ee);
+}
+.estimator .phone-field__number::placeholder {
+  color: rgba(244, 242, 238, 0.35);
+}
+.estimator-select .phone-field,
+.estimator-field .phone-field {
+  width: 100%;
+}
+
 .form-note {
   margin: 0.85rem 0 0;
   padding: 0.85rem 1rem;
@@ -2680,6 +2763,17 @@ a.svc-ask {
 }
 .enquiry-modal__field input:focus,
 .enquiry-modal__field textarea:focus {
+  border-color: rgba(17, 17, 17, 0.35);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);
+}
+.enquiry-modal__field .phone-field {
+  background: #fafaf8;
+  border-color: rgba(17, 17, 17, 0.12);
+  border-radius: 0.65rem;
+  min-height: 2.75rem;
+}
+.enquiry-modal__field .phone-field:focus-within {
   border-color: rgba(17, 17, 17, 0.35);
   background: #fff;
   box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.06);

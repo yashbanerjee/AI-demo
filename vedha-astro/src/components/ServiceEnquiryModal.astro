@@ -1,3 +1,7 @@
+---
+import PhoneField from "./PhoneField.astro";
+---
+
 <!-- Contextual enquiry popup — opened from a service list item -->
 <div class="enquiry-modal" id="enquiryModal" hidden aria-hidden="true">
   <div class="enquiry-modal__backdrop" data-enquiry-close tabindex="-1"></div>
@@ -41,6 +45,10 @@
         <label class="enquiry-modal__field">
           <span>Email</span>
           <input type="email" name="email" placeholder="you@company.com" required autocomplete="email" />
+        </label>
+        <label class="enquiry-modal__field">
+          <span>Mobile number</span>
+          <PhoneField id="svcPhone" required />
         </label>
         <label class="enquiry-modal__field">
           <span>Message</span>

@@ -1,3 +1,7 @@
+---
+import PhoneField from "../PhoneField.astro";
+---
+
 <!-- ===== Contact / Enquiry ===== -->
 <section class="contact" id="contact">
   <div class="contact__intro">
@@ -28,6 +32,9 @@
     </label>
     <label>Email
       <input type="email" name="email" placeholder="Email" required autocomplete="email" />
+    </label>
+    <label>Mobile number
+      <PhoneField id="homePhone" required />
     </label>
     <label>Service type
       <select name="service" required>

@@ -84,6 +84,29 @@ async function init() {
       addon_id TEXT NOT NULL REFERENCES estimator_addons(id) ON DELETE CASCADE,
       PRIMARY KEY (base_id, addon_id)
     );
+    CREATE TABLE IF NOT EXISTS form_submissions (
+      id SERIAL PRIMARY KEY,
+      type TEXT NOT NULL,
+      name TEXT NOT NULL DEFAULT '',
+      email TEXT NOT NULL DEFAULT '',
+      phone TEXT NOT NULL DEFAULT '',
+      service TEXT NOT NULL DEFAULT '',
+      category TEXT NOT NULL DEFAULT '',
+      description TEXT NOT NULL DEFAULT '',
+      budget TEXT NOT NULL DEFAULT '',
+      base_package TEXT NOT NULL DEFAULT '',
+      addons TEXT NOT NULL DEFAULT '',
+      total_aed INTEGER,
+      notes TEXT NOT NULL DEFAULT '',
+      delivery_estimate TEXT NOT NULL DEFAULT '',
+      delivery_preference TEXT NOT NULL DEFAULT '',
+      payload JSONB NOT NULL DEFAULT '{}',
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+    CREATE INDEX IF NOT EXISTS form_submissions_created_at_idx
+      ON form_submissions (created_at DESC);
+    CREATE INDEX IF NOT EXISTS form_submissions_type_idx
+      ON form_submissions (type);
   `);
   // Insert any markdown posts that are not yet in the DB (never overwrites
   // posts already edited in admin). Lets new files ship via deploy.
@@ -254,4 +277,111 @@ export async function listMedia(): Promise<{ filename: string; mime: string; cre
     "SELECT filename, mime, created_at FROM media ORDER BY created_at DESC"
   );
   return rows;
+}
+
+export interface FormSubmission {
+  id: number;
+  type: string;
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
+  category: string;
+  description: string;
+  budget: string;
+  base_package: string;
+  addons: string;
+  total_aed: number | null;
+  notes: string;
+  delivery_estimate: string;
+  delivery_preference: string;
+  payload: Record<string, unknown>;
+  created_at: Date;
+}
+
+export type FormSubmissionInput = {
+  type: string;
+  name?: string;
+  email?: string;
+  phone?: string;
+  service?: string;
+  category?: string;
+  description?: string;
+  budget?: string;
+  base?: string;
+  addons?: string;
+  totalAed?: number | null;
+  notes?: string;
+  deliveryEstimate?: string;
+  deliveryPreference?: string;
+  payload?: Record<string, unknown>;
+};
+
+export async function createFormSubmission(input: FormSubmissionInput): Promise<number> {
+  await ensureDb();
+  const { rows } = await pool.query(
+    `INSERT INTO form_submissions (
+      type, name, email, phone, service, category, description, budget,
+      base_package, addons, total_aed, notes, delivery_estimate, delivery_preference, payload
+    ) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15)
+    RETURNING id`,
+    [
+      input.type,
+      input.name ?? "",
+      input.email ?? "",
+      input.phone ?? "",
+      input.service ?? "",
+      input.category ?? "",
+      input.description ?? "",
+      input.budget ?? "",
+      input.base ?? "",
+      input.addons ?? "",
+      input.totalAed ?? null,
+      input.notes ?? "",
+      input.deliveryEstimate ?? "",
+      input.deliveryPreference ?? "",
+      JSON.stringify(input.payload ?? {}),
+    ]
+  );
+  return rows[0].id as number;
+}
+
+export async function listFormSubmissions(limit = 200): Promise<FormSubmission[]> {
+  await ensureDb();
+  const { rows } = await pool.query(
+    `SELECT id, type, name, email, phone, service, category, description, budget,
+            base_package, addons, total_aed, notes, delivery_estimate, delivery_preference,
+            payload, created_at
+     FROM form_submissions
+     ORDER BY created_at DESC
+     LIMIT $1`,
+    [limit]
+  );
+  return rows.map((row) => ({
+    ...row,
+    payload:
+      row.payload && typeof row.payload === "object" && !Array.isArray(row.payload)
+        ? (row.payload as Record<string, unknown>)
+        : {},
+  }));
+}
+
+export async function getFormSubmission(id: number): Promise<FormSubmission | null> {
+  await ensureDb();
+  const { rows } = await pool.query(
+    `SELECT id, type, name, email, phone, service, category, description, budget,
+            base_package, addons, total_aed, notes, delivery_estimate, delivery_preference,
+            payload, created_at
+     FROM form_submissions WHERE id = $1`,
+    [id]
+  );
+  if (!rows[0]) return null;
+  const row = rows[0];
+  return {
+    ...row,
+    payload:
+      row.payload && typeof row.payload === "object" && !Array.isArray(row.payload)
+        ? (row.payload as Record<string, unknown>)
+        : {},
+  };
 }

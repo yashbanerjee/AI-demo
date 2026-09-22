@@ -25,6 +25,7 @@ const current = Astro.url.pathname;
       <a class="topbar__brand" href="/admin/">VEDHA<span>Admin</span></a>
       <nav class="topbar__nav">
         <a href="/admin/" class:list={{ active: current === "/admin/" || current.startsWith("/admin/posts") }}>Posts</a>
+        <a href="/admin/enquiries/" class:list={{ active: current.startsWith("/admin/enquiries") }}>Enquiries</a>
         <a href="/admin/estimator/" class:list={{ active: current.startsWith("/admin/estimator") }}>Estimator</a>
         <a href="/admin/seo/" class:list={{ active: current.startsWith("/admin/seo") }}>SEO</a>
         <a href="/" target="_blank" rel="noopener">View site ↗</a>

@@ -1,0 +1,154 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { getFormSubmission } from "../../../lib/db";
+
+export const prerender = false;
+
+const id = Number(Astro.params.id);
+const row = Number.isFinite(id) ? await getFormSubmission(id) : null;
+
+if (!row) {
+  return Astro.redirect("/admin/enquiries/");
+}
+
+const formatDate = (date: Date) =>
+  date.toLocaleString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+const typeLabel = (type: string) => {
+  switch (type) {
+    case "enquiry":
+      return "Contact enquiry";
+    case "service-enquiry":
+      return "Service enquiry";
+    case "lp-enquiry":
+      return "Landing page enquiry";
+    case "cost-estimate":
+      return "Cost estimate";
+    case "newsletter":
+      return "Newsletter";
+    default:
+      return type;
+  }
+};
+---
+<AdminLayout title={`Enquiry #${row.id}`}>
+  <div class="head">
+    <div>
+      <a class="back" href="/admin/enquiries/">← Enquiries</a>
+      <h1>{typeLabel(row.type)}</h1>
+      <p class="muted">{formatDate(row.created_at)}</p>
+    </div>
+  </div>
+
+  <div class="panel form-grid">
+    <div class="form-row">
+      <div>
+        <p class="label">Name</p>
+        <p>{row.name || "—"}</p>
+      </div>
+      <div>
+        <p class="label">Mobile</p>
+        <p>
+          {row.phone ? <a href={`tel:${row.phone}`}>{row.phone}</a> : "—"}
+        </p>
+      </div>
+    </div>
+    <div class="form-row">
+      <div>
+        <p class="label">Email</p>
+        <p>
+          {row.email ? <a href={`mailto:${row.email}`}>{row.email}</a> : "—"}
+        </p>
+      </div>
+      <div>
+        <p class="label">Service</p>
+        <p>
+          {row.category ? `${row.category} · ` : ""}
+          {row.service || "—"}
+        </p>
+      </div>
+    </div>
+
+    {row.type === "cost-estimate" && (
+      <>
+        <div class="form-row">
+          <div>
+            <p class="label">Base package</p>
+            <p>{row.base_package || "—"}</p>
+          </div>
+          <div>
+            <p class="label">Total</p>
+            <p>
+              {row.total_aed != null
+                ? `AED ${row.total_aed.toLocaleString("en-AE")}`
+                : "—"}
+            </p>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <p class="label">Modules</p>
+            <p>{row.addons || "none"}</p>
+          </div>
+          <div>
+            <p class="label">Delivery</p>
+            <p>
+              {row.delivery_estimate || "—"}
+              {row.delivery_preference ? ` · ${row.delivery_preference}` : ""}
+            </p>
+          </div>
+        </div>
+        {row.notes && (
+          <div>
+            <p class="label">Notes</p>
+            <pre class="body">{row.notes}</pre>
+          </div>
+        )}
+      </>
+    )}
+
+    {row.budget && (
+      <div>
+        <p class="label">Budget</p>
+        <p>{row.budget}</p>
+      </div>
+    )}
+
+    <div>
+      <p class="label">Message</p>
+      <pre class="body">{row.description || "—"}</pre>
+    </div>
+  </div>
+</AdminLayout>
+
+<style>
+  .head { margin-bottom: 1.5rem; }
+  .head h1 { margin: 0.35rem 0 0.25rem; }
+  .back {
+    color: var(--ink-soft);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+  .back:hover { color: var(--ink); }
+  .label {
+    margin: 0 0 0.25rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+  }
+  .body {
+    margin: 0;
+    white-space: pre-wrap;
+    font: inherit;
+    line-height: 1.55;
+  }
+  a { color: inherit; }
+  a:hover { text-decoration: underline; }
+</style>

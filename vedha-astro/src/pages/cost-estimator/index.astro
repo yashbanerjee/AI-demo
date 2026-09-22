@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PhoneField from "../../components/PhoneField.astro";
 import {
   ADDON_GROUPS,
   formatAed,
@@ -345,8 +346,8 @@ const schemas = [
                     <input id="estEmail" type="email" name="email" placeholder="you@company.com" required autocomplete="email" inputmode="email" />
                   </div>
                   <div class="estimator-field">
-                    <label for="estPhone">Phone number</label>
-                    <input id="estPhone" type="tel" name="phone" placeholder="+971 50 000 0000" required autocomplete="tel" inputmode="tel" />
+                    <label for="estPhone">Mobile number</label>
+                    <PhoneField id="estPhone" required placeholder="50 000 0000" />
                   </div>
                   <div class="estimator-field">
                     <label for="estPref">Preferred delivery timing</label>

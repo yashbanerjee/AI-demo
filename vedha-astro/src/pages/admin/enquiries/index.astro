@@ -1,0 +1,127 @@
+---
+import AdminLayout from "../../../layouts/AdminLayout.astro";
+import { listFormSubmissions } from "../../../lib/db";
+
+export const prerender = false;
+
+const submissions = await listFormSubmissions(300);
+
+const formatDate = (date: Date) =>
+  date.toLocaleString("en-GB", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+const typeLabel = (type: string) => {
+  switch (type) {
+    case "enquiry":
+      return "Contact";
+    case "service-enquiry":
+      return "Service";
+    case "lp-enquiry":
+      return "Landing page";
+    case "cost-estimate":
+      return "Cost estimate";
+    case "newsletter":
+      return "Newsletter";
+    default:
+      return type;
+  }
+};
+---
+<AdminLayout title="Enquiries" wide>
+  <div class="head">
+    <h1>Enquiries</h1>
+    <p class="muted">{submissions.length} recent submission{submissions.length === 1 ? "" : "s"}</p>
+  </div>
+
+  <div class="panel">
+    {submissions.length === 0 ? (
+      <p class="muted">No form submissions yet.</p>
+    ) : (
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Service</th>
+            <th>Message</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {submissions.map((row) => (
+            <tr>
+              <td class="nowrap">{formatDate(row.created_at)}</td>
+              <td><span class="pill">{typeLabel(row.type)}</span></td>
+              <td>{row.name || <span class="muted">—</span>}</td>
+              <td>
+                {row.email ? (
+                  <a href={`mailto:${row.email}`}>{row.email}</a>
+                ) : (
+                  <span class="muted">—</span>
+                )}
+              </td>
+              <td>
+                {row.phone ? (
+                  <a href={`tel:${row.phone}`}>{row.phone}</a>
+                ) : (
+                  <span class="muted">—</span>
+                )}
+              </td>
+              <td>
+                {row.service || row.category ? (
+                  <>
+                    {row.category && <div class="muted">{row.category}</div>}
+                    <div>{row.service || "—"}</div>
+                    {row.type === "cost-estimate" && row.total_aed != null && (
+                      <div class="muted">AED {row.total_aed.toLocaleString("en-AE")}</div>
+                    )}
+                  </>
+                ) : (
+                  <span class="muted">—</span>
+                )}
+              </td>
+              <td class="msg">
+                {row.description ? (
+                  <span title={row.description}>
+                    {row.description.length > 120
+                      ? `${row.description.slice(0, 120)}…`
+                      : row.description}
+                  </span>
+                ) : (
+                  <span class="muted">—</span>
+                )}
+              </td>
+              <td>
+                <a class="btn btn--ghost btn--small" href={`/admin/enquiries/${row.id}/`}>View</a>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    )}
+  </div>
+</AdminLayout>
+
+<style>
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .head h1 { margin: 0; }
+  .head .muted { margin: 0; }
+  .nowrap { white-space: nowrap; }
+  .msg { max-width: 18rem; }
+  td a { color: inherit; }
+  td a:hover { text-decoration: underline; }
+</style>

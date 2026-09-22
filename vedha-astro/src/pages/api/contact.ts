@@ -1,4 +1,5 @@
 import type { APIRoute } from "astro";
+import { createFormSubmission } from "../../lib/db";
 import {
   buildUserConfirmation,
   mailConfigured,
@@ -35,6 +36,11 @@ const json = (data: unknown, status = 200) =>
   });
 
 const isEmail = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+const isValidMobile = (value: string) => {
+  const digits = value.replace(/\D/g, "");
+  return digits.length >= 8 && digits.length <= 15;
+};
 
 /** Safe status + SMTP shape (no secrets) for debugging deploys. */
 export const GET: APIRoute = async () => {
@@ -95,7 +101,7 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const hasEmail = Boolean(email && isEmail(email));
-    const hasPhone = Boolean(phone);
+    const hasPhone = Boolean(phone && isValidMobile(phone));
 
     if (type === "newsletter") {
       if (!hasEmail) {
@@ -103,13 +109,19 @@ export const POST: APIRoute = async ({ request }) => {
       }
     } else if (type === "lp-enquiry") {
       if (!hasEmail && !hasPhone) {
-        return json({ error: "Email or WhatsApp number is required." }, 400);
+        return json({ error: "Email or mobile number is required." }, 400);
       }
       if (email && !hasEmail) {
         return json({ error: "Please enter a valid email address." }, 400);
       }
     } else if (!hasEmail) {
       return json({ error: "A valid email is required." }, 400);
+    }
+
+    const requiresMobile =
+      type === "enquiry" || type === "service-enquiry" || type === "cost-estimate";
+    if (requiresMobile && !hasPhone) {
+      return json({ error: "Mobile number is required." }, 400);
     }
 
     let subject = "";
@@ -134,6 +146,7 @@ export const POST: APIRoute = async ({ request }) => {
         "",
         `Name: ${name}`,
         `Email: ${email}`,
+        `Mobile: ${phone}`,
         `Category: ${category || "—"}`,
         `Service: ${service || "—"}`,
         "",
@@ -152,7 +165,7 @@ export const POST: APIRoute = async ({ request }) => {
         "",
         `Name: ${name}`,
         `Email: ${hasEmail ? email : "—"}`,
-        `WhatsApp / phone: ${hasPhone ? phone : "—"}`,
+        `Mobile / WhatsApp: ${hasPhone ? phone : "—"}`,
         `Service: ${service || "web-development"}`,
         `Budget: ${budget || "—"}`,
         "",
@@ -171,6 +184,7 @@ export const POST: APIRoute = async ({ request }) => {
         "",
         `Name: ${name}`,
         `Email: ${email}`,
+        `Mobile: ${phone}`,
         `Service type: ${service || "—"}`,
         "",
         "Description:",
@@ -185,9 +199,6 @@ export const POST: APIRoute = async ({ request }) => {
       if (!base) {
         return json({ error: "Please select a base package before sending." }, 400);
       }
-      if (!hasPhone) {
-        return json({ error: "Phone number is required." }, 400);
-      }
       const totalLabel = `AED ${Math.round(totalAed).toLocaleString("en-AE")}`;
       subject = `Cost estimate — ${base} — ${totalLabel}`;
       text = [
@@ -195,7 +206,7 @@ export const POST: APIRoute = async ({ request }) => {
         "",
         `Name: ${name}`,
         `Email: ${email}`,
-        `Phone: ${phone}`,
+        `Mobile: ${phone}`,
         `Base: ${base}`,
         `Modules: ${addons || "none"}`,
         `Total: ${totalLabel}`,
@@ -212,6 +223,44 @@ export const POST: APIRoute = async ({ request }) => {
         .join("\n");
     } else {
       return json({ error: "Unknown form type." }, 400);
+    }
+
+    // Persist lead for admin (non-fatal if DB is down).
+    try {
+      await createFormSubmission({
+        type,
+        name,
+        email: hasEmail ? email : "",
+        phone: hasPhone ? phone : phoneRaw,
+        service,
+        category,
+        description,
+        budget,
+        base,
+        addons,
+        totalAed: type === "cost-estimate" ? Math.round(totalAed) : null,
+        notes,
+        deliveryEstimate,
+        deliveryPreference,
+        payload: {
+          type,
+          name,
+          email: hasEmail ? email : "",
+          phone: hasPhone ? phone : phoneRaw,
+          service,
+          category,
+          description,
+          budget,
+          base,
+          addons,
+          totalAed: type === "cost-estimate" ? Math.round(totalAed) : undefined,
+          notes,
+          deliveryEstimate,
+          deliveryPreference,
+        },
+      });
+    } catch (dbError) {
+      console.error("Failed to save form submission:", dbError);
     }
 
     const confirmationEmail = hasEmail ? email : "";

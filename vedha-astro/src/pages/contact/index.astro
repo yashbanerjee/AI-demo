@@ -1,5 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import PhoneField from "../../components/PhoneField.astro";
 import { breadcrumbSchema } from "../../lib/schema";
 
 const pagePath = "/contact/";
@@ -53,6 +54,9 @@ const schema = breadcrumbSchema([
           </label>
           <label>Email
             <input type="email" name="email" placeholder="Email" required autocomplete="email" />
+          </label>
+          <label>Mobile number
+            <PhoneField id="contactPhone" required />
           </label>
           <label>Service type
             <select name="service" required>
