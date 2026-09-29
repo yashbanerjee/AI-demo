@@ -78,7 +78,7 @@ const schema = [
       <div class="svc-leaf__intro-copy">
         <p class="kicker">(Services)&ensp;[{service.pillar}] · {service.categoryName}</p>
         <p class="svc-leaf__lede">{landing.lede}</p>
-        <p class="svc-leaf__summary">{service.description}</p>
+        <p class="svc-leaf__summary">{landing.summary ?? service.description}</p>
       </div>
       <div class="svc-leaf__intro-actions">
         <a class="btn btn--dark" href="/#book" data-book-consultation>
@@ -131,6 +131,11 @@ const schema = [
             </li>
           ))}
         </ol>
+        {landing.howHelpsOutro && (
+          <div class="svc-leaf__prose svc-leaf__prose--after">
+            <p>{landing.howHelpsOutro}</p>
+          </div>
+        )}
       </section>
     )}
 
@@ -360,6 +365,9 @@ const schema = [
     max-width: none;
     width: 100%;
     margin-bottom: clamp(1.8rem, 4vh, 2.6rem);
+  }
+  .svc-leaf__prose--after {
+    margin: clamp(1.6rem, 3.5vh, 2.2rem) 0 0;
   }
   .svc-leaf__prose p {
     margin: 0;

@@ -25,12 +25,14 @@ export type ServiceLandingContent = {
   seoDescription: string;
   h1: string;
   lede: string;
+  summary?: string;
   whyImportant: string[];
   whyHeading?: string;
   benefits: string[];
   howHelpsIntro?: string;
   howHelpsHeading?: string;
   howHelps?: ProcessStep[];
+  howHelpsOutro?: string;
   process: ProcessStep[];
   processHeading?: string;
   processIntro?: string;
@@ -1641,6 +1643,144 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "ERP consultant retail Dubai",
       "omnichannel retail ERP UAE",
       "ERP Solutions",
+      "Vedha Tech",
+    ],
+  },
+  "application-security-reviews": {
+    seoTitle: "Application Security Services in Dubai & UAE | Vedha Tech",
+    seoDescription:
+      "Reduce application risk with expert security reviews, secure source code analysis and practical remediation support for businesses in Dubai, the UAE and beyond.",
+    h1: "Application Security Services in Dubai and the UAE",
+    lede: "Application security services help businesses in Dubai and the UAE reduce software risk, protect critical data, improve release confidence, and move towards more secure, compliant digital operations.",
+    summary:
+      "Clear security reviews, practical remediation guidance, and expert support for safer application delivery.",
+    whyHeading: "What is Application Security Services?",
+    whyImportant: [
+      "Application security services identify and reduce weaknesses in the code, architecture and delivery practices behind your software. The work can include source code review, dependency analysis, API testing, authentication checks, configuration review and threat modelling.",
+      "Vedha reviews the application in context. We look at how it is built, deployed, integrated and used, then prioritise findings by likelihood, business impact and remediation effort. This gives your team a practical path from uncertainty to action.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Vedha Tech helps",
+    howHelpsIntro:
+      "Vedha helps you release with greater confidence, reduce avoidable security risk and make remediation easier to prioritise.",
+    howHelps: [
+      {
+        title: "Reduce release risk",
+        body: "Find weaknesses before they reach production or become harder to fix.",
+      },
+      {
+        title: "Protect business-critical systems",
+        body: "Focus security effort on the applications, APIs and workflows that matter most.",
+      },
+      {
+        title: "Support compliance decisions",
+        body: "Produce clear evidence of review activity, ownership and remediation progress.",
+      },
+      {
+        title: "Improve engineering decisions",
+        body: "Give developers findings they can act on, rather than a long list of unexplained alerts.",
+      },
+      {
+        title: "Strengthen investor and customer confidence",
+        body: "Show that application risk is being managed with a defined process.",
+      },
+      {
+        title: "Create a repeatable practice",
+        body: "Turn one review into a practical security baseline for future delivery.",
+      },
+    ],
+    howHelpsOutro:
+      "Our application security service is scoped around your systems, stakeholders and business priorities, whether you need a focused review or a broader security programme. For organisations seeking application security in Dubai or UAE, we provide practical guidance that aligns with local operating needs and business goals. Vedha works with companies both within and outside the UAE, supporting teams wherever their applications, users and delivery operations are based.",
+    processHeading: "What Application Security Services includes",
+    processIntro:
+      "The following activities may form part of an engagement. Vedha confirms the final scope after understanding your application, objectives and access requirements.",
+    process: [
+      {
+        title: "Scope the application and risk",
+        body: "We define the application boundary, environments, user roles, data flows, integrations and business-critical functions. This sets the review depth and the rules of engagement.",
+      },
+      {
+        title: "Review architecture and attack surfaces",
+        body: "We examine application architecture, trust boundaries, APIs, authentication, authorisation, third-party services and deployment paths to identify likely attack routes.",
+      },
+      {
+        title: "Conduct secure source code review",
+        body: "Our secure source code review services in the UAE assess high-risk code paths, input handling, access controls, secrets, error handling, dependencies and security-sensitive business logic.",
+      },
+      {
+        title: "Test application controls",
+        body: "We assess practical controls such as session management, identity, permissions, validation, file handling, API protection, logging and security configuration. Testing is controlled and agreed in advance.",
+      },
+      {
+        title: "Prioritise findings and remediation",
+        body: "Findings are ranked by technical severity, business exposure, exploitability and remediation effort. Your team receives clear ownership and recommended next actions.",
+      },
+      {
+        title: "Verify fixes and support the next release",
+        body: "Vedha can review remediation progress, retest selected fixes and help establish practical security checks for future delivery.",
+      },
+    ],
+    outcomesHeading: "Application Security Services deliverables",
+    outcomes: [
+      "Application security review scope and rules of engagement.",
+      "Application architecture and attack-surface assessment.",
+      "Secure source code review findings.",
+      "API, authentication and authorisation review.",
+      "Dependency and configuration review.",
+      "Threat model or abuse-case analysis where appropriate.",
+      "Prioritised findings register with severity and business impact.",
+      "Remediation guidance for engineering and product teams.",
+      "Executive summary for leadership and risk owners.",
+      "Retest report with open and resolved findings.",
+    ],
+    whyUsHeading: "Why Vedha Tech?",
+    whyUs: [
+      "Vedha combines senior engineering judgement with security-focused review work. We assess applications in their operating context, including the people, integrations and delivery practices around them.",
+      "You get clear findings, practical remediation guidance and a review process that supports safer delivery. Vedha works with organisations within the UAE and internationally, supporting growing product teams and established businesses modernising critical systems across different markets.",
+      "For organisations evaluating application security platforms, Vedha can help compare tools available in Dubai, across the UAE and internationally, then determine whether they fit the application’s risk profile. Platforms can improve visibility through code analysis, dependency monitoring, testing and reporting, while expert review provides context, prioritisation and remediation direction.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "What are application security services?",
+        answer:
+          "Application security services assess and improve the security of software, including its code, architecture, APIs, dependencies, configuration and delivery process. The aim is to identify practical risks and give the team a clear path to remediation.",
+      },
+      {
+        question: "What does a secure source code review cover?",
+        answer:
+          "A secure source code review can include examining security-sensitive code for issues such as injection, broken access control, insecure data handling, exposed secrets, weak validation and unsafe error handling. The scope depends on the application, language, repositories and risk areas involved.",
+      },
+      {
+        question: "Do you provide application security services in Dubai and the UAE?",
+        answer:
+          "Yes. Vedha provides application security services in Dubai and across the UAE. We also work with companies outside the UAE, supporting remote and distributed teams according to their application, access requirements and review scope.",
+      },
+      {
+        question: "Do you use application security platforms in Dubai or the UAE?",
+        answer:
+          "We can assess and use appropriate application security platforms in Dubai and the UAE where they support the engagement. Platforms can help with code analysis, dependency monitoring, testing and reporting, but they complement expert review rather than replace it.",
+      },
+      {
+        question: "Can you review applications before launch?",
+        answer:
+          "Yes. A pre-release application security review can identify risks before production. We can also review live applications, APIs and planned changes, then retest fixes as part of an ongoing security process.",
+      },
+    ],
+    ctaTitle: "Ready to review your application security?",
+    ctaBody:
+      "Tell us about the application, current concerns or upcoming release. Our Dubai-based team will scope the review around your risk and return a clear next step.",
+    ctaPrimaryLabel: "Book an application security consultation",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    keywords: [
+      "application security services Dubai",
+      "application security services UAE",
+      "application security Dubai",
+      "secure source code review UAE",
+      "application security platforms UAE",
+      "Cybersecurity & Compliance",
       "Vedha Tech",
     ],
   },
