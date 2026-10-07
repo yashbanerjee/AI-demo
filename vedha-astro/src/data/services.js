@@ -212,7 +212,7 @@ const servicePillars = [
               "Concise statements of customer value that sales, product, and marketing can share.",
           },
           {
-            name: "Logo design",
+            name: "Logo Design",
             description:
               "Primary mark and lockups engineered for digital, print, and small-scale use.",
           },

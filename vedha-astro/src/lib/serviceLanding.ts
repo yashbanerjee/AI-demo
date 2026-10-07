@@ -1646,6 +1646,141 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha Tech",
     ],
   },
+  "logo-design": {
+    seoTitle: "Logo Design in Dubai & UAE | Vedha Tech",
+    seoDescription:
+      "Logo design in Dubai and the UAE for businesses seeking a distinctive identity, practical brand assets and consistent customer-facing communication.",
+    h1: "Logo Design in Dubai and the UAE",
+    lede: "Logo design helps businesses in Dubai and the UAE build recognition, communicate credibility, and create a consistent brand foundation that supports stronger customer trust and long-term growth.",
+    summary:
+      "Distinctive marks, practical brand assets, and a clear visual foundation for consistent communication.",
+    whyHeading: "What is Logo Design?",
+    whyImportant: [
+      "Logo design is the process of creating a distinctive visual mark that helps people recognise and remember a business. A strong logo balances meaning, simplicity, legibility and flexibility so it works across websites, social media, print, signage and presentations.",
+      "Vedha approaches logo design as part of a wider brand system. We consider your audience, market position, competitors and future applications before developing a mark that can support consistent communication. For businesses looking for logo design in Dubai, the goal isn't simply a decorative graphic; it's a practical identity asset that can grow with the business.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Vedha Tech helps",
+    howHelpsIntro:
+      "Vedha helps businesses create a recognisable identity that supports trust, differentiation and consistent growth.",
+    howHelps: [
+      {
+        title: "Build recognition",
+        body: "Create a memorable visual mark customers can identify across touchpoints.",
+      },
+      {
+        title: "Strengthen credibility",
+        body: "Present a more considered and professional image to customers, partners and investors.",
+      },
+      {
+        title: "Clarify market position",
+        body: "Translate your business values and offer into a visual direction that feels relevant.",
+      },
+      {
+        title: "Improve consistency",
+        body: "Give internal teams and external partners clear assets and guidance to use the brand correctly.",
+      },
+      {
+        title: "Support growth",
+        body: "Build a flexible identity that works as your services, audience and channels expand.",
+      },
+      {
+        title: "Make communication easier",
+        body: "Establish a visual foundation for websites, campaigns, documents and digital products.",
+      },
+    ],
+    processHeading: "What Logo Design includes",
+    process: [
+      {
+        title: "Discover the business and audience",
+        body: "We learn about your business, customers, goals, competitors and market context. This gives the design work a clear commercial direction.",
+      },
+      {
+        title: "Define the creative direction",
+        body: "We explore visual territories, references, tone and positioning to establish a direction that fits your business and intended audience.",
+      },
+      {
+        title: "Develop logo concepts",
+        body: "We create considered logo concepts based on the agreed direction, focusing on distinctiveness, meaning, proportion and practical use. This can include custom logo design in Dubai for businesses that need a mark tailored to their market, audience and growth plans.",
+      },
+      {
+        title: "Refine the selected concept",
+        body: "We develop the chosen direction through structured feedback, improving the mark, typography, colour and supporting details. If your existing identity no longer reflects the business, logo redesign services can be scoped as an alternative to starting from scratch.",
+      },
+      {
+        title: "Test the identity across applications",
+        body: "We check how the logo performs across digital and physical contexts, including responsive sizes, light and dark backgrounds, social profiles, documents and other priority touchpoints.",
+      },
+      {
+        title: "Prepare and hand over the final system",
+        body: "We organise the approved files and usage guidance so your team can apply the identity consistently. Additional brand identity design services can be scoped where a broader visual system is required.",
+      },
+    ],
+    outcomesHeading: "Logo Design deliverables",
+    outcomesIntro: "Depending on the agreed scope, deliverables may include:",
+    outcomes: [
+      "Primary logo mark and wordmark.",
+      "Alternative lockups and responsive variations.",
+      "Light, dark, monochrome and colour versions.",
+      "Selected typography and colour references.",
+      "Social profile and favicon assets.",
+      "Print and digital-ready file formats.",
+      "Logo usage and clear-space guidance.",
+      "Basic application examples or mockups.",
+      "Source files for agreed formats.",
+      "Handover package for internal or partner use.",
+    ],
+    whyUsHeading: "Why Vedha Tech?",
+    whyUs: [
+      "Vedha combines strategic thinking, design judgement and practical delivery. Whether you need professional logo design or broader brand design services, we create identities with their real-world use in mind, from websites and digital products to presentations, social channels and printed materials.",
+      "Our approach is collaborative and commercially focused. You receive a clear design process, purposeful exploration and usable final assets rather than a mark created without context. Vedha can support businesses seeking logo design services in Dubai or UAE, while also working with companies beyond the region.",
+      "As a specialist logo design company in Dubai, Vedha can keep the engagement focused on a logo or help connect the identity to a broader website, product or brand rollout. Where a broader partner model is more suitable, our role can also be scoped around the design requirements rather than a fixed package.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "What does logo design include?",
+        answer:
+          "Logo design typically includes discovery, creative direction, concept development, refinement, application checks and final file preparation. The exact number of concepts, revisions and deliverables depends on the agreed scope.",
+      },
+      {
+        question: "Do you provide logo design services in Dubai and the UAE?",
+        answer:
+          "Yes. Vedha provides logo design services in Dubai and the UAE and works with companies internationally. Projects can be delivered remotely or through a collaborative process suited to your team.",
+      },
+      {
+        question: "What is the difference between custom logo design services and a template logo?",
+        answer:
+          "Custom logo design services are developed around your business, audience, positioning and intended applications. This creates a more relevant and adaptable identity than a pre-made template, which may be shared by other businesses.",
+      },
+      {
+        question: "Can you update an existing logo?",
+        answer:
+          "Yes. We can create a new logo, refine an existing mark, or provide logo redesign services for a business that has outgrown its current visual system. The approach depends on what should be retained and what needs to change.",
+      },
+      {
+        question: "Will the logo work across digital and print?",
+        answer:
+          "The logo is prepared and tested for agreed priority applications, such as websites, social media, presentations, documents, signage and print. We provide suitable file formats and variations within the project scope.",
+      },
+    ],
+    ctaTitle: "Ready to create a stronger visual identity?",
+    ctaBody:
+      "Tell us about your business, audience and where the logo will be used. Our Dubai-based team will recommend a focused design path and clarify the next step.",
+    ctaPrimaryLabel: "Start your logo design project",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    keywords: [
+      "logo design Dubai",
+      "logo design UAE",
+      "custom logo design Dubai",
+      "logo design company Dubai",
+      "logo redesign services",
+      "Brand Identity",
+      "Vedha Tech",
+    ],
+  },
   "application-security-services": {
     seoTitle: "Application Security Services in Dubai & UAE | Vedha Tech",
     seoDescription:
