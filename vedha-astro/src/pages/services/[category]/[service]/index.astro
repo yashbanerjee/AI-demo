@@ -285,7 +285,7 @@ const schema = [
     align-items: center;
     gap: 0.45rem 0.65rem;
     margin: 0 0 clamp(1.8rem, 4vh, 2.6rem);
-    font-size: 0.82rem;
+    font-size: var(--text-sm);
     color: var(--ink-soft);
   }
   .svc-leaf__crumbs a {
@@ -311,8 +311,8 @@ const schema = [
   .svc-leaf__lede {
     margin: 0;
     font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    font-weight: var(--weight-semibold);
+    font-size: var(--text-lede);
+    font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-tight);
     line-height: var(--leading-tight);
     color: var(--ink);
@@ -346,16 +346,17 @@ const schema = [
   }
   .svc-leaf__section-head h2 {
     margin: 0;
-    font-size: clamp(1.45rem, 2.6vw, 2rem);
-    font-weight: 600;
-    letter-spacing: -0.03em;
+    font-size: var(--text-title);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
     max-width: none;
   }
   .svc-leaf__section-head p:not(.kicker) {
     margin: 0;
     color: var(--ink-soft);
-    font-size: 0.98rem;
-    line-height: 1.5;
+    font-size: var(--text-lg);
+    line-height: var(--leading-relaxed);
     max-width: none;
   }
 
@@ -372,7 +373,7 @@ const schema = [
   .svc-leaf__prose p {
     margin: 0;
     color: var(--ink-soft);
-    font-size: 1.02rem;
+    font-size: var(--text-lg);
     line-height: var(--leading-relaxed);
     max-width: none;
   }
@@ -390,9 +391,9 @@ const schema = [
     border: 1px solid rgba(17, 17, 17, 0.08);
     border-radius: calc(var(--radius) * 0.7);
     background: var(--card);
-    font-size: 0.95rem;
-    line-height: 1.45;
-    font-weight: 500;
+    font-size: var(--text-md);
+    line-height: var(--leading-normal);
+    font-weight: var(--weight-medium);
   }
 
   .svc-leaf__process {
@@ -412,24 +413,27 @@ const schema = [
     background: var(--card);
   }
   .svc-leaf__step-num {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    color: rgba(17, 17, 17, 0.38);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wider);
+    line-height: var(--leading-none);
+    color: rgba(17, 17, 17, 0.4);
     font-variant-numeric: tabular-nums;
-    padding-top: 0.2rem;
+    /* optically align the small number with the cap-height of the h3 */
+    padding-top: 0.42rem;
   }
   .svc-leaf__process h3 {
-    margin: 0 0 0.55rem;
-    font-size: 1.08rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    margin: 0 0 var(--stack-xs);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
   }
   .svc-leaf__process p {
     margin: 0;
     color: var(--ink-soft);
-    font-size: 0.94rem;
-    line-height: 1.55;
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
     max-width: none;
   }
 
@@ -447,7 +451,7 @@ const schema = [
     column-gap: 0.85rem;
     padding: 1.15rem 0;
     border-bottom: 1px solid var(--line);
-    font-size: 1rem;
+    font-size: var(--text-md);
     line-height: 1.55;
   }
   .svc-leaf__outcome-mark {
@@ -465,6 +469,13 @@ const schema = [
   .svc-leaf__section .faq__item > p {
     max-width: none;
   }
+  /* Inside a leaf page the questions sit under a section H2, so they
+     step down to a list-item size instead of the homepage display size. */
+  .svc-leaf__section .faq__item summary {
+    font-size: var(--text-xl);
+    line-height: var(--leading-snug);
+    padding-block: clamp(1.1rem, 2.4vh, 1.5rem);
+  }
 
   .svc-leaf__cta {
     display: flex;
@@ -473,7 +484,7 @@ const schema = [
     justify-content: space-between;
     gap: 1.6rem 2.4rem;
     margin: clamp(1.5rem, 4vh, 2.5rem) 0 clamp(3.5rem, 9vh, 5.5rem);
-    padding: clamp(2rem, 4.5vh, 2.8rem);
+    padding: clamp(1.75rem, 4.5vh, 2.8rem) clamp(1.25rem, 2.6vw, 2.8rem);
     border-radius: calc(var(--radius) * 0.85);
     background: var(--dark);
     color: #fff;
@@ -481,15 +492,17 @@ const schema = [
   .svc-leaf__cta .kicker { color: rgba(255, 255, 255, 0.5); }
   .svc-leaf__cta h2 {
     margin: 0.35rem 0 0.5rem;
-    font-size: clamp(1.35rem, 2.4vw, 1.85rem);
-    font-weight: 600;
-    letter-spacing: -0.03em;
+    font-size: var(--text-title);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
   }
   .svc-leaf__cta p:not(.kicker) {
     margin: 0;
     color: rgba(255, 255, 255, 0.7);
     max-width: none;
-    line-height: 1.5;
+    font-size: var(--text-md);
+    line-height: var(--leading-normal);
   }
   .svc-leaf__cta .btn--dark {
     background: #fff;
@@ -532,14 +545,15 @@ const schema = [
     transform: translateY(-1px);
   }
   .svc-leaf__related-list strong {
-    font-size: 1.02rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-size: var(--text-lg);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
   }
   .svc-leaf__related-list span {
-    font-size: 0.88rem;
+    font-size: var(--text-sm);
     color: var(--ink-soft);
-    line-height: 1.45;
+    line-height: var(--leading-normal);
   }
 
   .svc-leaf__back {
@@ -552,7 +566,7 @@ const schema = [
   .svc-leaf__back a {
     color: var(--ink-soft);
     text-decoration: none;
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
   }
   .svc-leaf__back a:hover { color: var(--ink); }
 
@@ -563,5 +577,15 @@ const schema = [
     .svc-leaf__related-list {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+  }
+
+  /* Phones: stack the step number above the copy so paragraphs get the
+     card's full width instead of a narrow, heavily ragged column. */
+  @media (max-width: 47.99rem) {
+    .svc-leaf__process > li {
+      grid-template-columns: 1fr;
+      gap: 0.6rem;
+    }
+    .svc-leaf__step-num { padding-top: 0; }
   }
 </style>

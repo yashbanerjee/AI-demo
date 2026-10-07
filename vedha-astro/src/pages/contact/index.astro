@@ -161,16 +161,17 @@ const schema = breadcrumbSchema([
   }
   .contact-page__intro h2 {
     margin: 0;
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 600;
-    letter-spacing: -0.035em;
+    font-size: var(--text-lede);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
   }
   .contact-page__intro > p:not(.kicker) {
     margin: 0;
     color: var(--ink-soft);
     max-width: var(--measure-prose);
-    line-height: 1.55;
-    font-size: 1.05rem;
+    line-height: var(--leading-relaxed);
+    font-size: var(--text-lg);
   }
 
   .contact-page__aside {
@@ -187,23 +188,26 @@ const schema = breadcrumbSchema([
   }
   .contact-page__panel h3 {
     margin: 0;
-    font-size: 1.15rem;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
   }
   .contact-page__panel a {
     color: var(--ink);
     text-decoration: none;
-    font-size: 0.98rem;
+    font-size: var(--text-md);
   }
   .contact-page__panel a:hover { text-decoration: underline; text-underline-offset: 0.2em; }
   .contact-page__panel p:not(.kicker) {
     margin: 0;
     color: var(--ink-soft);
-    line-height: 1.5;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
   }
   .contact-page__fine {
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
     color: var(--ink-soft);
   }
 

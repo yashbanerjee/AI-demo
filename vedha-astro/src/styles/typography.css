@@ -17,12 +17,14 @@
   --font-display: var(--font-sans);
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
-  /* —— Size scale (rem, fluid where it matters) —— */
-  --text-2xs: 0.6875rem;   /* 11px @ 16 */
-  --text-xs: 0.75rem;      /* 12 */
-  --text-sm: 0.875rem;     /* 14 */
+  /* —— Size scale (rem, fluid where it matters) ——
+     The three smallest steps carry a pixel floor so labels, meta and
+     captions never drop below legible size on phones (root is 15px there). */
+  --text-2xs: max(0.6875rem, 11px);   /* 11 — micro labels */
+  --text-xs: max(0.75rem, 12px);      /* 12 — kickers / meta */
+  --text-sm: max(0.875rem, 13.5px);   /* 14 — secondary copy */
   --text-md: 1rem;         /* 16 — body */
-  --text-lg: 1.125rem;     /* 18 — lead / large body */
+  --text-lg: 1.125rem;     /* 18 — lead / long-form body */
   --text-xl: 1.25rem;      /* 20 — card titles (sm) */
   --text-2xl: 1.5rem;      /* 24 — card titles */
   --text-3xl: clamp(1.625rem, 2.2vw, 1.875rem);   /* ~26–30 */
@@ -31,6 +33,14 @@
   --text-6xl: clamp(2.5rem, 5.5vw, 4.25rem);      /* large H2 / process */
   --text-7xl: clamp(3rem, 7vw, 5.5rem);           /* scene / display */
   --text-display: clamp(3.25rem, 8vw, 6.5rem);    /* hero display */
+
+  /* Inner-page roles (services, blog, contact, estimator).
+     --text-lede: the page's opening statement under the banner.
+     --text-title: every section H2 on an inner page — one size everywhere
+     so the hierarchy reads the same from page to page. Kept clearly
+     above card titles (--text-xl/--text-2xl) and below the lede. */
+  --text-lede: clamp(1.85rem, 1.25rem + 1.9vw, 2.75rem);   /* ~28–44 */
+  --text-title: clamp(1.6rem, 1.1rem + 1.5vw, 2.3rem);     /* ~24–37 */
 
   /* —— Leading —— */
   --leading-none: 1;
@@ -155,6 +165,25 @@
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-tighter);
   line-height: var(--leading-display);
+}
+
+/* Inner-page statement + section title roles */
+.type-lede {
+  font-family: var(--font-display);
+  font-size: var(--text-lede);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--ink);
+}
+
+.type-title {
+  font-family: var(--font-display);
+  font-size: var(--text-title);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--ink);
 }
 
 .type-display {

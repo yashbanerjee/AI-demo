@@ -258,9 +258,10 @@ const documentTitle =
     align-content: start;
   }
   .post-aside__kicker {
-    font-size: 0.68rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wider);
+    line-height: var(--leading-none);
     text-transform: uppercase;
     color: var(--ink-soft);
   }
@@ -300,23 +301,24 @@ const documentTitle =
     min-width: 0;
   }
   .post-aside__link time {
-    font-size: 0.68rem;
+    font-size: var(--text-xs);
     color: var(--ink-soft);
-    letter-spacing: 0.04em;
+    letter-spacing: var(--tracking-wide);
+    font-variant-numeric: tabular-nums;
   }
   .post-aside__link strong {
-    font-size: 0.88rem;
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    line-height: 1.3;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-normal);
+    line-height: var(--leading-snug);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
   .post-aside__all {
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
     color: var(--ink-soft);
     text-decoration: none;
     transition: color 0.25s;
@@ -332,18 +334,19 @@ const documentTitle =
   .post__header { display: grid; gap: var(--stack-md); }
   .post__title {
     font-family: var(--font-display);
-    font-size: var(--text-4xl);
-    font-weight: var(--weight-light);
+    font-size: var(--text-5xl);
+    font-weight: var(--weight-medium);
     letter-spacing: var(--tracking-tight);
-    line-height: var(--leading-tight);
-    max-width: 22ch;
+    line-height: var(--leading-display);
+    max-width: 24ch;
   }
   .post__meta {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
     color: var(--ink-soft);
-    font-size: 0.95rem;
+    font-size: var(--text-sm);
+    font-variant-numeric: tabular-nums;
   }
   .post__cover {
     margin: 0;
@@ -366,9 +369,10 @@ const documentTitle =
   }
   .post__toc-label {
     margin: 0;
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    font-size: var(--text-xs);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-wider);
+    line-height: var(--leading-none);
     text-transform: uppercase;
     color: var(--ink-soft);
   }
@@ -398,8 +402,8 @@ const documentTitle =
     text-decoration: underline;
     text-underline-offset: 0.18em;
     text-decoration-thickness: 1px;
-    font-size: 0.98rem;
-    line-height: 1.4;
+    font-size: var(--text-md);
+    line-height: var(--leading-snug);
     transition: color 0.2s, text-decoration-color 0.2s;
   }
   .post__toc-list a:hover,
@@ -413,19 +417,20 @@ const documentTitle =
   .post__prose {
     display: grid;
     gap: var(--stack-lg);
-    font-size: 1.05rem;
-    line-height: 1.75;
+    font-size: var(--text-lg);
+    line-height: 1.7;
     color: rgba(17, 17, 17, 0.88);
   }
   .post__prose :global(h2) {
-    margin-top: 2rem;
-    font-size: clamp(1.25rem, 2.2vw, 1.55rem);
-    font-weight: 600;
-    letter-spacing: -0.02em;
-    line-height: 1.25;
+    margin-top: var(--stack-xl);
+    font-size: var(--text-title);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-tight);
     color: var(--ink);
     scroll-margin-top: 5.5rem;
   }
+  .post__prose :global(h2 + h3) { margin-top: 0; }
   .post__prose :global(p) { margin: 0; }
   .post__prose :global(a) {
     color: inherit;
@@ -485,8 +490,8 @@ const documentTitle =
     width: max-content;
     min-width: 100%;
     border-collapse: collapse;
-    font-size: 0.88rem;
-    line-height: 1.45;
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
     table-layout: auto;
   }
   .post__prose :global(th),
@@ -525,17 +530,17 @@ const documentTitle =
   @media (min-width: 48rem) {
     .post__prose :global(th),
     .post__prose :global(td) {
-      font-size: 0.92rem;
+      font-size: var(--text-sm);
       min-width: 8.5rem;
       max-width: 16rem;
     }
   }
   .post__prose :global(h3) {
-    margin-top: 0.65rem;
-    font-size: clamp(1.05rem, 1.8vw, 1.2rem);
-    font-weight: 600;
-    letter-spacing: -0.015em;
-    line-height: 1.35;
+    margin-top: var(--stack-sm);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    line-height: var(--leading-snug);
     color: var(--ink);
   }
   .post__footer {

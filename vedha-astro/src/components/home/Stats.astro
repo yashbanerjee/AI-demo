@@ -67,8 +67,10 @@ const cards = [
 </section>
 
 <style is:global>
+  /* Content hugs the card's left padding so all four cards share one
+     text edge (centering the grid track made each card indent differently). */
   .stat-card--compact {
-    justify-content: center;
+    justify-content: start;
   }
 
   .stat-card--compact .stat-card__top {

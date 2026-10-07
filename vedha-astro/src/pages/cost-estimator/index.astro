@@ -448,7 +448,7 @@ const schemas = [
       <div class="estimator-sheet__panel" role="dialog" aria-modal="true" aria-label="Your estimate">
         <header class="estimator-sheet__head">
           <p class="estimator__kicker">Your estimate</p>
-          <button type="button" class="estimator-sheet__close" data-cart-close aria-label="Close">×</button>
+          <button type="button" class="estimator-sheet__close" data-cart-close aria-label="Close"></button>
         </header>
         <ul class="estimator-cart__lines" data-cart-lines-mobile></ul>
         <div class="estimator-cart__meta">
@@ -624,7 +624,7 @@ const schemas = [
 
   .estimator__kicker {
     margin: 0;
-    font-size: 0.68rem;
+    font-size: var(--text-2xs);
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--studio-accent);
@@ -648,7 +648,7 @@ const schemas = [
     align-items: center;
     gap: 0.4rem;
     margin: 0 0 0.35rem;
-    font-size: 0.72rem;
+    font-size: var(--text-xs);
     color: rgba(244, 242, 238, 0.45);
   }
   .estimator__crumbs a { color: inherit; }
@@ -674,7 +674,7 @@ const schemas = [
     border: 1px solid var(--studio-line);
     color: var(--studio-mute);
     font: inherit;
-    font-size: 0.78rem;
+    font-size: var(--text-xs);
     background: rgba(255, 255, 255, 0.02);
     cursor: pointer;
     transition: background var(--fast), color var(--fast), border-color var(--fast), box-shadow var(--med), transform var(--fast);
@@ -736,7 +736,7 @@ const schemas = [
     gap: 0.2rem 1rem;
   }
   .estimator__section-head h2 { font-size: 0.95rem; letter-spacing: -0.02em; font-weight: 600; outline: none; }
-  .estimator__section-head p { color: var(--studio-mute); font-size: 0.78rem; }
+  .estimator__section-head p { color: var(--studio-mute); font-size: var(--text-xs); }
 
   /* Shared check badge on media */
   .estimator-check {
@@ -808,10 +808,10 @@ const schemas = [
   .estimator-base__body { display: grid; gap: 0.25rem; padding: 0.55rem 0.7rem 0.6rem; align-content: start; }
   .estimator-base__top { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
   .estimator-base__name { font-weight: 600; letter-spacing: -0.02em; font-size: 0.92rem; line-height: 1.25; }
-  .estimator-base__price { font-variant-numeric: tabular-nums; font-size: 0.78rem; color: var(--studio-accent); white-space: nowrap; font-weight: 600; }
+  .estimator-base__price { font-variant-numeric: tabular-nums; font-size: var(--text-xs); color: var(--studio-accent); white-space: nowrap; font-weight: 600; }
   .estimator-base__desc {
     color: var(--studio-mute);
-    font-size: 0.75rem;
+    font-size: var(--text-xs);
     line-height: 1.35;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -823,7 +823,7 @@ const schemas = [
     justify-content: space-between;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.66rem;
+    font-size: var(--text-2xs);
     color: rgba(244, 242, 238, 0.45);
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -842,7 +842,7 @@ const schemas = [
     border: 1px solid var(--studio-line);
     background: rgba(255, 255, 255, 0.03);
     color: var(--studio-mute);
-    font-size: 0.78rem;
+    font-size: var(--text-xs);
     cursor: pointer;
     transition: background var(--fast), color var(--fast), border-color var(--fast), transform var(--fast);
   }
@@ -892,7 +892,7 @@ const schemas = [
   .estimator-addon__body { display: grid; gap: 0.28rem; align-content: start; padding: 0.55rem 0.7rem 0.55rem; }
   .estimator-addon__badges { display: flex; flex-wrap: wrap; gap: 0.25rem; min-height: 0.95rem; }
   .estimator-badge {
-    font-size: 0.58rem;
+    font-size: var(--text-2xs);
     letter-spacing: 0.07em;
     text-transform: uppercase;
     font-weight: 600;
@@ -905,15 +905,15 @@ const schemas = [
   .estimator-badge--rec { background: rgba(244, 242, 238, 0.92); color: #111; }
   .estimator-addon__top { display: flex; justify-content: space-between; gap: 0.45rem; align-items: baseline; }
   .estimator-addon__name { font-weight: 600; letter-spacing: -0.02em; font-size: 0.86rem; line-height: 1.25; }
-  .estimator-addon__price { font-variant-numeric: tabular-nums; font-size: 0.74rem; color: var(--studio-accent); white-space: nowrap; font-weight: 600; }
-  .estimator-addon__desc { color: var(--studio-mute); font-size: 0.73rem; line-height: 1.4; }
+  .estimator-addon__price { font-variant-numeric: tabular-nums; font-size: var(--text-xs); color: var(--studio-accent); white-space: nowrap; font-weight: 600; }
+  .estimator-addon__desc { color: var(--studio-mute); font-size: var(--text-xs); line-height: 1.4; }
   .estimator-addon__foot { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; padding-top: 0.1rem; }
-  .estimator-addon__meta { font-size: 0.64rem; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(244, 242, 238, 0.45); }
+  .estimator-addon__meta { font-size: var(--text-2xs); letter-spacing: 0.05em; text-transform: uppercase; color: rgba(244, 242, 238, 0.45); }
   .estimator-addon__action {
     display: inline-flex;
     align-items: center;
     gap: 0.3rem;
-    font-size: 0.66rem;
+    font-size: var(--text-2xs);
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
@@ -955,7 +955,7 @@ const schemas = [
   @media (min-width: 40rem) { .estimator-form__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
   .estimator-field { display: grid; gap: 0.3rem; min-width: 0; }
   .estimator-field--full { grid-column: 1 / -1; }
-  .estimator-field label { font-size: 0.74rem; letter-spacing: 0.02em; color: var(--studio-mute); font-weight: 500; }
+  .estimator-field label { font-size: var(--text-xs); letter-spacing: 0.02em; color: var(--studio-mute); font-weight: 500; }
   .estimator-field:focus-within label { color: var(--studio-ink); }
   .estimator-form__optional { color: rgba(244, 242, 238, 0.4); font-weight: 400; }
   .estimator-field input,
@@ -1007,7 +1007,7 @@ const schemas = [
   .estimator-select select option { background: #1a1a1a; color: var(--studio-ink); }
   .estimator-nav--form { justify-content: space-between; padding-top: 0.1rem; }
   .estimator .form-note { margin: 0; border-radius: 0.5rem; }
-  .estimator__disclaimer { margin: 0; color: rgba(244, 242, 238, 0.42); font-size: 0.74rem; line-height: 1.4; }
+  .estimator__disclaimer { margin: 0; color: rgba(244, 242, 238, 0.42); font-size: var(--text-xs); line-height: 1.4; }
 
   .estimator-delivery {
     background: linear-gradient(165deg, rgba(212, 180, 131, 0.1), rgba(18, 18, 18, 0.9) 60%);
@@ -1019,9 +1019,9 @@ const schemas = [
     box-shadow: var(--studio-shadow);
   }
   .estimator-delivery__value { font-size: clamp(1.4rem, 2.5vw, 1.8rem); font-weight: 600; letter-spacing: -0.02em; color: var(--studio-accent); line-height: 1.1; }
-  .estimator-delivery__note { color: var(--studio-mute); font-size: 0.76rem; line-height: 1.4; }
+  .estimator-delivery__note { color: var(--studio-mute); font-size: var(--text-xs); line-height: 1.4; }
   .estimator-delivery__facts { margin: 0.5rem 0 0; display: grid; gap: 0.35rem; border-top: 1px solid var(--studio-line); padding-top: 0.6rem; }
-  .estimator-delivery__facts div { display: flex; justify-content: space-between; gap: 0.75rem; font-size: 0.78rem; }
+  .estimator-delivery__facts div { display: flex; justify-content: space-between; gap: 0.75rem; font-size: var(--text-xs); }
   .estimator-delivery__facts dt { color: var(--studio-mute); }
   .estimator-delivery__facts dd { margin: 0; font-weight: 600; text-align: right; }
 
@@ -1059,7 +1059,7 @@ const schemas = [
     box-shadow: var(--studio-shadow);
   }
   .estimator-cart__head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-  .estimator-cart__count { font-size: 0.72rem; color: var(--studio-mute); font-variant-numeric: tabular-nums; }
+  .estimator-cart__count { font-size: var(--text-xs); color: var(--studio-mute); font-variant-numeric: tabular-nums; }
   .estimator-cart__lines {
     list-style: none;
     display: grid;
@@ -1094,7 +1094,7 @@ const schemas = [
   .estimator-cart__thumb { grid-row: 1 / span 2; width: 2.35rem; height: 2.35rem; border-radius: 0.4rem; overflow: hidden; background: #000; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); }
   .estimator-cart__thumb img { width: 100%; height: 100%; object-fit: cover; }
   .estimator-cart__line strong { font-size: 0.8rem; font-weight: 600; grid-column: 2; grid-row: 1; color: var(--studio-ink); line-height: 1.25; }
-  .estimator-cart__price { font-size: 0.74rem; color: var(--studio-accent); font-variant-numeric: tabular-nums; grid-column: 3; grid-row: 1; font-weight: 600; white-space: nowrap; }
+  .estimator-cart__price { font-size: var(--text-xs); color: var(--studio-accent); font-variant-numeric: tabular-nums; grid-column: 3; grid-row: 1; font-weight: 600; white-space: nowrap; }
   .estimator-cart__remove {
     grid-column: 2 / -1;
     grid-row: 2;
@@ -1132,7 +1132,7 @@ const schemas = [
     background: transparent;
     color: var(--studio-mute);
     font: inherit;
-    font-size: 0.76rem;
+    font-size: var(--text-xs);
     cursor: pointer;
     padding: 0.2rem 0.4rem;
     transition: color var(--fast);
@@ -1208,10 +1208,15 @@ const schemas = [
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.08);
     color: #fff;
+    padding: 0;
+    display: grid;
+    place-items: center;
     font-size: 1.4rem;
     line-height: 1;
     cursor: pointer;
   }
+  /* The × glyph sits high in its em box; nudge it onto the optical centre */
+  .estimator-sheet__close::before { content: "×"; display: block; transform: translateY(-0.06em); }
   @keyframes estimator-sheet-up {
     from { transform: translateY(12%); opacity: 0.6; }
     to { transform: none; opacity: 1; }
