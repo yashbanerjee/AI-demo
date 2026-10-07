@@ -708,7 +708,8 @@
           target.getBoundingClientRect().top +
           window.scrollY -
           (parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 80);
-        window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
+        if (window.__lenis && !reduceMotion) window.__lenis.scrollTo(top);
+        else window.scrollTo({ top, behavior: reduceMotion ? "auto" : "smooth" });
         history.replaceState(null, "", href);
       });
     });
@@ -1202,7 +1203,9 @@
   };
 
   if (hasScenes && !reduceMotion) {
-    const SMOOTH = 0.16; // catch-up factor per frame
+    // Catch-up factor per frame. When Lenis is smoothing the scroll itself,
+    // track it tightly so the scenes don't lag a second time behind it.
+    const SMOOTH = window.__lenis ? 0.42 : 0.16;
     const EPS = 0.0004;
     let settled = false;
     const loop = () => {

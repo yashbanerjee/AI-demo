@@ -32,6 +32,18 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Lenis smooth scroll: it drives scrollTop itself every frame, so native
+   CSS smoothing must be off or the two fight and judder. */
+html.lenis,
+html.lenis body { height: auto; }
+html.lenis,
+html.has-smooth-scroll { scroll-behavior: auto; }
+.lenis [data-lenis-prevent],
+.lenis .booking-modal,
+.lenis .enquiry-modal,
+.lenis .menu-overlay,
+.lenis [data-estimator-main] { overscroll-behavior: contain; }
+
 body {
   font-family: var(--font-sans);
   font-size: var(--text-md);
