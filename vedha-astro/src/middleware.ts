@@ -11,6 +11,11 @@ const realRoutes = /^\/(blog|services|products|contact|llms|admin|api|media|imag
 const wpLeftovers = /^\/(wp-(admin|content|includes|json|login)|xmlrpc\.php|feed|comments|tag|category|author|hello-world|thank-you)(\/|$|\.)/i;
 const spamKeywords = /(casino|slots?|roulette|blackjack|bingo|gambl|jackpot|no-deposit|free-spins?|bet365|betting|baccarat|craps|gamstop|bookmaker)/i;
 
+const movedPages: Record<string, string> = {
+  "/services/cybersecurity-compliance/application-security-reviews/":
+    "/services/cybersecurity-compliance/application-security-services/",
+};
+
 const gone = () =>
   new Response("410 Gone — this page has been permanently removed.", {
     status: 410,
@@ -24,6 +29,9 @@ export const onRequest = defineMiddleware((context, next) => {
   if (wpPostId && /^\d+$/.test(wpPostId)) return gone();
   if (wpLeftovers.test(pathname)) return gone();
   if (pathname !== "/" && !realRoutes.test(pathname) && spamKeywords.test(pathname)) return gone();
+
+  const movedTo = movedPages[pathname.endsWith("/") ? pathname : `${pathname}/`];
+  if (movedTo) return context.redirect(movedTo, 301);
 
   // Site uses trailingSlash: always — slashless page URLs 404 before the route.
   // Uploaded files are stored as /media/file.jpg (no slash); serve that path too.

@@ -1689,9 +1689,9 @@ const servicePillars = [
               "Structured reviews of systems and controls that identify vulnerabilities and exposure.",
           },
           {
-            name: "Application security reviews",
+            name: "Application Security Services",
             description:
-              "Code and architecture reviews focused on common application attack surfaces.",
+              "Security reviews, secure source code analysis and remediation support that reduce application risk.",
           },
           {
             name: "Access-control architecture",

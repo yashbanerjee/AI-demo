@@ -1646,7 +1646,7 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha Tech",
     ],
   },
-  "application-security-reviews": {
+  "application-security-services": {
     seoTitle: "Application Security Services in Dubai & UAE | Vedha Tech",
     seoDescription:
       "Reduce application risk with expert security reviews, secure source code analysis and practical remediation support for businesses in Dubai, the UAE and beyond.",
