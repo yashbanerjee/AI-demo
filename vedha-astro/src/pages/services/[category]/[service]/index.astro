@@ -2,10 +2,12 @@
 import BaseLayout from "../../../../layouts/BaseLayout.astro";
 import {
   getServiceBySlugs,
+  getServicesBySlugs,
   getSiblingServices,
   servicePath,
 } from "../../../../data/services.js";
 import { buildServiceLanding } from "../../../../lib/serviceLanding";
+import { renderInline } from "../../../../lib/inlineLinks";
 import {
   breadcrumbSchema,
   faqPageSchema,
@@ -21,7 +23,9 @@ if (!service) {
 }
 
 const landing = buildServiceLanding(service);
-const related = getSiblingServices(categorySlug, serviceSlug, 6);
+const related = landing.relatedSlugs?.length
+  ? getServicesBySlugs(categorySlug, landing.relatedSlugs)
+  : getSiblingServices(categorySlug, serviceSlug, 6);
 const pagePath = service.path;
 const categoryPath = `/services/${service.categorySlug}/`;
 
@@ -38,6 +42,8 @@ const schema = [
     path: pagePath,
     category: service.categoryName,
     image: landing.cover,
+    alternateName: landing.alternateNames,
+    serviceType: landing.serviceType,
   }),
   faqPageSchema(landing.faqs),
 ];
@@ -102,7 +108,7 @@ const schema = [
         <h2 id="why-heading">{landing.whyHeading ?? `Why ${service.name} is important`}</h2>
       </header>
       <div class="svc-leaf__prose">
-        {landing.whyImportant.map((p) => <p>{p}</p>)}
+        {landing.whyImportant.map((p) => <p set:html={renderInline(p)} />)}
       </div>
       {landing.benefits.length > 0 && (
         <ul class="svc-leaf__benefits">
@@ -133,7 +139,7 @@ const schema = [
         </ol>
         {landing.howHelpsOutro && (
           <div class="svc-leaf__prose svc-leaf__prose--after">
-            <p>{landing.howHelpsOutro}</p>
+            <p set:html={renderInline(landing.howHelpsOutro)} />
           </div>
         )}
       </section>
@@ -181,7 +187,7 @@ const schema = [
           <h2 id="why-us-heading">{landing.whyUsHeading ?? "Why Vedha?"}</h2>
         </header>
         <div class="svc-leaf__prose">
-          {landing.whyUs.map((p) => <p>{p}</p>)}
+          {landing.whyUs.map((p) => <p set:html={renderInline(p)} />)}
         </div>
       </section>
     )}
@@ -376,6 +382,17 @@ const schema = [
     font-size: var(--text-lg);
     line-height: var(--leading-relaxed);
     max-width: none;
+  }
+  .svc-leaf__prose :global(a) {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: rgba(17, 17, 17, 0.35);
+    transition: text-decoration-color 0.25s;
+  }
+  .svc-leaf__prose :global(a:hover) {
+    text-decoration-color: currentColor;
   }
 
   .svc-leaf__benefits {

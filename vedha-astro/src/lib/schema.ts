@@ -65,16 +65,22 @@ export const leafServiceSchema = ({
   path,
   category,
   image,
+  alternateName,
+  serviceType,
 }: {
   name: string;
   description: string;
   path: string;
   category: string;
   image?: string;
+  alternateName?: string[];
+  serviceType?: string;
 }) => ({
   "@context": "https://schema.org",
   "@type": "Service",
   name,
+  ...(alternateName && alternateName.length ? { alternateName } : {}),
+  ...(serviceType ? { serviceType } : {}),
   description,
   url: absoluteUrl(path),
   category,

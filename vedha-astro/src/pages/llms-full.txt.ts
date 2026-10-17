@@ -2,6 +2,7 @@ import type { APIRoute } from "astro";
 import { getCollection } from "astro:content";
 import { pillars, slugOf, getAllServices } from "../data/services.js";
 import { buildServiceLanding } from "../lib/serviceLanding";
+import { stripInline } from "../lib/inlineLinks";
 import { textHeaders } from "../lib/sitemaps";
 
 export const GET: APIRoute = async ({ site }) => {
@@ -29,7 +30,7 @@ export const GET: APIRoute = async ({ site }) => {
               return `### ${svc.name}
 - URL: ${origin}${path}
 - Summary: ${svc.description}
-- Why it matters: ${landing.whyImportant[0]}
+- Why it matters: ${stripInline(landing.whyImportant[0])}
 - Process: ${landing.process.map((s) => s.title).join(" → ")}
 `;
             })
