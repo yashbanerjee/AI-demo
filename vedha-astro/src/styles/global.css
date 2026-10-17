@@ -2846,6 +2846,7 @@ a.svc-ask {
   color: rgba(17, 17, 17, 0.45);
   text-align: center;
 }
+.enquiry-modal__terms a { color: inherit; text-decoration: underline; }
 
 /* ============ Footer ============ */
 .site-footer {

@@ -74,6 +74,7 @@ export async function buildPagesSitemap(site: URL) {
       priority: "0.8",
     },
     { loc: abs(site, "/contact/"), changefreq: "monthly", priority: "0.8" },
+    { loc: abs(site, "/privacy-policy/"), changefreq: "yearly", priority: "0.3" },
     {
       loc: abs(site, "/cost-estimator/"),
       lastmod: new Date().toISOString(),

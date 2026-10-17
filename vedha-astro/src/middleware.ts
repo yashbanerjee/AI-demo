@@ -7,7 +7,7 @@ import { SESSION_COOKIE, verifyToken } from "./lib/auth";
  * tells crawlers those URLs are permanently deleted, which deindexes them
  * faster. None of these patterns overlap with real routes.
  */
-const realRoutes = /^\/(blog|services|products|contact|llms|admin|api|media|images|icons|fonts|videos|favicon|robots\.txt|sitemap|rss|manifest|cost-estimator|web-development-dubai)(\/|$|\.|-)/i;
+const realRoutes = /^\/(blog|services|products|contact|privacy-policy|llms|admin|api|media|images|icons|fonts|videos|favicon|robots\.txt|sitemap|rss|manifest|cost-estimator|web-development-dubai)(\/|$|\.|-)/i;
 const wpLeftovers = /^\/(wp-(admin|content|includes|json|login)|xmlrpc\.php|feed|comments|tag|category|author|hello-world|thank-you)(\/|$|\.)/i;
 const spamKeywords = /(casino|slots?|roulette|blackjack|bingo|gambl|jackpot|no-deposit|free-spins?|bet365|betting|baccarat|craps|gamstop|bookmaker)/i;
 
@@ -32,6 +32,10 @@ export const onRequest = defineMiddleware((context, next) => {
 
   const movedTo = movedPages[pathname.endsWith("/") ? pathname : `${pathname}/`];
   if (movedTo) return context.redirect(movedTo, 301);
+
+  if (pathname === "/privacy-policy") {
+    return context.redirect("/privacy-policy/");
+  }
 
   // Site uses trailingSlash: always — slashless page URLs 404 before the route.
   // Uploaded files are stored as /media/file.jpg (no slash); serve that path too.
