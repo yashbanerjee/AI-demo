@@ -1519,6 +1519,139 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha Tech",
     ],
   },
+  "construction-erp": {
+    seoTitle: "Construction ERP Implementation in Dubai & UAE | Vedha Tech",
+    seoDescription:
+      "Connect your project costs, procurement, and site operations with construction ERP in Dubai and the UAE. Improve visibility and take control of project delivery.",
+    h1: "Construction ERP in Dubai and the UAE",
+    lede: "Construction ERP helps businesses in Dubai and the UAE connect project costs, procurement and site operations, improve financial visibility, and build a practical foundation for controlled growth.",
+    summary:
+      "Connected workflows, clearer project reporting, and phased implementation that supports everyday operational decisions.",
+    whyHeading: "What is Construction ERP?",
+    whyImportant: [
+      "Construction ERP connects project delivery, purchasing, materials, subcontractor management and financial reporting within a shared operational system. It helps teams track commitments, costs and progress without relying on disconnected spreadsheets.",
+      "A construction ERP system should reflect how your projects run: budgets, approval routes, material movements, subcontractor responsibilities and reporting requirements. The aim is to make information easier to trust and act on.",
+      "Vedha’s existing offering focuses on ERP configurations for project costing, subcontractors, materials and site operations, with implementation scoped around business requirements.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Vedha Tech helps construction businesses",
+    howHelpsIntro:
+      "Vedha helps contractors and construction companies turn fragmented operational data into clearer decisions.",
+    howHelps: [
+      {
+        title: "Improve project cost visibility",
+        body: "Track budgets, purchasing commitments and actual expenditure to identify potential overruns earlier.",
+      },
+      {
+        title: "Strengthen procurement control",
+        body: "Connect purchase requests, approvals and material requirements to project priorities.",
+      },
+      {
+        title: "Reduce duplicate administration",
+        body: "Limit repeated data entry and manual reconciliation between site, procurement and finance teams.",
+      },
+      {
+        title: "Coordinate subcontractor workflows",
+        body: "Clarify work packages, approval responsibilities and payment information.",
+      },
+      {
+        title: "Support site execution",
+        body: "Make material availability and project information easier for relevant teams to access.",
+      },
+      {
+        title: "Build management confidence",
+        body: "Establish consistent reporting so leaders can compare performance and prioritise action.",
+      },
+    ],
+    processHeading: "What Construction ERP includes",
+    processIntro:
+      "Construction ERP implementation in the UAE should follow the business’s operational priorities, not a fixed module checklist. The final scope depends on your platform, processes, data and integration requirements.",
+    process: [
+      {
+        title: "Assess operations and ERP readiness",
+        body: "We review project workflows, existing systems, reporting gaps and stakeholder needs. This establishes priorities, implementation risks and measurable success criteria.",
+      },
+      {
+        title: "Define the ERP blueprint",
+        body: "We map the required modules, responsibilities, approval routes and data flows. The blueprint sets out what will be configured, customised, integrated or deferred to a later phase.",
+      },
+      {
+        title: "Configure project and operational workflows",
+        body: "We configure agreed workflows for areas such as project costing, procurement, materials and subcontractor management. Customisation is considered where standard functionality does not meet a validated requirement.",
+      },
+      {
+        title: "Prepare data and integrations",
+        body: "We plan data mapping, cleansing responsibilities and migration checks. Agreed integrations connect relevant systems, with validation rules to help keep financial and operational information consistent.",
+      },
+      {
+        title: "Test, train and launch",
+        body: "We support user acceptance testing, role-based training and a controlled cutover. Launch criteria help confirm that priority workflows, permissions and reports are ready for operational use.",
+      },
+      {
+        title: "Stabilise and improve",
+        body: "Where included, post-launch support addresses issues, adoption gaps and reporting adjustments. Further improvements are prioritised against actual usage and business needs.",
+      },
+    ],
+    outcomesHeading: "Construction ERP deliverables",
+    outcomesIntro: "Depending on the agreed scope, deliverables may include:",
+    outcomes: [
+      "ERP readiness assessment and prioritised requirements.",
+      "Implementation blueprint and phased delivery plan.",
+      "Configured project costing and budget workflows.",
+      "Procurement and materials management workflows.",
+      "Subcontractor records and approval workflows.",
+      "Agreed financial integrations and data mappings.",
+      "Data migration plan and validation records.",
+      "Role-based dashboards and management reports.",
+      "User acceptance testing records and training materials.",
+      "Go-live checklist, handover documentation and agreed support plan.",
+    ],
+    whyUsHeading: "Why Vedha Tech?",
+    whyUs: [
+      "Choosing a construction ERP partner in the UAE means finding a team that understands the relationship between systems, processes and adoption.",
+      "Vedha’s approach connects implementation planning with configuration, integration, training and operational handover. The existing service follows this sequence rather than treating ERP as a software installation alone.",
+      "For businesses evaluating construction ERP software in Dubai, we focus on the workflows and reporting outcomes that justify the investment. Your scope should distinguish standard platform capabilities from custom development and third-party dependencies.",
+      "Vedha works with companies within and outside the UAE. Engagements can support a focused operational requirement or a phased rollout across teams and projects.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "What should ERP for construction companies in Dubai cover?",
+        answer:
+          "Start with project costing, procurement, materials, subcontractor workflows and financial reporting. The right scope depends on your project types, operating model and existing systems. Not every business needs every module at launch.",
+      },
+      {
+        question: "How is ERP for the construction industry different from generic ERP?",
+        answer:
+          "Construction workflows require close links between projects, cost codes, purchasing commitments, materials and subcontractor activity. The configuration should make these relationships visible rather than rely solely on company-wide accounting or inventory records.",
+      },
+      {
+        question: "Can you implement ERP for contractors in Dubai?",
+        answer:
+          "Yes. Vedha’s construction ERP service can be scoped around contractor workflows, including project expenditure, purchasing, material allocation and subcontractor coordination. Requirements and platform suitability are assessed before implementation.",
+      },
+      {
+        question: "Can a construction ERP production module support fabrication or precast operations?",
+        answer:
+          "Yes. A production module can help plan fabrication, allocate materials, track completed components and coordinate site deliveries. Vedha reviews your workflows and selected ERP to confirm which features are available and where customisation is needed.",
+      },
+    ],
+    ctaTitle: "Ready to connect your construction operations?",
+    ctaBody:
+      "Tell us about your projects, current systems and reporting challenges. Our Dubai team will help define a focused implementation scope and practical next step.",
+    ctaPrimaryLabel: "Discuss your construction ERP project",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    keywords: [
+      "construction ERP Dubai",
+      "construction ERP UAE",
+      "construction ERP implementation Dubai",
+      "ERP for construction companies Dubai",
+      "ERP Solutions",
+      "Vedha Tech",
+    ],
+  },
   "retail-erp": {
     seoTitle: "Retail ERP in Dubai, UAE | Vedha Tech",
     seoDescription:
@@ -1643,6 +1776,144 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "ERP consultant retail Dubai",
       "omnichannel retail ERP UAE",
       "ERP Solutions",
+      "Vedha Tech",
+    ],
+  },
+  "standard-operating-procedures": {
+    seoTitle: "Standard Operating Procedures (SOP) Consulting UAE | Vedha Tech",
+    seoDescription:
+      "Help your business streamline workflows and maintain consistent operations with standard operating procedures (SOP) consulting in the UAE and beyond.",
+    h1: "Standard Operating Procedures in Dubai and the UAE",
+    lede: "Standard operating procedures help businesses in Dubai and the UAE reduce process variation, retain operational knowledge, and equip teams with clear instructions for consistent, accountable daily delivery.",
+    summary:
+      "Practical process documentation, clear ownership, and usable guidance that supports confident execution.",
+    whyHeading: "What are Standard Operating Procedures?",
+    whyImportant: [
+      "Standard operating procedures (SOPs) are written instructions that explain how to complete recurring tasks consistently. They define responsibilities, actions, checks, exceptions and escalation routes so employees know what to do and when to seek help.",
+      "Vedha’s standard operating procedures consulting in the UAE turns operational knowledge into practical guidance. Whether you are documenting a new workflow or updating outdated instructions, the aim is to make processes easier to follow, teach and maintain.",
+      "SOPs can support employee onboarding, system adoption, service delivery and operational handovers. They should reflect how your business actually works, not impose a generic template.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Vedha Tech helps your business",
+    howHelpsIntro:
+      "Vedha helps teams reduce uncertainty and make everyday operations less dependent on individual knowledge.",
+    howHelps: [
+      {
+        title: "Reduce inconsistent execution",
+        body: "Give employees an agreed way to complete recurring tasks.",
+      },
+      {
+        title: "Accelerate onboarding",
+        body: "Help new starters understand responsibilities, tools and expected outcomes.",
+      },
+      {
+        title: "Retain operational knowledge",
+        body: "Capture expertise before role changes, growth or staff departures disrupt delivery.",
+      },
+      {
+        title: "Clarify accountability",
+        body: "Define who performs, checks, approves and escalates each activity.",
+      },
+      {
+        title: "Support system adoption",
+        body: "Connect software workflows to the tasks employees need to complete.",
+      },
+      {
+        title: "Make improvement easier",
+        body: "Establish a documented baseline for reviewing bottlenecks, errors and unnecessary steps.",
+      },
+    ],
+    processHeading: "What Standard Operating Procedures includes",
+    processIntro:
+      "The exact scope depends on your process complexity, available documentation and access to process owners. A typical engagement follows six steps.",
+    process: [
+      {
+        title: "Prioritise the processes",
+        body: "We identify the workflows that most need documentation, considering business impact, recurring issues, handover risks and training needs. This establishes clear priorities and boundaries.",
+      },
+      {
+        title: "Capture how work happens",
+        body: "We gather existing documents and work with relevant employees to understand tasks, systems, dependencies and exceptions. Gaps or conflicting practices are recorded for your team to resolve.",
+      },
+      {
+        title: "Define responsibilities and controls",
+        body: "We clarify process owners, task responsibilities, approval points and escalation routes. Your subject-matter experts confirm any operational, legal or regulatory requirements that the procedures must reflect.",
+      },
+      {
+        title: "Draft practical procedures",
+        body: "We develop step-by-step instructions using a consistent structure. Depending on the workflow, these may include process maps, screenshots, checklists, system references and exception-handling guidance.",
+      },
+      {
+        title: "Validate with process owners",
+        body: "We review drafts with the people responsible for the work, checking accuracy, usability and missing scenarios. Agreed feedback is incorporated before approval.",
+      },
+      {
+        title: "Prepare for adoption and maintenance",
+        body: "We organise approved procedures for handover, with document ownership, version information and review guidance. Walkthroughs or training support can be included where agreed.",
+      },
+    ],
+    outcomesHeading: "Standard Operating Procedures deliverables",
+    outcomesIntro:
+      "Depending on the agreed scope, Vedha’s SOP documentation services in the UAE may include:",
+    outcomes: [
+      "Prioritised process inventory and documentation scope.",
+      "Standardised SOP template and document structure.",
+      "Approved step-by-step procedure documents.",
+      "Process maps showing activities and handoffs.",
+      "Roles, responsibilities and approval guidance.",
+      "Task checklists and supporting work instructions.",
+      "Exception-handling and escalation guidance.",
+      "Document ownership and version-control register.",
+      "Review schedule and maintenance guidance.",
+      "Handover walkthrough or training materials.",
+    ],
+    whyUsHeading: "Why Vedha Tech?",
+    whyUs: [
+      "Vedha’s existing SOP offering focuses on written procedures that help processes run consistently across teams. This approach connects documentation to day-to-day execution rather than treating it as a standalone paperwork exercise.",
+      "We focus on instructions employees can use: clear language, practical steps, defined ownership and relevant system references. Process owners remain involved so the documentation reflects approved ways of working.",
+      "Vedha works with companies within and outside the UAE. Engagements can focus on selected workflows or connect SOP development with broader training, adoption and documentation needs.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "What is included in SOP documentation services?",
+        answer:
+          "SOP documentation services typically include process discovery, responsibility mapping, procedure writing, stakeholder review and handover. The number of procedures, supporting materials and review rounds is agreed before delivery.",
+      },
+      {
+        question: "Can you update existing SOPs?",
+        answer:
+          "Yes. Vedha can review existing procedures for unclear instructions, outdated system references, missing responsibilities and inconsistent formatting. Your process owners validate changes before the updated documents are approved.",
+      },
+      {
+        question: "How are SOPs different from policies and work instructions?",
+        answer:
+          "Policies establish rules and expectations. SOPs explain how a recurring process should run, including responsibilities and decision points. Work instructions provide more detailed guidance for a specific task, such as completing an action in a software system.",
+      },
+      {
+        question: "Can SOPs support compliance or audit preparation?",
+        answer:
+          "SOPs can help document responsibilities, controls and approved practices. They do not, by themselves, establish compliance or guarantee certification. Your compliance, legal or sector specialists should confirm applicable requirements and approve relevant content.",
+      },
+      {
+        question: "How long does SOP development take?",
+        answer:
+          "Timing depends on the number and complexity of processes, existing documentation and stakeholder availability. Vedha confirms milestones after scoping, including time for discovery, drafting, review and approval.",
+      },
+    ],
+    ctaTitle: "Ready to make your processes easier to follow?",
+    ctaBody:
+      "Tell us which workflows need documenting, where teams face uncertainty, and what existing guidance is available. Our Dubai-based team will recommend a focused scope and next step.",
+    ctaPrimaryLabel: "Discuss your SOP documentation needs",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    keywords: [
+      "SOP consulting UAE",
+      "standard operating procedures Dubai",
+      "SOP documentation services UAE",
+      "standard operating procedures consulting UAE",
+      "Training, Adoption & Documentation",
       "Vedha Tech",
     ],
   },

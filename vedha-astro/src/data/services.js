@@ -2120,7 +2120,7 @@ const servicePillars = [
               "Communications and stakeholder work that reduce resistance during system change.",
           },
           {
-            name: "Standard operating procedures",
+            name: "Standard Operating Procedures",
             description:
               "Written SOPs that define how processes should run consistently across teams.",
           },
