@@ -1575,9 +1575,9 @@ const servicePillars = [
               "Content organisation that machines can parse accurately for summaries and answers.",
           },
           {
-            name: "Answer-engine optimisation",
+            name: "Answer Engine Optimisation",
             description:
-              "Tactics that improve inclusion and accuracy in answer engines and AI overviews.",
+              "AEO services in Dubai and the UAE that earn accurate brand citations in ChatGPT, Perplexity, Gemini, Copilot and Google AI Overviews.",
           },
           {
             name: "Search and AI visibility reporting",
@@ -2220,10 +2220,27 @@ export function getServiceBySlugs(categorySlug, serviceSlug) {
   );
 }
 
+// Siblings are picked from a window centred on the current service so every
+// leaf receives inbound links from its neighbours (not only the first six).
 export function getSiblingServices(categorySlug, serviceSlug, limit = 6) {
-  return getAllServices()
-    .filter(
-      (s) => s.categorySlug === categorySlug && s.slug !== serviceSlug
-    )
-    .slice(0, limit);
+  const inCategory = getAllServices().filter(
+    (s) => s.categorySlug === categorySlug
+  );
+  const idx = inCategory.findIndex((s) => s.slug === serviceSlug);
+  const others = inCategory.filter((s) => s.slug !== serviceSlug);
+  if (idx < 0 || others.length <= limit) return others.slice(0, limit);
+  const start = Math.min(
+    Math.max(idx - Math.floor(limit / 2), 0),
+    others.length - limit
+  );
+  return others.slice(start, start + limit);
+}
+
+export function getServicesBySlugs(categorySlug, slugs) {
+  const inCategory = getAllServices().filter(
+    (s) => s.categorySlug === categorySlug
+  );
+  return slugs
+    .map((slug) => inCategory.find((s) => s.slug === slug))
+    .filter(Boolean);
 }

@@ -51,6 +51,12 @@ export type ServiceLandingContent = {
   ctaPrimaryHref?: string;
   ctaSecondaryLabel?: string;
   ctaSecondaryHref?: string;
+  /** Extra names for Service schema (e.g. acronyms, alternate spellings). */
+  alternateNames?: string[];
+  /** schema.org Service.serviceType */
+  serviceType?: string;
+  /** Sibling slugs to show under "Related services" instead of the default window. */
+  relatedSlugs?: string[];
 };
 
 const hash = (s: string) =>
@@ -2188,6 +2194,180 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "application security platforms UAE",
       "Cybersecurity & Compliance",
       "Vedha Tech",
+    ],
+  },
+  "answer-engine-optimisation": {
+    seoTitle: "Answer Engine Optimisation (AEO) Services in Dubai | Vedha",
+    seoDescription:
+      "AEO services in Dubai and the UAE. Get cited accurately in ChatGPT, Perplexity, Gemini and Google AI Overviews with answer-ready content and visibility tracking.",
+    h1: "Answer Engine Optimisation (AEO) Services in Dubai, UAE",
+    lede: "Answer engine optimisation helps businesses in Dubai and the UAE become the source AI assistants cite when buyers ask ChatGPT, Perplexity, Gemini or Google AI Overviews what to buy and who to trust.",
+    summary:
+      "Answer-ready content, strong entity signals and measurable AI visibility across ChatGPT, Perplexity, Gemini and Google AI Overviews.",
+    whyHeading: "What is answer engine optimisation?",
+    whyImportant: [
+      "Answer engine optimisation (AEO, also written answer engine optimization) is the practice of improving how often, and how accurately, a brand appears in AI-generated answers. Where classic SEO earns a ranked link, AEO earns the citation or recommendation inside the answer itself — in Google AI Overviews and AI Mode, ChatGPT, Perplexity, Gemini and Microsoft Copilot, as well as featured snippets and voice assistants.",
+      "AEO builds on SEO rather than replacing it. Crawlable pages, clear information architecture, accurate [structured data](/services/search-ai-visibility/structured-data/) and genuine expertise still decide whether a page is eligible. What changes is the unit of content: answer engines extract self-contained passages, so pages need definition-first openings, question-led headings, concise direct answers and consistent brand facts that machines can quote without distortion. Generative engine optimisation (GEO) describes the same work focused on LLM-based answers; Vedha treats both as one programme.",
+      "AEO matters most where buyers research before they contact anyone: B2B technology and professional services, real estate and property management, healthcare and clinics, education, hospitality, and e-commerce. In each case a prospect in Dubai or Abu Dhabi can now ask an assistant for a shortlist and receive three or four names. If your brand is not among them — or is described with the wrong services, locations or prices — the enquiry goes elsewhere before your website is ever opened.",
+      "Vedha provides answer engine optimisation in Dubai and across the UAE for organisations whose buyers increasingly start a purchase or vendor search with a question to an AI assistant rather than a search box. We work in English and Arabic, and we measure results by citations and share of answer — not rankings alone. If you are planning a new site, our guide to [making a redesigned website ready for AI search](/blog/website-redesign-vs-rebuild-dubai/) explains how AEO fits into that project.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Vedha helps you win AI answers",
+    howHelpsIntro:
+      "Most brands are either absent from AI answers or described inaccurately in them. Vedha closes both gaps: we make your expertise easy for answer engines to find, trust and quote, then prove the change with a tracked prompt set.",
+    howHelps: [
+      {
+        title: "Be present where buying decisions now start",
+        body: "Appear in the shortlist an assistant gives when a prospect asks who does what you do in Dubai or the UAE.",
+      },
+      {
+        title: "Correct what AI says about you",
+        body: "Fix outdated, incomplete or wrong brand facts that assistants repeat because your sources contradict each other.",
+      },
+      {
+        title: "Turn expertise into quotable answers",
+        body: "Restructure service, product and knowledge pages so each section answers a real question in a self-contained way.",
+      },
+      {
+        title: "Strengthen entity and authority signals",
+        body: "Align your organisation, people and offerings across your site, structured data, profiles and third-party mentions.",
+      },
+      {
+        title: "Protect classic search while you do it",
+        body: "Every AEO change is also a technical and on-page SEO improvement — Google states its AI features reward the same fundamentals.",
+      },
+      {
+        title: "Measure citations, not guesses",
+        body: "Track brand mentions, citation share and competitor inclusion across engines month on month, tied to AI referral traffic.",
+      },
+    ],
+    howHelpsOutro:
+      "The engagement is scoped around your commercial questions, markets and languages, whether you need a focused [AI-search visibility audit](/services/search-ai-visibility/ai-search-visibility-audits/) or an ongoing answer engine optimisation programme with [AI brand-mention monitoring](/services/search-ai-visibility/ai-brand-mention-monitoring/). For organisations in Dubai and the UAE, we test English, Modern Standard Arabic and Gulf-dialect prompts separately, because the sources AI engines trust differ by language. Vedha also supports brands outside the UAE that sell into the region.",
+    processHeading: "What our AEO service includes",
+    processIntro:
+      "The following activities typically form part of an engagement. Vedha confirms the final scope after reviewing your current AI visibility, website and content operations.",
+    process: [
+      {
+        title: "Baseline your AI visibility",
+        body: "We build a prompt set from the questions your buyers actually ask — category, comparison, problem, local and branded — and run it across ChatGPT, Perplexity, Gemini, Copilot and Google AI Overviews. You see where you are mentioned, cited, ignored or misdescribed, and which competitors and sources appear instead.",
+      },
+      {
+        title: "Fix the entity and technical foundation",
+        body: "We make sure AI and search crawlers can access your pages, resolve duplicate and thin content, and align Organization, Service, Product, FAQ and Person structured data with the visible text. Brand name, location, offerings and leadership are made consistent across your site, Google Business Profile, LinkedIn, directories and press.",
+      },
+      {
+        title: "Make content answer-ready",
+        body: "Priority pages are rewritten with definition-first openings, question-led headings, concise 40–80 word direct answers, supporting evidence and clear next steps. Each section is written to stand alone so it can be extracted accurately, in English and Arabic where relevant.",
+      },
+      {
+        title: "Build corroboration beyond your website",
+        body: "Answer engines weigh what others say about you. We identify the comparison articles, industry directories, review platforms, communities and publications that engines cite in your category, and plan how your brand earns accurate mentions there.",
+      },
+      {
+        title: "Integrate with classic SEO and content operations",
+        body: "AEO changes are folded into your existing keyword, content and technical SEO roadmap so one effort improves rankings, snippets and AI citations together. We also brief your writers and marketing team on the answer-ready format.",
+      },
+      {
+        title: "Measure, report and iterate",
+        body: "Each month we re-run the prompt set, track brand mention rate, citation share, competitor inclusion and AI referral sessions in GA4, then adjust the plan. Volatility across runs is reported honestly rather than cherry-picked.",
+      },
+    ],
+    outcomesHeading: "Answer engine optimisation deliverables",
+    outcomesIntro:
+      "Depending on scope, your AEO engagement may include the items below. Together they give marketing, product and leadership teams a shared, evidence-based view of how the brand appears in AI answers and what to do about it.",
+    outcomes: [
+      "AI visibility audit across ChatGPT, Perplexity, Gemini, Copilot and Google AI Overviews.",
+      "Buyer prompt set covering category, comparison, problem, local and branded questions.",
+      "Competitor and source analysis showing who is cited for your questions today.",
+      "Entity consistency review and remediation plan across web, profiles and directories.",
+      "Structured data implementation aligned to visible content.",
+      "AI crawler access and technical readiness fixes.",
+      "Answer-ready rewrites of priority service, product and knowledge pages.",
+      "English and Arabic content guidelines for answer-ready writing.",
+      "Third-party mention and corroboration plan.",
+      "Monthly AI visibility report with brand mention rate, citation share and referral traffic.",
+    ],
+    whyUsHeading: "Why Vedha?",
+    whyUs: [
+      "Vedha combines search expertise with the engineering to act on it. The same team that audits your AI visibility can run the [technical SEO audit](/services/search-ai-visibility/technical-seo-audits/), fix the structured data, strengthen [entity and knowledge signals](/services/search-ai-visibility/entity-and-knowledge-optimisation/), rebuild page templates, [improve site performance](/services/search-ai-visibility/website-performance-improvement/) and integrate analytics — so recommendations do not stall in a backlog waiting for a developer.",
+      "We are based in Dubai and build for how the UAE actually searches: a multilingual audience moving between English, Arabic and code-switched queries, with AI assistants increasingly the first stop. Our prompt sets and content plans reflect that reality rather than a generic global playbook.",
+      "We report what engines actually return. Citation and mention tracking is run as a real user would see it, variability is disclosed, and progress is tied to AI referral traffic and enquiries — not to a single visibility score.",
+    ],
+    faqHeading: "Frequently asked questions",
+    faqs: [
+      {
+        question: "What is answer engine optimisation (AEO)?",
+        answer:
+          "Answer engine optimisation is the practice of improving how often and how accurately a brand appears in AI-generated answers from tools such as ChatGPT, Perplexity, Gemini, Microsoft Copilot and Google AI Overviews, as well as featured snippets and voice assistants. It focuses on being the extracted or cited answer rather than only a ranked link.",
+      },
+      {
+        question: "How is AEO different from SEO and GEO?",
+        answer:
+          "SEO earns visibility in ranked lists of links. AEO earns visibility in direct-answer formats. Generative engine optimisation (GEO) is the part of AEO focused specifically on LLM-based answers. Roughly four-fifths of the underlying work is shared — crawlable pages, clear structure, accurate structured data and genuine expertise — so Vedha delivers them as one integrated programme.",
+      },
+      {
+        question: "Which AI platforms do you optimise for?",
+        answer:
+          "Google AI Overviews and AI Mode, ChatGPT, Perplexity, Gemini and Microsoft Copilot, plus Google featured snippets and voice assistants. Each engine favours slightly different sources — for example, Google draws heavily from pages that already rank well, while Perplexity favours well-researched content with citations — so the prompt set is run across all of them.",
+      },
+      {
+        question: "Do we need an llms.txt file or special AI markup?",
+        answer:
+          "Not for Google. Google states that no new machine-readable files, AI text files or special schema are required to appear in AI Overviews or AI Mode; pages simply need to be indexable and follow standard SEO practice. Vedha focuses on crawl access, accurate structured data that matches visible content, and answer-ready writing, which benefit every engine.",
+      },
+      {
+        question: "How do you measure AEO results?",
+        answer:
+          "We track a fixed prompt set each month and report brand mention rate, citation share, the exact URLs cited, competitor inclusion and prompt coverage by engine, alongside AI referral sessions in GA4 and enquiries. Rankings are still reported, but they are not the headline metric.",
+      },
+      {
+        question: "How long does answer engine optimisation take to show results?",
+        answer:
+          "Entity corrections and structured data changes can be reflected within weeks once pages are recrawled. Earning new citations for competitive commercial questions typically takes three to six months of consistent content and corroboration work, and continues to compound with an ongoing programme.",
+      },
+      {
+        question: "Do you provide AEO services in Arabic as well as English?",
+        answer:
+          "Yes. AI engines cite noticeably different sources for Arabic and English queries in the Gulf, so Vedha tests English, Modern Standard Arabic and Gulf-dialect prompts separately and plans content and corroboration for each where it matters to your audience.",
+      },
+      {
+        question: "How much do AEO services cost in Dubai?",
+        answer:
+          "Cost depends on the number of markets and languages, the size of the prompt set, how many pages need rewriting and whether technical fixes are included. Vedha starts with a scoped AI visibility audit and provides a clear proposal for the ongoing programme before work begins.",
+      },
+    ],
+    ctaTitle: "Ready to find out what AI says about your brand?",
+    ctaBody:
+      "Tell us about your market, your buyers and the questions you want to own. Our Dubai-based team will run a baseline across the major AI engines and return a clear, prioritised next step.",
+    ctaPrimaryLabel: "Book an AEO consultation",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Explore Search & AI Visibility",
+    ctaSecondaryHref: "/services/search-ai-visibility/",
+    alternateNames: [
+      "AEO",
+      "Answer Engine Optimization",
+      "AI search optimisation",
+    ],
+    serviceType: "Answer engine optimisation and AI search visibility",
+    relatedSlugs: [
+      "ai-search-visibility-audits",
+      "ai-brand-mention-monitoring",
+      "entity-and-knowledge-optimisation",
+      "ai-readable-content-structuring",
+      "structured-data",
+      "search-and-ai-visibility-reporting",
+    ],
+    keywords: [
+      "answer engine optimisation Dubai",
+      "answer engine optimization UAE",
+      "AEO services Dubai",
+      "AEO agency UAE",
+      "generative engine optimisation Dubai",
+      "AI search visibility UAE",
+      "ChatGPT optimisation Dubai",
+      "Google AI Overviews optimisation",
+      "Search & AI Visibility",
+      "Vedha",
     ],
   },
 };
