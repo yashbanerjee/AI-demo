@@ -1,5 +1,7 @@
 import dns from "node:dns";
+import fs from "node:fs";
 import net from "node:net";
+import path from "node:path";
 import tls from "node:tls";
 import nodemailer from "nodemailer";
 
@@ -137,6 +139,68 @@ export type MailPayload = {
   replyTo?: string;
 };
 
+const LOGO_CID = "vedha-logo";
+
+function emailLogoPath(): string | null {
+  const candidates = [
+    path.join(process.cwd(), "public", "images", "email-logo.png"),
+    path.join(process.cwd(), "dist", "client", "images", "email-logo.png"),
+  ];
+  return candidates.find((file) => fs.existsSync(file)) ?? null;
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+/** Plain-text body wrapped in a branded layout with the Vedha logo. */
+function brandedHtml(text: string) {
+  const paragraphs = escapeHtml(text)
+    .split(/\n{2,}/)
+    .map(
+      (block) =>
+        `<p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.55;color:#161614;">${block.replace(/\n/g, "<br>")}</p>`
+    )
+    .join("");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<body style="margin:0;padding:0;background:#f4f4f2;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f2;padding:24px 12px;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border:1px solid #e6e6e2;">
+          <tr>
+            <td align="center" style="padding:28px 24px 8px;">
+              <img src="cid:${LOGO_CID}" width="168" alt="VEDHA" style="display:block;width:168px;max-width:168px;height:auto;border:0;">
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:8px 28px 28px;">
+              ${paragraphs}
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>`;
+}
+
+function withBranding(payload: MailPayload): MailPayload & { logo?: Buffer } {
+  const logoFile = emailLogoPath();
+  const logo = logoFile ? fs.readFileSync(logoFile) : undefined;
+  return {
+    ...payload,
+    html: payload.html || (logo ? brandedHtml(payload.text) : undefined),
+    logo,
+  };
+}
+
 function createTransport() {
   const host = env("SMTP_HOST");
   const port = Number(env("SMTP_PORT", "587") || "587");
@@ -179,15 +243,25 @@ async function sendViaSmtp(payload: MailPayload) {
     throw new Error("SMTP_FROM (or SMTP_USER) is required as the From address.");
   }
 
+  const branded = withBranding(payload);
   const transport = createTransport();
   try {
     await transport.sendMail({
       from,
       to,
-      replyTo: payload.replyTo || undefined,
-      subject: payload.subject,
-      text: payload.text,
-      html: payload.html || undefined,
+      replyTo: branded.replyTo || undefined,
+      subject: branded.subject,
+      text: branded.text,
+      html: branded.html || undefined,
+      attachments: branded.logo
+        ? [
+            {
+              filename: "vedha-logo.png",
+              content: branded.logo,
+              cid: LOGO_CID,
+            },
+          ]
+        : undefined,
     });
   } finally {
     transport.close();
@@ -199,6 +273,7 @@ async function sendViaResend(payload: MailPayload) {
   const to = payload.to || env("CONTACT_TO", "info@vedha.ae");
   const from = env("SMTP_FROM", "Vedha Website <onboarding@resend.dev>");
 
+  const branded = withBranding(payload);
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
@@ -208,10 +283,19 @@ async function sendViaResend(payload: MailPayload) {
     body: JSON.stringify({
       from,
       to: [to],
-      reply_to: payload.replyTo || undefined,
-      subject: payload.subject,
-      text: payload.text,
-      html: payload.html || undefined,
+      reply_to: branded.replyTo || undefined,
+      subject: branded.subject,
+      text: branded.text,
+      html: branded.html || undefined,
+      attachments: branded.logo
+        ? [
+            {
+              filename: "vedha-logo.png",
+              content: branded.logo.toString("base64"),
+              content_id: LOGO_CID,
+            },
+          ]
+        : undefined,
     }),
     signal: AbortSignal.timeout(12_000),
   });
