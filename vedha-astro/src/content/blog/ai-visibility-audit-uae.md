@@ -26,7 +26,7 @@ A business can rank well on Google and still be absent from the answers people r
 
 ## What is an AI visibility audit?
 
-An AI visibility audit reviews how AI search tools present your brand when people ask relevant questions. It examines whether AI systems understand your business, trust your content and recommend it in their answers.
+An [AI visibility audit](https://vedha.ae/services/search-ai-visibility/ai-search-visibility-audits/) reviews how AI search tools present your brand when people ask relevant questions. It examines whether AI systems understand your business, trust your content and recommend it in their answers.
 
 AI visibility refers to how often and how accurately platforms such as ChatGPT, Gemini, Perplexity, and Google AI Overviews mention or cite a brand. For UAE businesses, it should also cover bilingual search behaviour, local intent, and consistent business information across the website, Google Business Profile and third-party sources.
 
