@@ -1923,6 +1923,148 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha Tech",
     ],
   },
+  "brand-naming": {
+    seoTitle: "Brand Naming in Dubai & UAE | Vedha Tech",
+    seoDescription:
+      "Find a name your business can build on with brand naming in Dubai and the UAE. Explore distinctive options, compare candidates and choose with confidence.",
+    h1: "Brand Naming in Dubai and the UAE",
+    lede: "Find a name that fits your business, makes sense to your audience and leaves room for growth. Vedha provides brand naming in Dubai and the UAE, helping you develop credible options and choose between them with clear reasoning.",
+    summary:
+      "Focused name exploration, structured evaluation and a shortlist your team can make a decision on.",
+    whyHeading: "What Is Brand Naming?",
+    whyImportant: [
+      "Your team has plenty of suggestions, but no clear favourite. Some names feel too generic, others are difficult to pronounce, and the strongest candidates may already be in use.",
+      "Brand naming gives that discussion structure. It involves developing and evaluating names for a business, product or service against agreed criteria, rather than relying on personal preference alone.",
+      "You gain a shortlist with an explanation behind each candidate, potential concerns to investigate and a clearer basis for deciding which name deserves further investment.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Brand Naming Helps Your Business",
+    howHelpsIntro:
+      "A name appears in customer conversations, contracts, websites and referrals. Choosing it carefully can prevent difficulties that become harder to resolve once the business grows.",
+    howHelps: [
+      {
+        title: "Make your business easier to identify",
+        body: "Explore names that distinguish you from competitors without making your offer unnecessarily difficult to understand.",
+      },
+      {
+        title: "Move stakeholders towards a decision",
+        body: "Compare candidates against shared criteria, so feedback goes beyond whether someone simply likes a name.",
+      },
+      {
+        title: "Avoid unnecessary restrictions",
+        body: "Consider whether references to a particular location, product or audience could limit the name’s usefulness as your business develops.",
+      },
+      {
+        title: "Identify concerns before committing",
+        body: "Flag apparent spelling, pronunciation, meaning or availability issues before you commission design and launch materials.",
+      },
+    ],
+    processHeading: "Our Brand Naming Process",
+    processIntro:
+      "We begin with what the name needs to achieve, then develop and narrow the options through structured exploration and review.",
+    process: [
+      {
+        title: "Establish the naming brief",
+        body: "We clarify what you are naming, who it serves and which markets matter. Your existing positioning, language requirements and commercial plans establish the boundaries.",
+      },
+      {
+        title: "Explore naming directions",
+        body: "We define suitable approaches, such as descriptive, suggestive or coined names. These directions guide exploration and give your team a shared vocabulary for discussing options.",
+      },
+      {
+        title: "Develop and evaluate candidates",
+        body: "We generate names and filter them against the brief, considering relevance, distinctiveness, sound, spelling and flexibility. Selected candidates are presented with their intended meaning and rationale.",
+      },
+      {
+        title: "Refine the shortlist",
+        body: "We gather stakeholder feedback and review the strongest candidates. Agreed preliminary searches flag apparent conflicts or digital availability concerns, without substituting for professional legal clearance.",
+      },
+      {
+        title: "Support the selection",
+        body: "We document the preferred name or final shortlist, explain the recommendation and identify outstanding checks before you proceed with registration, identity development or launch preparation.",
+      },
+    ],
+    outcomesHeading: "Brand Naming Deliverables",
+    outcomesIntro:
+      "Depending on your organisation’s requirements and agreed scope, deliverables may include:",
+    outcomes: [
+      "Brief and Selection Criteria — Naming brief covering objectives, audience, markets and constraints.",
+      "Brief and Selection Criteria — Criteria for evaluating and comparing candidates.",
+      "Name Development — Agreed naming directions.",
+      "Name Development — Candidate names with supporting rationale.",
+      "Name Development — Refined shortlist incorporating stakeholder feedback.",
+      "Screening and Handover — Preliminary screening observations and dated availability findings, where agreed.",
+      "Screening and Handover — Preferred-name recommendation or shortlist evaluation.",
+      "Screening and Handover — Checklist of outstanding legal, linguistic and registration checks.",
+    ],
+    whyUsHeading: "Why Choose Vedha for Brand Naming?",
+    whyUs: [
+      "You need more than an interesting list of words. Vedha connects each shortlisted name to your brief, making it easier to explain the options and reach a considered decision.",
+      "If you are developing a [brand identity in Dubai](/services/brand-identity/), naming establishes the identifier that later design and communication work will use. Brand naming can also form part of Vedha’s broader brand identity services, including [brand positioning services in Dubai](/services/brand-identity/market-positioning/), visual design, messaging, brand guidelines and launch support.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Who is brand naming suitable for?",
+        answer:
+          "It suits new businesses, products and service lines, as well as organisations considering a name change because their current name causes confusion or limits expansion.",
+      },
+      {
+        question: "Do you work with businesses outside the UAE?",
+        answer:
+          "Yes. Vedha works with companies within and outside the UAE. Your intended markets, audience and language requirements shape the naming brief and any additional validation needed.",
+      },
+      {
+        question: "Does naming include brand positioning services in Dubai?",
+        answer:
+          "Naming builds on a clear understanding of your audience, offer and differentiation. If these need refining, Vedha can also help with [brand positioning services in Dubai](/services/brand-identity/market-positioning/) to give the naming work a stronger foundation.",
+      },
+      {
+        question: "Can naming form part of a brand identity package in Dubai?",
+        answer:
+          "Yes. Naming can be the starting point for your [Dubai brand identity](/services/brand-identity/). Vedha can also help develop the visual design, messaging, guidelines and launch support that bring your chosen name to life.",
+      },
+      {
+        question: "Do you confirm trademark and domain availability?",
+        answer:
+          "Agreed preliminary checks can flag apparent issues. They do not secure a domain, establish trademark rights or replace legal clearance and approval by the relevant authorities.",
+      },
+    ],
+    ctaTitle: "Choose a Name You Can Build On",
+    ctaBody:
+      "Turn an open-ended naming discussion into a focused shortlist, with clear reasons to progress each option and visibility into what still needs checking. Share what you are naming, your intended markets and any existing ideas. Our Dubai-based team will clarify the requirements and recommend a suitable engagement.",
+    ctaPrimaryLabel: "Discuss Your Brand Naming Project",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "market-positioning",
+      "brand-strategy",
+      "logo-design",
+      "brand-messaging",
+      "visual-identity-systems",
+      "brand-guidelines",
+    ],
+    keywords: [
+      "brand naming in dubai",
+      "brand identity in dubai",
+      "brand identity package in dubai",
+      "dubai brand identity",
+      "brand positioning services in dubai",
+      "Business naming",
+      "Product naming",
+      "Naming brief",
+      "Name development",
+      "Naming directions",
+      "Name evaluation",
+      "Naming shortlist",
+      "Trademark clearance",
+      "Domain availability",
+      "Linguistic validation",
+      "Brand Identity",
+      "Vedha Tech",
+    ],
+  },
   "logo-design": {
     seoTitle: "Logo Design in Dubai & UAE | Vedha Tech",
     seoDescription:
@@ -2192,6 +2334,146 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "application security Dubai",
       "secure source code review UAE",
       "application security platforms UAE",
+      "Cybersecurity & Compliance",
+      "Vedha Tech",
+    ],
+  },
+  "security-awareness-training": {
+    seoTitle: "Security Awareness Training in Dubai & UAE | Vedha Tech",
+    seoDescription:
+      "Reduce avoidable human error and strengthen everyday security habits with security awareness training in Dubai and the UAE.",
+    h1: "Security Awareness Training in Dubai and the UAE",
+    lede: "Reduce avoidable human error, strengthen everyday security habits, and help your employees recognise and report suspicious activity with security awareness training in Dubai and UAE.",
+    summary:
+      "Practical guidance, relatable scenarios, and clear reporting steps for safer decisions at work.",
+    whyHeading: "What is Security Awareness Training?",
+    whyImportant: [
+      "An unexpected invoice. A convincing email from someone posing as your manager. A link asking you to sign in again. Would your employees know what to check before acting?",
+      "Security awareness training gives your people practical ways to spot warning signs, handle information safely and raise concerns. It connects security advice to the messages, requests and decisions they encounter every day.",
+      "Your employees do not need to become cybersecurity experts. They need to know when to pause, how to verify an unusual request and where to report something suspicious. Your business benefits from a team that feels confident asking questions rather than guessing.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Vedha Tech helps your business",
+    howHelpsIntro: "Vedha helps you turn security expectations into everyday actions.",
+    howHelps: [
+      {
+        title: "Reduce avoidable mistakes",
+        body: "Help employees check before opening attachments, sharing sensitive information or approving unusual requests.",
+      },
+      {
+        title: "Encourage earlier reporting",
+        body: "Make it clear how to raise concerns, even when employees are unsure whether something is wrong.",
+      },
+      {
+        title: "Protect important workflows",
+        body: "Reinforce verification steps around payments, account changes and sensitive requests.",
+      },
+      {
+        title: "Simplify onboarding",
+        body: "Give new starters a shared understanding of their security responsibilities.",
+      },
+      {
+        title: "Make policies easier to follow",
+        body: "Explain what your security rules mean in situations employees recognise.",
+      },
+      {
+        title: "Identify learning gaps",
+        body: "Use discussions or knowledge checks to understand where your team needs more guidance.",
+      },
+    ],
+    processHeading: "What Security Awareness Training includes",
+    processIntro:
+      "Your security awareness training follows six steps, tailored to your team’s work.",
+    process: [
+      {
+        title: "Understand your people and risks",
+        body: "We learn how your employees work, which tools they use and where they encounter suspicious requests. Existing guidance and recurring concerns help us prioritise relevant topics.",
+      },
+      {
+        title: "Define learning objectives",
+        body: "We agree what your employees should recognise, how they should respond and which reporting routes they should follow. These objectives guide the content and session format.",
+      },
+      {
+        title: "Develop practical training content",
+        body: "We prepare workplace examples covering agreed topics, such as phishing, social engineering, password security, multi-factor authentication and safe information sharing.",
+      },
+      {
+        title: "Deliver role-relevant sessions",
+        body: "Your team explores scenarios linked to its responsibilities, from handling supplier invoices to accessing customer records. Sessions focus on practical decisions rather than technical jargon.",
+      },
+      {
+        title: "Practise recognition and response",
+        body: "Phishing awareness training in Dubai can include guided reviews of suspicious messages, impersonation attempts and unexpected requests. Your employees practise checking details, verifying instructions and following internal reporting procedures.",
+      },
+      {
+        title: "Reinforce learning",
+        body: "Where agreed, knowledge checks, reference materials and follow-up recommendations help you reinforce key messages and plan refresher training.",
+      },
+    ],
+    outcomesHeading: "Security Awareness Training deliverables",
+    outcomesIntro: "Depending on your agreed scope, deliverables may include:",
+    outcomes: [
+      "Audience and training-needs summary.",
+      "Learning objectives and session plan.",
+      "Tailored presentation or workshop materials.",
+      "Phishing and social engineering examples.",
+      "Role-specific security scenarios.",
+      "Employee guidance on recognising and reporting concerns.",
+      "Quick-reference security checklists.",
+      "Knowledge checks and a summary of learning gaps.",
+      "Attendance or completion records, where agreed.",
+      "Refresher recommendations and handover materials.",
+    ],
+    whyUsHeading: "Why Vedha Tech?",
+    whyUs: [
+      "With Vedha, you can focus training on the decisions your team actually makes: whether to trust an attachment, how to check a payment request or whom to contact after an accidental disclosure.",
+      "You get clear explanations, relatable examples and reporting guidance connected to your internal processes. The aim is to help your people ask better questions and respond with greater confidence, without making security feel intimidating.",
+      "Whether you need security awareness training in UAE or support for employees outside the region, Vedha can create tailored training for you. Training complements your technical controls and [incident-response planning](/services/cybersecurity-compliance/incident-response-planning/); it does not replace them.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Who should attend security awareness training?",
+        answer:
+          "Anyone using business email, systems, devices or sensitive information can benefit. Your content should reflect employee responsibilities, with targeted examples for teams handling payments, customer records or privileged access.",
+      },
+      {
+        question: "Do you provide cybersecurity training for employees in Dubai?",
+        answer:
+          "Yes. Vedha can scope training for an individual employee or a wider team in Dubai, across the UAE and internationally. The content, delivery format and supporting materials are agreed around your needs.",
+      },
+      {
+        question: "What does phishing awareness training in UAE cover?",
+        answer:
+          "Your employees can learn to recognise suspicious links, attachments, sender impersonation, fake login pages and fraudulent payment requests. Training also explains how to verify unexpected instructions and report concerns through your approved channels.",
+      },
+      {
+        question: "Does training include simulated phishing campaigns?",
+        answer:
+          "Not automatically. Reviewing examples is different from sending simulated phishing emails. Any live simulation requires a separately agreed scope, suitable tooling, authorisation and clear arrangements for employee data and reporting.",
+      },
+    ],
+    ctaTitle: "Help your team make safer security decisions",
+    ctaBody:
+      "Tell us about your employees, current concerns and existing guidance. We will recommend a focused training scope and a practical next step.",
+    ctaPrimaryLabel: "Discuss your security awareness training needs",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "incident-response-planning",
+      "security-policies",
+      "application-security-services",
+      "security-assessments",
+      "vulnerability-remediation",
+      "secure-development-practices",
+    ],
+    keywords: [
+      "security awareness training Dubai",
+      "security awareness training UAE",
+      "phishing awareness training Dubai",
+      "phishing awareness training UAE",
+      "cybersecurity training for employees Dubai",
       "Cybersecurity & Compliance",
       "Vedha Tech",
     ],

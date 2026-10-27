@@ -205,7 +205,7 @@ const schema = [
               {faq.question}
               <i aria-hidden="true"></i>
             </summary>
-            <p>{faq.answer}</p>
+            <p set:html={renderInline(faq.answer)} />
           </details>
         ))}
       </div>

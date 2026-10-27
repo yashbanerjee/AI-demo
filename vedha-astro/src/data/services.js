@@ -199,7 +199,7 @@ const servicePillars = [
           {
             name: "Brand naming",
             description:
-              "Name development and shortlisting that balances distinctiveness, clarity, and trademark practicality.",
+              "Focused name exploration, structured evaluation and a shortlist your team can decide on with clear reasoning.",
           },
           {
             name: "Brand messaging",
@@ -1761,7 +1761,7 @@ const servicePillars = [
           {
             name: "Security-awareness training",
             description:
-              "Practical training that helps staff recognise phishing, social engineering, and unsafe habits.",
+              "Practical guidance, relatable scenarios and clear reporting steps that help employees recognise and report suspicious activity.",
           },
         ],
       },
