@@ -62,7 +62,7 @@ There is no single best procurement system. The right choice depends on where yo
 
 - A custom workflow layer is often the right choice when your ERP handles finance and inventory well, but procurement workflows remain manual and need approval chains, supplier document checks, budget validations or notifications that standard tools cannot configure easily.
 - Your ERP remains the system of record while you automate the steps around it, such as routing purchase requests by department, cost centre or spend limit and sending approved data to your ERP automatically.
-- This works well for UAE businesses with unique approval structures, multiple entities, complex supplier requirements or industry-specific compliance needs, and Vedha’s [procurement systems services](https://vedha.ae/services/enterprise-software/procurement-systems/) support this connected, workflow-led approach.
+- This works well for UAE businesses with unique approval structures, multiple entities, complex supplier requirements or industry-specific compliance needs, and Vedha’s procurement systems services support this connected, workflow-led approach.
 
 ## What features should procurement software include?
 
