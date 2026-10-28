@@ -1988,14 +1988,14 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
     outcomesIntro:
       "Depending on your organisation’s requirements and agreed scope, deliverables may include:",
     outcomes: [
-      "Brief and Selection Criteria — Naming brief covering objectives, audience, markets and constraints.",
-      "Brief and Selection Criteria — Criteria for evaluating and comparing candidates.",
-      "Name Development — Agreed naming directions.",
-      "Name Development — Candidate names with supporting rationale.",
-      "Name Development — Refined shortlist incorporating stakeholder feedback.",
-      "Screening and Handover — Preliminary screening observations and dated availability findings, where agreed.",
-      "Screening and Handover — Preferred-name recommendation or shortlist evaluation.",
-      "Screening and Handover — Checklist of outstanding legal, linguistic and registration checks.",
+      "Naming brief covering objectives, audience, markets and constraints.",
+      "Criteria for evaluating and comparing candidates.",
+      "Agreed naming directions.",
+      "Candidate names with supporting rationale.",
+      "Refined shortlist incorporating stakeholder feedback.",
+      "Preliminary screening observations and dated availability findings, where agreed.",
+      "Preferred-name recommendation or shortlist evaluation.",
+      "Checklist of outstanding legal, linguistic and registration checks.",
     ],
     whyUsHeading: "Why Choose Vedha for Brand Naming?",
     whyUs: [

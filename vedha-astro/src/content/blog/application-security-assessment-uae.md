@@ -11,14 +11,14 @@ draft: false
 **On this page:**
 
 - [What is an application security assessment?](#what-is-an-application-security-assessment)
-- [Why should you assess security before launch?](#why-should-you-assess-security-before-launch)
-- [What’s the difference between an application security assessment and penetration testing?](#whats-the-difference-between-an-application-security-assessment-and-penetration-testing)
-- [What should you check before launching software?](#what-should-you-check-before-launching-software)
-- [How do you secure APIs, integrations and data flows?](#how-do-you-secure-apis-integrations-and-data-flows)
-- [What privacy and compliance requirements should you check?](#what-privacy-and-compliance-requirements-should-you-check)
-- [How do you prioritise findings and prepare for launch?](#how-do-you-prioritise-findings-and-prepare-for-launch)
-- [How Vedha approaches application security](#how-vedha-approaches-application-security)
-- [FAQs about application security assessments](#faqs-about-application-security-assessments)
+- [Why assess security before launch](#why-should-you-assess-security-before-launch)
+- [Application security assessment vs penetration testing](#whats-the-difference-between-an-application-security-assessment-and-penetration-testing)
+- [What to check before launching software](#what-should-you-check-before-launching-software)
+- [How to secure APIs, integrations and data flows](#how-do-you-secure-apis-integrations-and-data-flows)
+- [Privacy and compliance requirements](#what-privacy-and-compliance-requirements-should-you-check)
+- [How to prioritise findings and prepare for launch](#how-do-you-prioritise-findings-and-prepare-for-launch)
+- [How Vedha helps](#how-vedha-approaches-application-security)
+- [FAQs](#faqs-about-application-security-assessments)
 
 Launching software without a security assessment can expose customer data, disrupt operations and create compliance risk. An application security assessment helps you confirm that your application, APIs, integrations, user permissions and data flows are secure enough for real-world use.
 
