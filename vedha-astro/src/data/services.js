@@ -137,7 +137,7 @@ const servicePillars = [
           {
             name: "Mobile-app design",
             description:
-              "Native-feeling mobile interfaces tailored to iOS and Android patterns and device constraints.",
+              "Research-led mobile UX and UI design for iOS and Android, from journeys and prototypes through to developer-ready handover.",
           },
           {
             name: "Web-application design",
@@ -312,7 +312,7 @@ const servicePillars = [
           {
             name: "Asset-management systems",
             description:
-              "Tracking and lifecycle control for physical and digital assets across locations.",
+              "Connected asset records, accountable handovers and lifecycle workflows built around how your organisation operates.",
           },
           {
             name: "Inventory-management systems",

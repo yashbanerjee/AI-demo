@@ -1273,6 +1273,152 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha Tech",
     ],
   },
+  "asset-management-systems": {
+    seoTitle: "Asset Management Software in Dubai & UAE | Vedha Tech",
+    seoDescription:
+      "Centralise asset tracking and manage lifecycles with custom asset management software in Dubai and the UAE, built around your business workflows and reporting.",
+    h1: "Custom Asset Management Software in Dubai and the UAE",
+    lede: "Know what your business owns, where assets are located and who is responsible for them. Vedha builds custom asset management software in Dubai and the UAE to centralise tracking, manage asset lifecycles and give your teams clearer visibility across locations.",
+    summary:
+      "Connected asset records, accountable handovers and lifecycle workflows built around how your organisation operates.",
+    whyHeading: "What Is an Asset Management System?",
+    whyImportant: [
+      "A laptop moves between departments. Equipment reaches a new site, but the spreadsheet still shows its previous location. When someone asks who holds it or whether it needs replacing, nobody has a reliable answer.",
+      "An asset management system brings asset records, assignments, movements and lifecycle events into one place. It helps your teams manage equipment and other business assets from acquisition through use, transfer and retirement.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Asset Management Software Helps Your Business",
+    howHelpsIntro:
+      "Better asset records support decisions about purchasing, allocation and replacement, while making everyday ownership and movement easier to manage.",
+    howHelps: [
+      {
+        title: "Find available assets before buying more",
+        body: "Review holdings across departments and locations to identify equipment that can be reassigned instead of unnecessarily replaced.",
+      },
+      {
+        title: "Make custody clearer",
+        body: "Record who receives an asset, where it moves and when it is returned, reducing uncertainty during transfers and employee departures.",
+      },
+      {
+        title: "Plan lifecycle decisions",
+        body: "Use purchase dates, condition, service history and status to inform maintenance, replacement and retirement decisions.",
+      },
+      {
+        title: "Simplify reconciliation",
+        body: "Compare recorded holdings with physical checks, investigate discrepancies and maintain a clearer history of changes.",
+      },
+    ],
+    processHeading: "Our Asset Management Software Development Process",
+    processIntro:
+      "We start with your asset categories and operating workflows, then design, build and validate the system around the records and controls you need.",
+    process: [
+      {
+        title: "Understand How You Manage Assets",
+        body: "We start by understanding how assets move through your business and where records become unreliable. This reveals what your new system needs to resolve.",
+      },
+      {
+        title: "Design the System Around Your Team",
+        body: "Before development, your team reviews prototypes showing how everyday tasks will work. Together, we refine the workflows and establish who can access or change asset information.",
+      },
+      {
+        title: "Build a Connected Asset Register",
+        body: "We develop the system around the agreed design, giving each asset a traceable record. Where integrations are required, we connect existing systems and prepare your data for migration.",
+      },
+      {
+        title: "Validate Against Everyday Use",
+        body: "Your employees test the software using situations they encounter at work. We resolve issues and check that records remain accurate as assets change hands or locations.",
+      },
+      {
+        title: "Prepare Your Team for Launch",
+        body: "We help your team put the system into use with clear guidance and an agreed handover. Post-launch support, where included, helps resolve issues during early adoption.",
+      },
+    ],
+    outcomesHeading: "Asset Management Software Deliverables",
+    outcomesIntro:
+      "Depending on your organisation’s requirements and agreed scope, deliverables may include:",
+    outcomes: [
+      "Asset data model, workflow specification and permissions matrix.",
+      "Interface prototypes and integration plan.",
+      "Central asset register with categories, identifiers and location records.",
+      "Assignment, transfer, return and retirement workflows.",
+      "Asset history, status reporting and operational dashboards.",
+      "Barcode or QR identification workflows, where agreed.",
+      "Validated migration of existing asset records.",
+      "User acceptance testing records.",
+      "User guidance and technical documentation.",
+      "Deployment checklist and agreed support arrangements.",
+    ],
+    whyUsHeading: "Why Choose Vedha for Asset Management Software?",
+    whyUs: [
+      "Your system needs to reflect how assets move through your business, not simply store a catalogue. Our asset management systems centre on tracking and lifecycle control across locations.",
+      "When you commission an asset management system in Dubai, we connect the register to the people, approvals and systems responsible for keeping it accurate. Custom development lets you define the fields, access rules and workflows your organisation needs, with integrations assessed before build commitments are made.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Can you build fixed asset management software in Dubai?",
+        answer:
+          "Yes. Vedha can develop registers and workflows for equipment, furniture, vehicles and other fixed assets. This can include depreciation calculations and accounting integrations where needed.",
+      },
+      {
+        question: "Does asset tracking software in Dubai provide live location tracking?",
+        answer:
+          "Not automatically. Barcode and QR workflows record verified events. GPS, RFID or other live tracking requires compatible hardware, connectivity and integrations assessed during discovery.",
+      },
+      {
+        question: "Can you develop fixed asset management software for banks in Dubai?",
+        answer:
+          "Vedha can assess requirements for branch equipment, IT assets and custody records. Access controls, audit trails, hosting and security requirements must be validated with your bank’s stakeholders.",
+      },
+      {
+        question: "Can you build an asset management solution for small businesses in UAE?",
+        answer:
+          "Yes. We start with essential asset records, assignments and location tracking. Additional workflows can follow as your business grows, without making the initial system unnecessarily complex.",
+      },
+      {
+        question: "Can your asset management software in UAE connect with existing systems?",
+        answer:
+          "Integrations with finance, procurement, HR or service-management systems can be assessed. Feasibility depends on available APIs, data quality, access permissions and the agreed exchange requirements.",
+      },
+    ],
+    ctaTitle: "Take Control of Your Asset Records",
+    ctaBody:
+      "Share your asset categories, locations, current records and integration needs. Our team will identify the priority workflows and recommend a development scope.",
+    ctaPrimaryLabel: "Discuss Your Asset Management Software Requirements",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "inventory-management-systems",
+      "procurement-systems",
+      "maintenance-management-systems",
+      "document-management-systems",
+      "employee-management-systems",
+      "field-service-platforms",
+    ],
+    keywords: [
+      "asset management software in Dubai",
+      "fixed asset management software in Dubai",
+      "asset management system in Dubai",
+      "asset management software in UAE",
+      "asset tracking software in Dubai",
+      "fixed asset management software for banks in Dubai",
+      "asset management solution for small businesses in UAE",
+      "Custom asset management software",
+      "Asset lifecycle management",
+      "Central asset register",
+      "Asset assignments",
+      "Asset transfers",
+      "Asset custody",
+      "Asset reconciliation",
+      "Barcode asset tracking",
+      "QR identification",
+      "Asset retirement",
+      "Accounting integrations",
+      "Enterprise Software",
+      "Vedha Tech",
+    ],
+  },
   "procurement-systems": {
     seoTitle: "Procurement Systems in Dubai, UAE | Vedha Tech",
     seoDescription:
@@ -2063,6 +2209,157 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Linguistic validation",
       "Brand Identity",
       "Vedha Tech",
+    ],
+  },
+  "mobile-app-design": {
+    seoTitle: "Mobile App Design in Dubai | UX/UI & Product Design | Vedha",
+    seoDescription:
+      "Work with a mobile app design agency in Dubai to create intuitive iOS and Android experiences through research, UX, UI design, prototyping and developer handover.",
+    h1: "Mobile App Design in Dubai and the UAE",
+    lede: "Design mobile experiences that feel clear, intuitive and ready for real use. Vedha is a mobile app design agency in Dubai that turns user needs, business goals and platform conventions into interfaces your teams can build with confidence.",
+    summary:
+      "From first-time users to complex operational workflows, we design mobile products that reduce friction and support measurable outcomes.",
+    whyHeading: "What Is Mobile App Design?",
+    whyImportant: [
+      "A mobile app is more than a set of screens. It is the way people complete a task, make a decision or reach support while moving through their day.",
+      "Mobile app design brings together research, UX and UI design, interface design and prototyping. It defines how people find information, complete actions and recover from errors across iOS and Android.",
+      "Good app design in Dubai should reflect both user expectations and the realities of your business: different devices, connectivity conditions, languages, accessibility needs and internal systems.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Mobile App Design Helps Your Business",
+    howHelpsIntro:
+      "Strong mobile design makes products easier to adopt, easier to support and more valuable to use.",
+    howHelps: [
+      {
+        title: "Improve task completion",
+        body: "Remove unnecessary steps and design journeys around the actions users need to complete.",
+      },
+      {
+        title: "Reduce support burden",
+        body: "Clear labels, predictable navigation and helpful error states prevent avoidable confusion.",
+      },
+      {
+        title: "Support adoption across teams",
+        body: "Design interfaces that work for customers, employees or operational users, depending on the product.",
+      },
+      {
+        title: "Create a buildable foundation",
+        body: "Deliver structured designs, components and specifications that developers can implement consistently.",
+      },
+    ],
+    processHeading: "Our Mobile App Design Process",
+    processIntro:
+      "We begin with users and business context, then design, test and document the experience before development begins.",
+    process: [
+      {
+        title: "Understand Users and Product Goals",
+        body: "We start by learning who uses the app, what they need to achieve and where the current experience creates friction. This establishes the design priorities before visual work begins.",
+      },
+      {
+        title: "Map Journeys and Structure Content",
+        body: "We define user flows, navigation and information architecture so people can move through the app without guessing what to do next.",
+      },
+      {
+        title: "Design Interfaces and Prototypes",
+        body: "Your team reviews wireframes, mobile UI designs and interactive prototypes before development. We refine layouts, states and interactions based on feedback.",
+      },
+      {
+        title: "Test With Real Users",
+        body: "We validate the experience with representative users or stakeholders. Findings are used to improve usability, accessibility and clarity before handover.",
+      },
+      {
+        title: "Prepare Designs for Development",
+        body: "We deliver organised design files, components and specifications. Where required, we support developers during implementation and review the built experience against the agreed designs.",
+      },
+    ],
+    outcomesHeading: "Mobile App Design Deliverables",
+    outcomesIntro:
+      "Depending on your product and agreed scope, deliverables may include:",
+    outcomes: [
+      "User and stakeholder research.",
+      "User journey mapping and prioritised user flows.",
+      "Information architecture and navigation structure.",
+      "Wireframes and interaction flows.",
+      "iOS and Android interface designs.",
+      "Interactive prototypes for stakeholder review and usability testing.",
+      "Reusable components, styles and design tokens.",
+      "Accessibility considerations and responsive behaviour.",
+      "Developer-ready design files and implementation guidance.",
+    ],
+    whyUsHeading: "Why Choose Vedha as Your Mobile Design Agency?",
+    whyUs: [
+      "Your app needs to work for people using it in real conditions, not only look polished in a presentation. As a mobile design agency, Vedha connects research, interface design and technical feasibility from the start.",
+      "When you engage Vedha for mobile app design in Dubai, we design around your users, brand and platform requirements. We can also support the next stage of the project, taking the agreed designs into [mobile app development](/services/mobile-application-development/) so design decisions carry through to the finished product.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Do you provide mobile app design in Dubai?",
+        answer:
+          "Yes. Vedha provides mobile app design in Dubai and across the UAE, covering research, UX design, UI design, prototyping and developer handover.",
+      },
+      {
+        question: "Can you design apps for both iOS and Android?",
+        answer:
+          "Yes. We design for iOS and Android app design, adapting to platform patterns, device constraints and platform-specific interactions while maintaining a consistent product experience.",
+      },
+      {
+        question: "Do you work as an app design agency for existing products?",
+        answer:
+          "Yes. We can audit an existing app, redesign selected journeys or create a broader UX and UI refresh without discarding the value already built into the product.",
+      },
+      {
+        question: "Can you design enterprise and employee mobile apps?",
+        answer:
+          "Yes. We design consumer, employee, field-service, booking, delivery and other operational mobile products, with workflows shaped around the people who use them.",
+      },
+      {
+        question: "Can you support accessibility and Arabic and English interfaces?",
+        answer:
+          "Yes. Accessibility design and bilingual experiences can be included where required. Language direction, content structure and interface patterns are assessed during design.",
+      },
+      {
+        question: "Can you develop the mobile app along with designing it?",
+        answer:
+          "Yes. Vedha can take the project from design into development, building the mobile app according to the agreed designs, platform requirements and technical scope.",
+      },
+    ],
+    ctaTitle: "Design a Mobile Experience People Can Use",
+    ctaBody:
+      "Give your users a mobile product that makes everyday tasks straightforward, from first launch to repeat use. Share your product goals, target users, current designs and platform requirements. We will identify the priority journeys and recommend an appropriate design scope.",
+    ctaPrimaryLabel: "Discuss Your Mobile App Design Requirements",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "ui-design",
+      "interactive-prototyping",
+      "usability-testing",
+      "ux-audits",
+      "design-systems",
+      "web-application-design",
+    ],
+    keywords: [
+      "mobile app design in dubai",
+      "app design in dubai",
+      "mobile design agency",
+      "app design agency",
+      "mobile app design agency",
+      "mobile app design agency in Dubai",
+      "app design agency for existing products",
+      "Mobile UX design",
+      "Mobile UI design",
+      "iOS app design",
+      "Android app design",
+      "Interactive prototyping",
+      "User journey mapping",
+      "Information architecture",
+      "Usability testing",
+      "Design system",
+      "Developer handover",
+      "Accessibility design",
+      "UX/UI & Product Design",
+      "Vedha",
     ],
   },
   "logo-design": {
