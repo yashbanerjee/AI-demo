@@ -1,0 +1,27 @@
+{
+	admin off
+	auto_https off
+}
+
+# Railway injects PORT; TLS is terminated at Railway's edge.
+:{$PORT:8080} {
+	root * /srv
+	encode zstd gzip
+
+	# ">" defers the header so it overrides file_server's guessed type
+	header /vedha.vcf {
+		>Content-Type "text/vcard; charset=utf-8"
+		Content-Disposition "inline; filename=\"Vedha-Technologies.vcf\""
+		Cache-Control "public, max-age=3600"
+	}
+
+	header /assets/* Cache-Control "public, max-age=604800"
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		-Server
+	}
+
+	file_server
+}
