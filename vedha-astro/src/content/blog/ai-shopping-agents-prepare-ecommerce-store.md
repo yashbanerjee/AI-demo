@@ -8,7 +8,7 @@ image: "/images/blog/ai-shopping-agents-prepare-ecommerce-store.jpg"
 draft: false
 ---
 
-## On this page
+**On this page:**
 
 - [What are AI shopping agents?](#what-are-ai-shopping-agents)
 - [What has Shopify announced about AI-powered shopping?](#what-has-shopify-announced-about-ai-powered-shopping)
@@ -25,9 +25,7 @@ On 28 October 2026, Shopify announced tools that allow compatible AI shopping ag
 
 Can your store provide an assistant with accurate product details, live stock information and a reliable route to purchase? The answer depends on your catalogue, APIs, integrations and checkout infrastructure. This guide explains what Shopify announced and how businesses can prepare their systems for AI-driven eCommerce.
 
-## Quick answer
-
-AI shopping agents help customers search, compare and purchase products through AI assistants. Preparing an eCommerce store involves improving structured product information, synchronising inventory, reviewing APIs and securing checkout. A full website rebuild is not always necessary.
+**Quick answer:** AI shopping agents help customers search, compare and purchase products through AI assistants. Preparing an eCommerce store involves improving structured product information, synchronising inventory, reviewing APIs and securing checkout. A full website rebuild is not always necessary.
 
 ## What are AI shopping agents?
 
