@@ -35,14 +35,14 @@ A traditional eCommerce chatbot generally answers questions or directs visitors 
 
 ## What has Shopify announced about AI-powered shopping?
 
+![Infographic highlighting Shopify's AI shopping updates, including Shop.md, Shop.dev, Shopify Catalog and WebMCP, which support AI-powered product discovery, shopping experiences and browser-agent interactions.](/images/blog/ai-shopping-agents-shopify-updates.jpg)
+
 In its [Fall '26 Edition](https://www.shopify.com/news/fall-26-edition-developer), Shopify introduced several ways for developers and AI assistants to interact with its commerce infrastructure:
 
 - **Shop.md:** A shopping skill for compatible AI assistants to find products and help customers purchase through Shop Pay.
 - **Shop.dev:** Developer access to Shopify's catalogue, customer sign-in, carts and checkout functionality.
 - **Shopify Catalog:** Product information such as prices, variants and availability made accessible to supported shopping agents.
 - **WebMCP:** Structured tools on supported Shopify storefronts that let compatible browser agents search catalogues, update carts and interact with checkout rather than relying solely on visual clicks.
-
-![Infographic highlighting Shopify's AI shopping updates, including Shop.md, Shop.dev, Shopify Catalog and WebMCP, which support AI-powered product discovery, shopping experiences and browser-agent interactions.](/images/blog/ai-shopping-agents-shopify-updates.jpg)
 
 WebMCP is still emerging, with limited browser-agent support, while Shopify Catalog requires products to meet eligibility criteria. These tools also do not automatically change how a Shopify website looks. The bigger change is that customers may find and buy products through compatible AI assistants before visiting the store themselves.
 
@@ -58,6 +58,8 @@ For retailers, product discovery and purchasing increasingly extend beyond the s
 
 ## How do AI agents connect to eCommerce platforms?
 
+![Infographic showing how AI shopping agents connect to eCommerce platforms through APIs and MCP tools to access product catalogues, pricing, inventory and checkout, with customer approval for purchases.](/images/blog/ai-shopping-agents-connect-stores.jpg)
+
 An agent needs a dependable way to access product information and perform approved actions. Three technologies are relevant.
 
 ### APIs: Accessing commerce functions
@@ -71,8 +73,6 @@ The Model Context Protocol (MCP) connects AI applications to external tools and 
 ### Universal Commerce Protocol: Supporting checkout
 
 The Universal Commerce Protocol (UCP) defines a standardised way to support commerce interactions, including carts and checkout. Shopify uses UCP in agent-facing purchasing workflows, with customer handoff where required. Its [agent checkout documentation](https://shopify.dev/docs/agents/carts-and-checkout) explains supported flows and limitations.
-
-![Infographic showing how AI shopping agents connect to eCommerce platforms through APIs and MCP tools to access product catalogues, pricing, inventory and checkout, with customer approval for purchases.](/images/blog/ai-shopping-agents-connect-stores.jpg)
 
 `Customer request → AI assistant → Commerce tools and APIs → Catalogue and inventory → Cart → Secure checkout`
 
