@@ -2775,6 +2775,140 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha Tech",
     ],
   },
+  "technical-seo-audits": {
+    seoTitle: "Technical SEO Audit Services in Dubai & UAE | Vedha Tech",
+    seoDescription:
+      "Technical SEO audits in Dubai and UAE. Identify crawl, indexing, speed and website structure issues with practical recommendations from Vedha.",
+    h1: "Technical SEO Audits in Dubai and the UAE",
+    lede: "Identify the technical issues holding your website back with a technical SEO audit in Dubai. Vedha helps businesses across the UAE uncover crawlability, indexing, website performance and site-structure problems that may affect how search engines discover and understand their pages.",
+    summary:
+      "Clear findings, prioritised recommendations, and practical next steps to build a stronger foundation for organic search visibility.",
+    whyHeading: "What Is a Technical SEO Audit?",
+    whyImportant: [
+      "Your website may have valuable content and relevant keywords, but can search engines access, understand and index it correctly?",
+      "A technical SEO audit examines the underlying website issues that may prevent pages from appearing or performing well in organic search. It evaluates how search engines crawl your website, which pages can be indexed and whether technical problems are affecting search accessibility.",
+      "From broken links and redirect issues to slow-loading pages and incorrect indexing rules, an audit helps identify what needs attention and where improvements should begin.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Technical SEO Audits Help Your Business",
+    howHelpsIntro:
+      "Vedha's technical SEO audits in Dubai help businesses understand and address the technical barriers affecting their website's search performance.",
+    howHelps: [
+      {
+        title: "Improve search engine accessibility",
+        body: "Identify crawl errors, blocked pages, and indexing problems that may prevent important content from appearing in search results.",
+      },
+      {
+        title: "Identify website performance issues",
+        body: "Assess loading speed, Core Web Vitals and mobile usability issues that may affect user experience.",
+      },
+      {
+        title: "Strengthen website structure",
+        body: "Review internal linking, URL structures, redirects and canonical tags to support clearer navigation and indexing.",
+      },
+      {
+        title: "Prioritise SEO improvements",
+        body: "Turn technical findings into actionable recommendations based on their potential impact and implementation requirements.",
+      },
+    ],
+    processHeading: "Our Technical SEO Audit Process",
+    processIntro:
+      "Our approach to technical SEO in Dubai combines website analysis, technical evaluation and practical recommendations tailored to your website.",
+    process: [
+      {
+        title: "Review Your Website and Objectives",
+        body: "We understand your website's structure, platform and search visibility goals to establish the scope and priorities of the audit.",
+      },
+      {
+        title: "Analyse Crawlability and Indexing",
+        body: "We examine how search engines access your website, reviewing robots.txt, XML sitemaps, indexing directives, canonical tags and crawl errors.",
+      },
+      {
+        title: "Evaluate Technical SEO Performance",
+        body: "We assess page speed, Core Web Vitals, mobile usability, internal linking, redirects, structured data and other relevant technical SEO factors.",
+      },
+      {
+        title: "Identify and Prioritise Issues",
+        body: "We organise the findings by severity, potential search impact and implementation effort, helping your team understand which problems require attention first.",
+      },
+      {
+        title: "Deliver Recommendations and Next Steps",
+        body: "We provide an audit report with technical findings, recommended fixes and a prioritised action plan. Implementation support can be scoped separately where required.",
+      },
+    ],
+    outcomesHeading: "Technical SEO Audit Deliverables",
+    outcomesIntro:
+      "Depending on your website's requirements and agreed scope, deliverables may include:",
+    outcomes: [
+      "Crawlability and indexability analysis.",
+      "XML sitemap and robots.txt review.",
+      "Canonical tags and indexing directives assessment.",
+      "Page speed and Core Web Vitals findings.",
+      "Mobile usability assessment.",
+      "Internal linking, URL structure and redirect review.",
+      "Broken links and crawl error findings.",
+      "Duplicate content and technical URL issues.",
+      "Structured data implementation review.",
+      "Consolidated technical SEO audit report.",
+      "Prioritised issues and recommended fixes.",
+      "Implementation roadmap and next-step guidance.",
+    ],
+    whyUsHeading: "Why Choose Vedha for Technical SEO Audits?",
+    whyUs: [
+      "At Vedha, we approach SEO auditing in Dubai with an understanding of both search engine requirements and the technology behind your website.",
+      "As a Dubai-based technology partner with website development and technical expertise, we focus on identifying the underlying causes of SEO issues rather than providing a generic checklist.",
+      "Our recommendations connect technical findings with practical implementation steps, helping your marketing and development teams understand what needs to be fixed and why.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "What does a technical SEO audit include?",
+        answer:
+          "A technical SEO audit examines crawlability, indexing, website speed, mobile usability, redirects, internal linking, structured data and other technical factors affecting search visibility.",
+      },
+      {
+        question: "Do you provide technical SEO audits for websites in Dubai and across the UAE?",
+        answer:
+          "Yes. Vedha provides technical SEO audits for businesses in Dubai and across the UAE, tailoring the assessment to each website's platform, structure and requirements.",
+      },
+      {
+        question: "How is a technical SEO audit different from a general SEO audit?",
+        answer:
+          "A technical SEO audit focuses on website infrastructure and search accessibility. A broader SEO audit may also examine content, keywords, backlinks and competitor performance.",
+      },
+      {
+        question: "When should my business conduct a technical SEO audit?",
+        answer:
+          "A Dubai website audit is particularly useful before a redesign or migration, after significant website changes, or when indexing problems or unexplained organic traffic declines occur.",
+      },
+    ],
+    ctaTitle: "Build a Stronger Technical Foundation for Your Website",
+    ctaBody:
+      "Tell us about your website, current challenges and search objectives. We'll recommend an appropriate audit scope and next steps.",
+    ctaPrimaryLabel: "Discuss Your Technical SEO Audit Needs",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "on-page-seo",
+      "structured-data",
+      "website-performance-improvement",
+      "keyword-research",
+      "answer-engine-optimisation",
+      "search-console-setup",
+    ],
+    keywords: [
+      "technical SEO audit Dubai",
+      "technical SEO audits Dubai",
+      "technical SEO Dubai",
+      "SEO audit Dubai",
+      "website audit Dubai",
+      "crawlability SEO",
+      "Core Web Vitals",
+      "Search & AI Visibility",
+      "Vedha Tech",
+    ],
+  },
   "answer-engine-optimisation": {
     seoTitle: "Answer Engine Optimisation (AEO) Services in Dubai | Vedha",
     seoDescription:

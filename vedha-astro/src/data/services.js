@@ -1512,7 +1512,7 @@ const servicePillars = [
           {
             name: "Technical SEO audits",
             description:
-              "Crawl, index, and site-health reviews that identify technical blockers to organic visibility.",
+              "Clear findings, prioritised recommendations and practical next steps for crawlability, indexing, performance and site-structure issues.",
           },
           {
             name: "Keyword research",
