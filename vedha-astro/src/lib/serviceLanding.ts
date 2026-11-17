@@ -2775,6 +2775,289 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha Tech",
     ],
   },
+  "website-maintenance": {
+    seoTitle: "Website Maintenance in Dubai | Website Support & Updates | Vedha",
+    seoDescription:
+      "Website maintenance in Dubai and the UAE, including updates, security monitoring, performance checks, content support and ecommerce website maintenance services.",
+    h1: "Website Maintenance in Dubai and the UAE",
+    lede: "Your website should keep working for your business long after launch. Vedha provides website maintenance in Dubai and across the UAE, helping you keep your site secure, up to date and ready for the people who rely on it.",
+    summary:
+      "From routine updates and security checks to content changes and ecommerce support, we take care of the technical details so your team can focus on running the business.",
+    whyHeading: "What Is Website Maintenance?",
+    whyImportant: [
+      "Website maintenance is the ongoing care that keeps your site secure, stable and useful. It covers updates, backups, monitoring, bug fixes, content changes and the improvements that help your website continue performing well.",
+      "Without regular maintenance, small issues can build up: a slow page, a broken form, an outdated plugin or an error that affects customers before anyone notices.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Website Maintenance Helps Your Business",
+    howHelpsIntro:
+      "Good website maintenance support in Dubai gives you confidence that someone is looking after the details, while your team stays focused on customers and growth.",
+    howHelps: [
+      {
+        title: "Keep your website secure",
+        body: "We apply updates, monitor vulnerabilities and maintain backups to reduce avoidable risks.",
+      },
+      {
+        title: "Maintain a smooth experience",
+        body: "We identify slow pages, broken links, errors and other issues before they frustrate visitors.",
+      },
+      {
+        title: "Keep content current",
+        body: "We support routine changes to pages, products, banners, forms and other website content.",
+      },
+      {
+        title: "Protect online sales",
+        body: "For ecommerce businesses, we help maintain products, checkout functionality, integrations and other revenue-critical features.",
+      },
+      {
+        title: "Prevent small issues from escalating",
+        body: "We address minor issues early, before they affect customers, search visibility or day-to-day operations.",
+      },
+    ],
+    processHeading: "Our Website Maintenance Process",
+    processIntro:
+      "We start by understanding how your website works and what your team needs from ongoing support, then put a clear maintenance plan in place.",
+    process: [
+      {
+        title: "Review Your Website and Requirements",
+        body: "We review your platform, integrations, content needs, security requirements and any existing issues. This helps us understand where support is most needed.",
+      },
+      {
+        title: "Establish a Maintenance Plan",
+        body: "We agree what will be maintained, how requests are handled, how often you receive updates and what happens when something urgent arises.",
+      },
+      {
+        title: "Maintain and Monitor",
+        body: "We carry out agreed updates, monitor website health and address technical issues. Where needed, we coordinate with your hosting, security or third-party providers.",
+      },
+      {
+        title: "Support Content and Improvements",
+        body: "We handle agreed content changes, ecommerce updates and ongoing improvements, so your website keeps pace with your business.",
+      },
+      {
+        title: "Report and Review",
+        body: "We provide clear updates on completed work, issues found and recommendations for improvement, so you always know the state of your website.",
+      },
+    ],
+    outcomesHeading: "Website Maintenance Deliverables",
+    outcomesIntro:
+      "Depending on your website and agreed scope, deliverables may include:",
+    outcomes: [
+      "Website review and maintenance-plan definition.",
+      "Core, plugin, theme and platform updates.",
+      "Security monitoring, vulnerability checks and backup arrangements.",
+      "Uptime, performance and error monitoring.",
+      "Bug fixes and technical issue resolution.",
+      "Content updates and page changes.",
+      "Ecommerce website maintenance services in Dubai, including product, checkout and integration support.",
+      "Broken-link, redirect and form-testing checks.",
+      "Regular reporting on completed work and recommendations.",
+      "Responsive website support services in Dubai for agreed requests.",
+    ],
+    whyUsHeading: "Why Choose Vedha for Website Maintenance in Dubai?",
+    whyUs: [
+      "You need more than someone who applies updates when reminded. As a website maintenance company in Dubai, Vedha looks after the technical health of your website while understanding how it supports your business.",
+      "When you engage Vedha for website maintenance in Dubai, we tailor support around your platform, integrations, content needs and risk priorities. We can also work alongside your internal team or existing agency, with clear ownership and communication throughout.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Do you provide website maintenance in Dubai?",
+        answer:
+          "Yes. Vedha provides website maintenance in Dubai and across the UAE, covering technical upkeep, security updates, monitoring, content support and ongoing improvements.",
+      },
+      {
+        question: "What is included in your website maintenance services in Dubai?",
+        answer:
+          "Our website maintenance services in Dubai can include updates, backups, security checks, performance monitoring, bug fixes, content changes and agreed ecommerce support. The exact scope is agreed before the engagement begins.",
+      },
+      {
+        question: "Do you provide ecommerce website maintenance services in Dubai?",
+        answer:
+          "Yes. We can support ecommerce websites, including product updates, checkout testing, integration checks, performance monitoring and technical issue resolution.",
+      },
+      {
+        question: "Do you provide website maintenance support in Dubai for websites built by other agencies?",
+        answer:
+          "Yes. We can assess websites built by other providers and provide ongoing maintenance support, subject to access requirements, platform compatibility and the agreed scope.",
+      },
+      {
+        question: "How quickly do you respond to website issues?",
+        answer:
+          "Response times depend on the agreed support arrangement and issue severity. Critical issues can be prioritised, while routine requests are handled according to the agreed maintenance plan.",
+      },
+      {
+        question: "Can website maintenance include redesign or new feature development?",
+        answer:
+          "Yes. Smaller improvements can often be included within an agreed maintenance arrangement. Larger redesigns, new features or platform changes are usually scoped separately.",
+      },
+    ],
+    ctaTitle: "Keep Your Website Working for Your Business",
+    ctaBody:
+      "Tell us about your website, current challenges and support needs. We’ll recommend a maintenance arrangement that fits your platform, priorities and way of working.",
+    ctaPrimaryLabel: "Discuss Your Website Maintenance Needs",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "website-performance-optimisation",
+      "technical-seo",
+      "website-redesign",
+      "website-migration",
+      "cms-implementation",
+      "multilingual-websites",
+    ],
+    keywords: [
+      "website maintenance Dubai",
+      "website maintenance services Dubai",
+      "website maintenance support Dubai",
+      "ecommerce website maintenance services Dubai",
+      "website maintenance company Dubai",
+      "responsive website support services Dubai",
+      "Website Design & Development",
+      "Vedha",
+    ],
+  },
+  "business-intelligence-implementation": {
+    seoTitle: "Business Intelligence Implementation in Dubai & UAE | Vedha",
+    seoDescription:
+      "Implement trusted BI platforms, dashboards, data models and governed reporting with business intelligence services in Dubai and across the UAE.",
+    h1: "Business Intelligence Implementation in Dubai and the UAE",
+    lede: "Turn scattered data into reporting your teams can trust and use. Vedha provides business intelligence services in Dubai that help organisations implement BI platforms, data models, dashboards and governed reporting workflows.",
+    summary:
+      "Connected data, governed reporting and BI dashboards built around the decisions your organisation needs to make.",
+    whyHeading: "What Is Business Intelligence Implementation?",
+    whyImportant: [
+      "Business intelligence implementation is the process of turning data sources into reliable reporting, analysis and decision support. It brings together data connections, data models, semantic layers, dashboards, permissions and governance.",
+      "Rather than simply installing a BI tool, implementation defines how information is prepared, calculated, secured and presented. This helps teams answer commercial and operational questions consistently across the organisation.",
+      "A well-implemented BI environment gives decision-makers a shared view of performance, while giving operational teams the detail they need to act.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How Business Intelligence Helps Your Business",
+    howHelpsIntro:
+      "Business intelligence tools in Dubai can help organisations move from manual reporting and conflicting spreadsheets to a more consistent view of performance.",
+    howHelps: [
+      {
+        title: "Improve decision-making",
+        body: "Give leaders and teams reliable metrics, trends and comparisons in one place.",
+      },
+      {
+        title: "Reduce manual reporting",
+        body: "Automate recurring reports and reduce time spent consolidating data from multiple sources.",
+      },
+      {
+        title: "Create a single source of truth",
+        body: "Define metrics, data ownership and reporting rules so teams work from consistent information.",
+      },
+      {
+        title: "Support operational teams",
+        body: "Make relevant insights available in dashboards and workflows people already use.",
+      },
+      {
+        title: "Enable AI-ready reporting",
+        body: "Establish clean, governed data foundations that can support AI business intelligence in the UAE over time.",
+      },
+    ],
+    processHeading: "Our Business Intelligence Implementation Process",
+    processIntro:
+      "We begin with the decisions your organisation needs to improve, then assess data readiness, build the BI environment and support adoption.",
+    process: [
+      {
+        title: "Define the Decisions to Improve",
+        body: "We start by identifying the business questions, KPIs and decisions the BI solution needs to support. This ensures reporting is designed around practical use rather than available data alone.",
+      },
+      {
+        title: "Assess Data Readiness",
+        body: "We review data sources, quality, access requirements, ownership and governance needs. This helps identify gaps and dependencies before development begins.",
+      },
+      {
+        title: "Design the BI Environment",
+        body: "We define the data model, semantic layer, metrics, dashboard structure, user roles and permissions. Prototypes help stakeholders review how reports and dashboards will work.",
+      },
+      {
+        title: "Build and Validate",
+        body: "We develop data connections, transformations, models and dashboards according to the agreed design. Metrics and reports are validated with your team before wider rollout.",
+      },
+      {
+        title: "Launch and Support Adoption",
+        body: "We support deployment, user guidance and operational handover. Post-launch support, where agreed, helps resolve issues and refine dashboards as teams begin using the system.",
+      },
+    ],
+    outcomesHeading: "Business Intelligence Implementation Deliverables",
+    outcomesIntro:
+      "Depending on your organisation’s requirements and agreed scope, deliverables may include:",
+    outcomes: [
+      "Business requirements and KPI definition.",
+      "Data-source and data-readiness assessment.",
+      "Data-quality, access and governance review.",
+      "BI platform setup and configuration.",
+      "Data connections, transformations and data models.",
+      "Semantic layer, metrics and calculation definitions.",
+      "Executive, operational and analytical dashboards.",
+      "User roles, permissions and reporting access.",
+      "Data dictionary, reporting documentation and user guidance.",
+      "Maintenance and enhancement roadmap.",
+    ],
+    whyUsHeading: "Why Choose Vedha for Business Intelligence in the UAE?",
+    whyUs: [
+      "Business intelligence should support decisions, not simply display data. As one of the data intelligence service providers in Dubai, Vedha connects business requirements, data engineering and BI implementation in one delivery approach.",
+      "When you engage Vedha for business intelligence in the UAE, we design reporting around your systems, stakeholders and commercial goals. We can also assess where AI business intelligence in the UAE may add value, while ensuring the underlying data is reliable, governed and ready for use.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Do you provide business intelligence services in Dubai?",
+        answer:
+          "Yes. Vedha provides business intelligence services in Dubai and across the UAE, covering discovery, BI platform implementation, dashboard development, data modelling and governance.",
+      },
+      {
+        question: "Which business intelligence tools in Dubai do you work with?",
+        answer:
+          "We assess the most suitable BI platform for your requirements, existing systems and reporting needs. Tool selection depends on data sources, user needs, security requirements and integration options.",
+      },
+      {
+        question: "Can you implement AI business intelligence in the UAE?",
+        answer:
+          "Yes. Where appropriate, we can incorporate AI-assisted analysis, forecasting or natural-language reporting. We assess whether the use case, data quality and governance requirements support a reliable AI-enabled solution.",
+      },
+      {
+        question: "Can you connect BI dashboards to our existing systems?",
+        answer:
+          "Yes. We can assess integrations with ERP, CRM, finance, operations, marketing and other business systems. The approach depends on the available APIs, data access permissions and the reporting requirements for each source.",
+      },
+      {
+        question: "Do you provide business intelligence resources in Dubai?",
+        answer:
+          "Yes. Vedha can provide business intelligence resources in Dubai for discovery, implementation, dashboard development, data modelling and ongoing support, depending on the agreed engagement.",
+      },
+    ],
+    ctaTitle: "Turn Business Data Into Decisions",
+    ctaBody:
+      "Give your teams a reliable way to monitor performance, investigate issues and make decisions using consistent, governed reporting. Share your business goals, current data sources, reporting challenges and preferred BI tools. We will identify the priority use cases and recommend an appropriate implementation scope.",
+    ctaPrimaryLabel: "Discuss Your Business Intelligence Implementation Needs",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "executive-dashboards",
+      "financial-dashboards",
+      "embedded-analytics",
+      "predictive-analytics",
+      "data-quality-monitoring",
+      "master-data-management",
+    ],
+    keywords: [
+      "business intelligence implementation Dubai",
+      "business intelligence services Dubai",
+      "business intelligence tools Dubai",
+      "AI business intelligence UAE",
+      "business intelligence UAE",
+      "data intelligence service providers Dubai",
+      "BI dashboards",
+      "Data & Business Intelligence",
+      "Vedha",
+    ],
+  },
   "technical-seo-audits": {
     seoTitle: "Technical SEO Audit Services in Dubai & UAE | Vedha Tech",
     seoDescription:

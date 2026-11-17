@@ -812,7 +812,7 @@ const servicePillars = [
           {
             name: "Website maintenance",
             description:
-              "Ongoing updates, content support, and technical care that keep the site secure and current.",
+              "Ongoing updates, security checks, content changes and ecommerce support that keep your website working for the business.",
           },
         ],
       },
@@ -1326,7 +1326,7 @@ const servicePillars = [
           {
             name: "Business intelligence implementation",
             description:
-              "BI platform setup covering models, semantic layers, and governed reporting access.",
+              "Connected data, governed reporting and BI dashboards built around the decisions your organisation needs to make.",
           },
           {
             name: "Embedded analytics",
