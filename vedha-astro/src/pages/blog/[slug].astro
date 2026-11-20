@@ -535,12 +535,13 @@ const documentTitle =
     background: rgba(17, 17, 17, 0.04);
     font-weight: 600;
     color: var(--ink);
-    white-space: nowrap;
+    white-space: normal;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
   .post__prose :global(th:first-child) {
     z-index: 2;
     background: #f3f3f3;
-    white-space: normal;
   }
   @media (min-width: 48rem) {
     .post__prose :global(th),
