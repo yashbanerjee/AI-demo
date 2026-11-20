@@ -797,7 +797,7 @@ const servicePillars = [
           {
             name: "CMS implementation",
             description:
-              "Content management setup so marketing teams can publish and update without engineering.",
+              "Structured content, clear publishing workflows and flexible templates built around how your team works.",
           },
           {
             name: "Website performance optimisation",
@@ -1179,7 +1179,7 @@ const servicePillars = [
           {
             name: "AI strategy and consulting",
             description:
-              "Practical guidance on where AI creates value, what to build first, and how to govern it.",
+              "Clear priorities, realistic delivery plans and governance designed for responsible AI adoption.",
           },
           {
             name: "AI opportunity assessments",

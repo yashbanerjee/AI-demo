@@ -2775,6 +2775,291 @@ const customLandings: Record<string, Partial<ServiceLandingContent>> = {
       "Vedha Tech",
     ],
   },
+  "ai-strategy-and-consulting": {
+    seoTitle: "AI Strategy and Consulting Services in Dubai | AI Consulting | Vedha",
+    seoDescription:
+      "Practical AI consulting in Dubai and the UAE. Vedha helps businesses identify AI use cases, assess readiness and plan responsible implementation.",
+    h1: "AI Strategy and Consulting in Dubai and the UAE",
+    lede: "Turn AI ambitions into a practical plan your team can act on. Vedha provides AI consulting in Dubai, helping organisations identify valuable use cases, assess readiness and build a clear path from idea to implementation.",
+    summary:
+      "Clear priorities, realistic delivery plans and governance designed for responsible AI adoption.",
+    whyHeading: "What Is AI Strategy and Consulting?",
+    whyImportant: [
+      "AI strategy and consulting helps organisations decide where artificial intelligence can create value, what to build first and how to manage the risks involved.",
+      "It is more than a technology recommendation. An effective strategy considers your business goals, existing systems, data availability, team capabilities and the decisions AI needs to support.",
+      "Whether you are exploring your first AI initiative or scaling an existing programme, AI strategy consulting in Dubai can give leadership a structured way to prioritise investment and move forward with confidence.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How AI Consulting Helps Your Business",
+    howHelpsIntro:
+      "AI works best when it is applied to a specific business problem, supported by the right data and delivered with clear ownership.",
+    howHelps: [
+      {
+        title: "Turn broad ambitions into focused initiatives",
+        body: "Define AI use cases with a clear purpose, expected outcome and practical next steps.",
+      },
+      {
+        title: "Make better use of existing information",
+        body: "Identify where data, systems and internal knowledge can support useful decisions or automated tasks.",
+      },
+      {
+        title: "Create a shared direction",
+        body: "Align leadership, technical teams and business stakeholders on priorities, responsibilities and delivery requirements.",
+      },
+      {
+        title: "Build confidence in adoption",
+        body: "Help teams understand what AI can do, where its limitations are and when human judgement should remain central.",
+      },
+    ],
+    processHeading: "Our AI Consulting Process",
+    processIntro:
+      "We begin with your business context, then develop an AI approach that can be tested, measured and implemented. Our AI consulting in Dubai is designed to help organisations move from initial discovery to a practical delivery plan.",
+    process: [
+      {
+        title: "Understand Your Business Priorities",
+        body: "We discuss your goals, operational challenges and the decisions that matter most. This helps us identify where AI could make a meaningful difference.",
+      },
+      {
+        title: "Assess Data and System Readiness",
+        body: "We review available data, technical systems, integrations, access requirements and governance considerations. This stage helps establish what is possible now and what needs preparation.",
+      },
+      {
+        title: "Identify and Prioritise Use Cases",
+        body: "We assess potential AI opportunities against value, feasibility and risk. The result is a prioritised set of use cases with a clear rationale for each.",
+      },
+      {
+        title: "Define the Delivery Roadmap",
+        body: "We outline the recommended approach, delivery phases, dependencies, success measures and ownership. This gives leadership a practical route from strategy to implementation.",
+      },
+      {
+        title: "Support Implementation and Governance",
+        body: "Where required, we can support delivery alongside your internal teams or technology partners. We also define governance, monitoring and review practices so the solution remains useful over time.",
+      },
+    ],
+    outcomesHeading: "AI Strategy and Consulting Deliverables",
+    outcomesIntro:
+      "Depending on your requirements and agreed scope, deliverables may include:",
+    outcomes: [
+      "Discovery workshops and stakeholder interviews.",
+      "AI opportunity assessment and use-case prioritisation.",
+      "Data, systems and readiness assessment.",
+      "AI roadmap and implementation plan.",
+      "Business case, success measures and delivery dependencies.",
+      "Governance, risk and responsible-use considerations.",
+      "Technology and platform recommendations.",
+      "Proof-of-concept or pilot planning.",
+      "Implementation support and delivery coordination.",
+      "Team enablement and adoption guidance.",
+    ],
+    whyUsHeading: "Why Choose Vedha for AI Consulting in the UAE?",
+    whyUs: [
+      "AI initiatives succeed when strategy, data and delivery are connected. Vedha helps organisations move beyond broad AI ambitions by defining practical use cases, assessing what is achievable and establishing a clear route to implementation.",
+      "As an AI consultancy in Dubai, we combine strategic guidance with an understanding of the technical work involved in delivering AI solutions. We can support organisations across the UAE, from initial discovery and planning through to implementation and ongoing improvement.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Do you provide AI consulting services in Dubai?",
+        answer:
+          "Yes. Vedha provides AI consulting services in Dubai and across the UAE, supporting organisations that need practical guidance on AI opportunities, readiness, governance and delivery.",
+      },
+      {
+        question: "What does an AI consultant in Dubai do?",
+        answer:
+          "An AI consultant helps organisations identify where AI can add value, assess feasibility and risks, define an implementation approach and support delivery. The focus is on turning business requirements into a practical, measurable plan.",
+      },
+      {
+        question: "Do you offer a free AI consultation in Dubai?",
+        answer:
+          "Yes. Vedha can arrange an initial consultation to discuss your objectives, current challenges and potential AI opportunities. This helps establish whether a more detailed AI strategy engagement is the right next step.",
+      },
+      {
+        question: "Can you support AI transformation consulting in UAE organisations?",
+        answer:
+          "Yes. We can support organisations across the UAE in adopting AI responsibly, from readiness assessment and use-case prioritisation to governance and implementation planning.",
+      },
+      {
+        question: "Do you recommend specific AI tools or platforms?",
+        answer:
+          "We assess options against your requirements, existing systems, data environment and delivery needs. Recommendations are based on suitability and practical implementation considerations, rather than promoting a predetermined platform.",
+      },
+      {
+        question: "Can Vedha help build and implement the AI solution?",
+        answer:
+          "Yes. We can support implementation, proof-of-concept development, integrations and ongoing optimisation. The approach depends on your internal capability, technical requirements and preferred delivery model.",
+      },
+    ],
+    ctaTitle: "Start With a Practical AI Plan",
+    ctaBody:
+      "Tell us about your business goals, current systems and the challenges you want AI to address. We’ll help you identify a practical starting point and define the next steps.",
+    ctaPrimaryLabel: "Discuss Your AI Strategy",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "ai-opportunity-assessments",
+      "custom-ai-assistants",
+      "enterprise-knowledge-assistants",
+      "ai-workflow-agents",
+      "ai-customer-support-systems",
+      "ai-powered-search",
+    ],
+    keywords: [
+      "AI consulting in Dubai",
+      "AI strategy consulting Dubai",
+      "AI consulting services Dubai",
+      "AI consultant Dubai",
+      "free AI consultation Dubai",
+      "AI transformation consulting UAE",
+      "AI consultancy Dubai",
+      "AI Solutions",
+      "Vedha",
+    ],
+  },
+  "cms-implementation": {
+    seoTitle: "CMS Implementation in Dubai | CMS Development | Vedha",
+    seoDescription:
+      "Simplify website publishing with CMS implementation in Dubai. Vedha builds content workflows, reusable templates and integrations around your team’s needs.",
+    h1: "CMS Implementation in Dubai and the UAE",
+    lede: "Update your website without having to raise a development request every time. Vedha provides CMS implementation in Dubai, giving your team the tools to publish content, manage pages and keep your website current with less reliance on developers.",
+    summary:
+      "Structured content, clear publishing workflows and flexible templates built around how your team works.",
+    whyHeading: "What Is CMS Implementation?",
+    whyImportant: [
+      "A content management system lets your team create, edit and publish website content without changing the underlying code. But choosing a platform is only the beginning.",
+      "CMS implementation turns that platform into a working publishing environment. It defines how content is organised, which layouts editors can use and who reviews changes before they go live.",
+      "Whether you’re replacing an outdated system or planning CMS website development in Dubai, the aim is the same: make everyday updates easier while maintaining control over your website.",
+    ],
+    benefits: [],
+    howHelpsHeading: "How CMS Implementation Helps Your Business",
+    howHelpsIntro:
+      "Your CMS should make publishing simpler, not introduce another system your team struggles to use.",
+    howHelps: [
+      {
+        title: "Give your team more independence",
+        body: "Let authorised editors update content without involving developers in every routine change.",
+      },
+      {
+        title: "Keep your website consistent",
+        body: "Use reusable templates and components to maintain brand standards as new pages are added.",
+      },
+      {
+        title: "Make approvals clearer",
+        body: "Establish publishing permissions and review workflows so everyone understands their responsibilities.",
+      },
+      {
+        title: "Manage content across markets",
+        body: "Structure multilingual content and regional variations without relying on disconnected pages.",
+      },
+      {
+        title: "Prepare for future requirements",
+        body: "Build content models that can support additional sections, integrations or digital channels.",
+      },
+    ],
+    processHeading: "Our CMS Implementation Process",
+    processIntro:
+      "We begin with the people managing your content, then design and build a system that fits their responsibilities.",
+    process: [
+      {
+        title: "Understand Your Publishing Needs",
+        body: "We learn what your team publishes and where the current process slows them down. This helps us establish what the new CMS needs to make easier.",
+      },
+      {
+        title: "Choose the Right CMS Approach",
+        body: "We assess platform options against your website requirements and technical environment. If you’re considering a headless CMS in UAE operations, we also evaluate whether separating content management from presentation is worthwhile.",
+      },
+      {
+        title: "Design the Editing Experience",
+        body: "Your team reviews how pages are assembled and content moves towards publication. We refine the templates and permissions before development begins.",
+      },
+      {
+        title: "Build, Connect and Migrate",
+        body: "We configure the CMS and develop the agreed website components. Existing content is prepared for migration, with checks to confirm it reaches the right place.",
+      },
+      {
+        title: "Test and Hand Over",
+        body: "Your editors test everyday tasks before launch. We resolve issues and provide guidance so your team can manage the website confidently after handover.",
+      },
+    ],
+    outcomesHeading: "CMS Implementation Deliverables",
+    outcomesIntro:
+      "Depending on your website requirements and agreed scope, deliverables may include:",
+    outcomes: [
+      "Publishing requirements and CMS platform assessment.",
+      "Content architecture and content-model definitions.",
+      "CMS setup and configuration.",
+      "Website templates and reusable page components.",
+      "Editorial roles, permissions and approval workflows.",
+      "Multilingual content-management configuration.",
+      "Connections to agreed business systems and external services.",
+      "Content migration, URL mapping and validation.",
+      "Editorial testing, user guidance and technical documentation.",
+      "Deployment support and an agreed maintenance roadmap.",
+    ],
+    whyUsHeading: "Why Choose Vedha for CMS Development in Dubai?",
+    whyUs: [
+      "A CMS only helps if your team can use it comfortably. Vedha connects the editing experience with the technical work behind your website, so content management is built into the solution rather than treated as an afterthought.",
+      "We consider both the visitor experience and the people maintaining the site, helping your team manage content without compromising structure or consistency. As a CMS development company in Dubai, we can also support website development and [website maintenance](/services/website-design-development/website-maintenance/), with responsibilities established from the start.",
+    ],
+    faqHeading: "Frequently Asked Questions",
+    faqs: [
+      {
+        question: "Do you provide CMS website development in UAE markets?",
+        answer:
+          "Yes. Vedha can build a new CMS-powered website or improve the content-management capabilities of an existing site, supporting businesses in Dubai and across the UAE.",
+      },
+      {
+        question: "Which content management system in Dubai should my business choose?",
+        answer:
+          "The right choice depends on what you publish, who manages it and how your website connects to other systems. We assess your requirements before recommending a platform, rather than fitting your business around a predetermined tool. For a closer look at the options, see our guide to the [best CMS platforms in the UAE](/blog/best-cms-platforms-uae/).",
+      },
+      {
+        question: "Can you implement a headless CMS in UAE businesses?",
+        answer:
+          "Yes. We can assess and implement a headless approach where content needs to serve multiple websites, apps or other interfaces. We also consider the development and maintenance requirements before recommending it over a traditional CMS.",
+      },
+      {
+        question: "Which UAE agencies implement enterprise CMS and digital experience platforms?",
+        answer:
+          "Vedha can deliver enterprise CMS and digital experience platform requirements, including platform selection, integrations, content workflows and implementation.",
+      },
+      {
+        question: "Can you migrate content from our existing website?",
+        answer:
+          "Yes. We plan how existing content maps into the new CMS and identify what needs updating or removing. Migration checks help confirm that content, media and agreed URL redirects are handled correctly.",
+      },
+      {
+        question: "Will our team need developers to update the website?",
+        answer:
+          "Routine changes can be managed through the templates and editing controls included in your CMS. New functionality or substantial layout changes may still require development, and we explain those boundaries during handover.",
+      },
+    ],
+    ctaTitle: "Make Your Website Easier to Manage",
+    ctaBody:
+      "Tell us about your current website, publishing challenges and future plans. We’ll recommend a practical scope for CMS implementation in Dubai or across the UAE.",
+    ctaPrimaryLabel: "Discuss Your CMS Implementation Needs",
+    ctaPrimaryHref: "/#book",
+    ctaSecondaryLabel: "Contact Vedha",
+    ctaSecondaryHref: "/contact/",
+    relatedSlugs: [
+      "website-maintenance",
+      "website-migration",
+      "website-redesign",
+      "multilingual-websites",
+      "website-performance-optimisation",
+      "technical-seo",
+    ],
+    keywords: [
+      "CMS implementation Dubai",
+      "CMS development Dubai",
+      "CMS website development Dubai",
+      "headless CMS UAE",
+      "content management system Dubai",
+      "CMS development company Dubai",
+      "Website Design & Development",
+      "Vedha",
+    ],
+  },
   "website-maintenance": {
     seoTitle: "Website Maintenance in Dubai | Website Support & Updates | Vedha",
     seoDescription:
