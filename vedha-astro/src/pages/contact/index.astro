@@ -11,7 +11,7 @@ const schema = breadcrumbSchema([
 ---
 <BaseLayout
   title="Contact — VEDHA"
-  description="Contact Vedha Technologies in Dubai — send an enquiry, subscribe to updates, or book a free consultation."
+  description="Contact Vedha Technologies in Dubai — send an enquiry or book a free consultation."
   ogImage="/images/photo-lake-jetty.jpg"
   preloadHeroImage="/images/photo-lake-jetty.jpg"
 >
@@ -82,18 +82,6 @@ const schema = breadcrumbSchema([
       </div>
 
       <aside class="contact-page__aside" aria-label="Contact details">
-        <section class="contact-page__panel">
-          <p class="kicker">(Newsletter)</p>
-          <h3>Be the first to know what’s new.</h3>
-          <form class="contact-page__newsletter" id="contactNewsletter" data-mail-form="newsletter">
-            <label class="visually-hidden" for="contactNlEmail">E-mail</label>
-            <input id="contactNlEmail" type="email" name="email" placeholder="E-mail" required autocomplete="email" />
-            <button class="btn btn--dark" type="submit"><span>Subscribe</span></button>
-            <p class="form-note" data-form-note hidden role="status" aria-live="polite"></p>
-          </form>
-          <p class="contact-page__fine">No noise. Just curated updates.</p>
-        </section>
-
         <section class="contact-page__panel">
           <p class="kicker">(New Projects / Business)</p>
           <a href="mailto:info@vedha.ae">info@vedha.ae</a>
@@ -186,13 +174,6 @@ const schema = breadcrumbSchema([
     border-radius: calc(var(--radius) * 0.75);
     background: var(--card);
   }
-  .contact-page__panel h3 {
-    margin: 0;
-    font-size: var(--text-xl);
-    font-weight: var(--weight-semibold);
-    letter-spacing: var(--tracking-tight);
-    line-height: var(--leading-snug);
-  }
   .contact-page__panel a {
     color: var(--ink);
     text-decoration: none;
@@ -204,35 +185,6 @@ const schema = breadcrumbSchema([
     color: var(--ink-soft);
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
-  }
-  .contact-page__fine {
-    font-size: var(--text-xs);
-    line-height: var(--leading-normal);
-    color: var(--ink-soft);
-  }
-
-  .contact-page__newsletter {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    width: 100%;
-  }
-  .contact-page__newsletter input {
-    flex: 1;
-    min-width: 10rem;
-    min-height: 48px;
-    padding: 0 1rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    background: var(--bg);
-    font: inherit;
-    color: var(--ink);
-    font-size: max(16px, 1em);
-  }
-  .contact-page__newsletter input:focus {
-    outline: none;
-    border-color: var(--ink);
-    box-shadow: 0 0 0 3px rgba(17, 17, 17, 0.08);
   }
 
   @media (min-width: 64rem) {
